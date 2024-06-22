@@ -6,6 +6,12 @@
   <packaging>war</packaging>
   <dependencies>
   	<dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>4.0.1</version> <!-- O la versión que necesites -->
+        <scope>provided</scope>
+    </dependency>
+  	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-core</artifactId>
 		<version>4.2.5.RELEASE</version>
