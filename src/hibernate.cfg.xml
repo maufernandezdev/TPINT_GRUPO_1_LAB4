@@ -13,12 +13,11 @@
     	<!-- <property name="show_sql">true</property> -->
   		
         <mapping class="frgp.utn.edu.ar.entidad.Usuario"/>
-        
-        <!-- <mapping class="frgp.utn.edu.ar.entidad.Especialidad"/>
+        <mapping class="frgp.utn.edu.ar.entidad.Especialidad"/>
         <mapping class="frgp.utn.edu.ar.entidad.Medico"/>
         <mapping class="frgp.utn.edu.ar.entidad.Paciente"/>
         <mapping class="frgp.utn.edu.ar.entidad.Turno"/>
-      	<mapping class="frgp.utn.edu.ar.entidad.Horario"/> -->
+      	<mapping class="frgp.utn.edu.ar.entidad.Horario"/>
     	
     </session-factory>
 </hibernate-configuration>
