@@ -7,15 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<form action="dashboard.html" method="post">
-	    <label for="username">Usuario:</label>
-	    <input type="text" id="username" name="username">
-	    <br>
-	    <label for="password">Contraseña:</label>
-	    <input type="password" id="password" name="password">
-	    <br>
-	    <input type="submit" value="Login">
-	</form>
-	<label>${error}</label>
+	<h1>Dashboard administradores</h1>
+	<h2>Bienvenido ${user}!</h2>
 </body>
 </html>

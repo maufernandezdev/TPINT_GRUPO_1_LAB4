@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>Bienvenido ${user}!</h1>
+	<h1>Dashboard medicos</h1>
+	<h2>Bienvenido ${user}!</h2>
 </body>
 </html>

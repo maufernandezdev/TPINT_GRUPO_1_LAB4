@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/tx
+     http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop
+     http://www.springframework.org/schema/aop/spring-aop.xsd">
+	
+	<!-- dao imp beans -->
+	<bean id="beanConexion" class="frgp.utn.edu.ar.daoImp.ConfigHibernate" scope="singleton">
+	</bean>
+	<bean id="beanDaoUsuario" class="frgp.utn.edu.ar.daoImp.DaoUsuario">
+	    <constructor-arg ref="beanConexion" />
+	</bean>
+	
+	<!-- negocio imp beans -->
+	<bean id="beanUsuarioNegocio" class="frgp.utn.edu.ar.negocioImp.UsuarioNegocio">
+	    <property name="daoUsuario" ref="beanDaoUsuario" />
+	</bean>
+	
+	<!-- entidad beans -->
+	<bean id="beanUsuario" class="frgp.utn.edu.ar.entidad.Usuario" scope="prototype"></bean>
+	
+</beans>
