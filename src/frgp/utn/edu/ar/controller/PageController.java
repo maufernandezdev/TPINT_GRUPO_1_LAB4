@@ -41,15 +41,6 @@ public class PageController {
 			 MV.setViewName("login");
 			 MV.addObject("error", "La contraseña es incorrecta!");
 		}
-		/*
-		if (username.equals("Gaston") && password.equals("1234")) {
-			System.out.println("login exitoso!");
-	        MV.setViewName("dashboard-admin");
-	        MV.addObject("user", username);
-	     } else {
-            MV.setViewName("login");
-            MV.addObject("error", "El usuario no existe!");
-	    }*/
 		return MV;
 	}
 	
