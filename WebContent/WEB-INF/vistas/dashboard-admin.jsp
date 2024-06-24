@@ -23,18 +23,7 @@
             color: #000;
         }
     </style>
-    <script>
-        function loadPage(page) {
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', page, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    document.getElementById('content').innerHTML = xhr.responseText;
-                }
-            };
-            xhr.send();
-        }
-    </script>
+
 </head>
 <body>
     <h1>Dashboard Administradores</h1>
@@ -42,15 +31,15 @@
     
     <div class="nav">
         <ul>
-            <li><a href="#" onclick="loadPage('pacientes.jsp')">Pacientes</a></li>
-            <li><a href="#" onclick="loadPage('medicos.jsp')">Médicos</a></li>
-            <li><a href="#" onclick="loadPage('asignacionTurnos.jsp')">Asignación de Turnos</a></li>
-            <li><a href="#" onclick="loadPage('informes.jsp')">Informes</a></li>
+            <li><a href="pacientes.html" target="content">Pacientes</a></li>
+            <li><a href="medicos.html" target="content">Médicos</a></li>
+            <li><a href="asignacionTurnos.html" target="content">Asignación de Turnos</a></li>
+            <li><a href="informes.html" target="content">Informes</a></li>
         </ul>
     </div>
     
     <div id="content">
-       
+        <iframe name="content" style="width:100%; height: 500px; border: none;"></iframe>
     </div>
 </body>
 </html>
