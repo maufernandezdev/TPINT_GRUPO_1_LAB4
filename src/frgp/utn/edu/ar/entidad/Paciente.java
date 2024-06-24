@@ -169,4 +169,5 @@ public class Paciente implements Serializable{
 				+ fechaNac + ", correo=" + correo + ", estado=" + estado + ", listaTurnos=" + listaTurnos + "]";
 	}
 	
+	
 }

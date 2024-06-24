@@ -10,7 +10,6 @@ INSERT INTO especialidad (nombre) VALUES
 ('Ortopedia'),
 ('Pediatría'),
 ('Psiquiatría');
-
 /*Pacientes*/
 INSERT INTO Pacientes (dni, nombre, apellido, telefono, direccion, provincia, localidad, fechaNac, correo, estado) 
 VALUES 

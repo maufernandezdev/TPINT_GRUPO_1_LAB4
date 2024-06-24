@@ -18,7 +18,6 @@ import frgp.utn.edu.ar.negocioImp.PacienteNegocio;
 @Controller
 public class PacienteController {
 	
-
     @RequestMapping("/pacientes")
     public ModelAndView pacientes() {
         ModelAndView mv = new ModelAndView();
@@ -26,7 +25,6 @@ public class PacienteController {
         return mv;
     }
     
-    // Mapeo para listar todos los pacientes y mostrarlos en la página
     @RequestMapping("listarPacientes.html")
     public ModelAndView listarPacientes() {
     	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");

@@ -83,10 +83,8 @@
     <p>No hay pacientes para mostrar.</p>
 </c:if>
 
-
  <!-- Javascript -->
-    <script>
-    
+    <script>   
     /*Aca para hacer un toogle en el botón de alta */
     function mostrarFormularioAlta() {
         var formulario = document.getElementById("formularioAlta");
@@ -98,7 +96,6 @@
     }
 
     </script>
-
 </body>
 </html>
 
