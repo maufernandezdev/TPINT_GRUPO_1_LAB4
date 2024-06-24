@@ -1,14 +1,20 @@
 package frgp.utn.edu.ar.controller;
 
+import java.util.List;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import frgp.utn.edu.ar.entidad.Usuario;
 import frgp.utn.edu.ar.entidad.Usuario.TipoDeUsuario;
 import frgp.utn.edu.ar.negocioImp.UsuarioNegocio;
+
+import frgp.utn.edu.ar.entidad.Paciente;
+import frgp.utn.edu.ar.negocioImp.PacienteNegocio;
 
 @Controller
 public class PageController {
@@ -50,4 +56,13 @@ public class PageController {
 		MV.setViewName("login");
 		return MV;
 	}
+	
+   @RequestMapping("/dashboard-admin")
+    public ModelAndView dashboardAdmin() {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("dashboard-admin");
+        mv.addObject("user", "Administrador");
+        return mv;
+    }
+
 }

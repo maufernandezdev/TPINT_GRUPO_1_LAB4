@@ -1,6 +1,7 @@
 package frgp.utn.edu.ar.entidad;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -33,7 +34,7 @@ public class Paciente implements Serializable{
 	private String direccion;
 	private String provincia;
 	private String localidad;
-	private LocalDate fechaNac;
+	private Date fechaNac;
 	private String correo;
     private Estado estado;
 	
@@ -53,7 +54,7 @@ public class Paciente implements Serializable{
 	public Paciente ( ) {}
 	
 	public Paciente(int dni, String nombre, String apellido, String telefono, String direccion, String provincia,
-			String localidad, LocalDate fechaNac, String correo) {
+			String localidad, Date fechaNac, String correo) {
 		super();
 		this.dni = dni;
 		this.nombre = nombre;
@@ -69,7 +70,7 @@ public class Paciente implements Serializable{
 	
 	//facilitar
     public void setPacienteDetails(int dni, String nombre, String apellido, String telefono, String direccion,
-            String provincia, String localidad, LocalDate fechaNac, String correo) {
+            String provincia, String localidad, Date fechaNac, String correo) {
 		this.dni = dni;
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -137,11 +138,11 @@ public class Paciente implements Serializable{
 		this.localidad = localidad;
 	}
 
-	public LocalDate getFechaNac() {
+	public Date getFechaNac() {
 		return fechaNac;
 	}
 
-	public void setFechaNac(LocalDate fechaNac) {
+	public void setFechaNac(Date fechaNac) {
 		this.fechaNac = fechaNac;
 	}
 
@@ -167,5 +168,6 @@ public class Paciente implements Serializable{
 				+ ", direccion=" + direccion + ", provincia=" + provincia + ", localidad=" + localidad + ", fechaNac="
 				+ fechaNac + ", correo=" + correo + ", estado=" + estado + ", listaTurnos=" + listaTurnos + "]";
 	}
+	
 	
 }
