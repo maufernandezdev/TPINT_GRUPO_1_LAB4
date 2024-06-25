@@ -1,11 +1,12 @@
 package frgp.utn.edu.ar.daoImp;
 
+import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
-
 import frgp.utn.edu.ar.dao.IdaoEspecialidad;
 import frgp.utn.edu.ar.entidad.Especialidad;
-import frgp.utn.edu.ar.entidad.Medico;
+
 
 public class DaoEspecialidad implements IdaoEspecialidad {
     private ConfigHibernate conexion;
@@ -70,4 +71,12 @@ public class DaoEspecialidad implements IdaoEspecialidad {
 
         return exists;
     }
+    
+    public List<Especialidad> ReadAll() {
+		conexion = new ConfigHibernate();
+	    Session session = conexion.abrirConexion();
+        session.beginTransaction();
+        List<Especialidad> especialidades = session.createQuery("FROM Especialidad").list();
+        return especialidades;
+	}
 }

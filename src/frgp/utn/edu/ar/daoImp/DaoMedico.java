@@ -61,7 +61,6 @@ public class DaoMedico implements IdaoMedico {
         return medico;
 	}
 
-	
 	public boolean Update(Medico medico) {
 		boolean estado = true;
 	    Session session = null;

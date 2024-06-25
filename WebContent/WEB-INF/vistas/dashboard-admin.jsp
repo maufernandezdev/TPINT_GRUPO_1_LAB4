@@ -4,8 +4,28 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Dashboard Administradores</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var links = document.querySelectorAll('.nav ul li a');
+            links.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    links.forEach(function(link) {
+                        link.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                });
+            });
+        });
+    </script>
     <style>
- 
+ 		.nav ul li a {
+            text-decoration: none;
+            color: black;
+        }
+        .nav ul li a.selected {
+            text-decoration: underline;
+            color: #0066cc;
+        }
         .nav {
             background-color: #f3f3f3;
             padding: 10px;
@@ -37,7 +57,7 @@
         </ul>
     </div> 
     <div id="content">
-        <iframe name="content" style="width:100%; height: 500px; border: none;"></iframe>
+        <iframe name="content" style="width:100%; height: 1000px; border: none;"></iframe>
     </div>
 </body>
 </html>
