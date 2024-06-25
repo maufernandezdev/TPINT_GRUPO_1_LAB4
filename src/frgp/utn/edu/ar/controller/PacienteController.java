@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import frgp.utn.edu.ar.entidad.Medico;
 import frgp.utn.edu.ar.entidad.Paciente;
 import frgp.utn.edu.ar.negocioImp.PacienteNegocio;
 
@@ -25,13 +26,18 @@ public class PacienteController {
         return mv;
     }
     
-    @RequestMapping("listarPacientes.html")
+    @RequestMapping("/listarPacientes")
     public ModelAndView listarPacientes() {
     	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 		PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
-        ModelAndView mv = new ModelAndView("pacientes");
+        ModelAndView mv = new ModelAndView("listarPacientes");
         List<Paciente> pacientes = pacienteNegocio.ReadAll();
-        mv.addObject("pacientes", pacientes);
+        mv.addObject("listaPacientes", pacientes);
+        
+        for (Paciente p1: pacientes) {
+			System.out.println(p1.toString());
+		}
+        
         return mv;
     }
     

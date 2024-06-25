@@ -83,6 +83,9 @@
     	</style>
 	</head>
 	<body>
+	
+	<jsp:include page="masterPage.jsp" /> 
+	
 		<h1>Gestión de Medicos</h1>
 	    <div id="formularioAlta" class="container">
 	        <h2>Alta Paciente</h2>

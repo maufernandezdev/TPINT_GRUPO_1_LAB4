@@ -55,12 +55,12 @@
     </div>
 <hr>
 
-<!-- Botón para listar pacientes -->
+<!-- Botón para listar pacientes 
 <form action="listarPacientes.html" method="get">
     <input type="submit" value="Listar Pacientes">
 </form>
 
-<!-- Mostrar lista de pcientes -->
+
 <c:if test="${not empty pacientes}">
     <table border="1">
         <thead>
