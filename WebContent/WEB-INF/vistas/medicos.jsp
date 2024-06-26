@@ -88,7 +88,7 @@
 	
 		<h1>Gestión de Medicos</h1>
 	    <div id="formularioAlta" class="container">
-	        <h2>Alta Paciente</h2>
+	        <h2>Alta Médico</h2>
 			<form id="formAltaMedico" action="guardar_medico.html" method="post">
 	  		
 	  		<div class="item">

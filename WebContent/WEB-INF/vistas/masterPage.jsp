@@ -40,7 +40,7 @@
 		    <li class="nav-item dropdown">
 		      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Pacientes</a>
 		      <div class="dropdown-menu">
-		        <a class="dropdown-item" >Alta Paciente</a>
+		        <a class="dropdown-item" href="pacientes.html">Alta Paciente</a>
 		        <a class="dropdown-item" >Baja Paciente</a>
 		        <a class="dropdown-item" >Modificacion Paciente</a>
 		        <a class="dropdown-item" href="listarPacientes.html" >Listado Paciente</a>
