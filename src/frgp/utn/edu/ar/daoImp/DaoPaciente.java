@@ -82,7 +82,9 @@ public class DaoPaciente implements IdaoPaciente{
 	    
 	    return paciente != null;
 	}
-
+	
+	
+	
 	public boolean Update(Paciente paciente) {
 		boolean estado = false;
 	    Session session = null;
@@ -108,7 +110,8 @@ public class DaoPaciente implements IdaoPaciente{
 	    
 		return estado;
 	}
-
+	
+	
 	public boolean Delete(int dni) {
 	    boolean estado = false;
 	    conexion = new ConfigHibernate();

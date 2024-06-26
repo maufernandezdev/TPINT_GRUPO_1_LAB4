@@ -24,6 +24,7 @@ import frgp.utn.edu.ar.negocioImp.PacienteNegocio;
 public class PacienteController {
 	private final static String MENSAJE_AGREGADO = "AGREGADO CORRECTAMENTE";
 	private final static String MENSAJE_YA_EXISTE = "YA EXISTE EN LA BASE DE DATOS";
+	private final static String MENSAJE_MODIFICADO = "MODIFICADO CORRECTAMENTE";
 	
 	
     @RequestMapping("/pacientes")
@@ -100,4 +101,52 @@ public class PacienteController {
 	    return mv;
     }
     
+    
+    @RequestMapping(value = "modificar_paciente.html", method = RequestMethod.POST)
+    public ModelAndView modificarPaciente(
+            @RequestParam int dni,
+            @RequestParam String nombre,
+            @RequestParam String apellido,
+            @RequestParam String telefono,
+            @RequestParam String direccion,
+            @RequestParam String provincia,
+            @RequestParam String localidad,
+            @RequestParam Date fechaNac,
+            @RequestParam String correo) {
+
+        ModelAndView mv = new ModelAndView();
+        ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+        PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
+
+        // Obtener paciente por DNI
+        Paciente paciente = pacienteNegocio.ReadOne(dni);
+
+        if (paciente != null) {
+            paciente.setNombre(nombre);
+            paciente.setApellido(apellido);
+            paciente.setTelefono(telefono);
+            paciente.setDireccion(direccion);
+            paciente.setProvincia(provincia);
+            paciente.setLocalidad(localidad);
+            paciente.setFechaNac(fechaNac);
+            paciente.setCorreo(correo);
+
+            // Actualizar paciente
+            boolean actualizado = pacienteNegocio.Update(paciente);
+
+            if (actualizado) {
+                mv.setViewName("pacientes");
+                mv.addObject("successMessage", "Paciente: " + dni + " " + MENSAJE_MODIFICADO);
+            } else {
+                mv.setViewName("pacientes");
+                mv.addObject("errorMessage", "Error al modificar paciente con DNI: " + dni);
+            }
+        } else {
+            mv.setViewName("pacientes");
+            mv.addObject("errorMessage", "No se encontró paciente con DNI: " + dni);
+        }
+
+        return mv;
+    }
+
 }
