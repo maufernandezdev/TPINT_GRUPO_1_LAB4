@@ -18,6 +18,8 @@
         });
     </script>
     <style>
+     
+    
  		.nav ul li a {
             text-decoration: none;
             color: black;
@@ -46,9 +48,12 @@
 
 </head>
 <body>
+
+	<jsp:include page="masterPage.jsp" /> 
+
     <h1>Dashboard Administradores</h1>
     <h2>Bienvenido ${user}!</h2>
-    <div class="nav">
+    <!-- <div class="nav">
         <ul>
             <li><a href="pacientes.html" target="content">Pacientes</a></li>
             <li><a href="medicos.html" target="content">Médicos</a></li>
@@ -58,6 +63,6 @@
     </div> 
     <div id="content">
         <iframe name="content" style="width:100%; height: 1000px; border: none;"></iframe>
-    </div>
+    </div>-->
 </body>
 </html>
