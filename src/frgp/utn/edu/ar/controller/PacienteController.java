@@ -75,6 +75,8 @@ public class PacienteController {
 	        mv.addObject("errorMessage", "Error al parsear el DNI: " + e.getMessage());
 	        return mv;
 	    }    
+	    yaExiste = pacienteNegocio.Exist(dniParsed);
+	    
 	    if (!yaExiste) {
 	        paciente.setDni(dniParsed);
 	        paciente.setNombre(nombre);
@@ -146,6 +148,36 @@ public class PacienteController {
             mv.addObject("errorMessage", "No se encontró paciente con DNI: " + dni);
         }
 
+        return mv;
+    }
+    
+    
+    @RequestMapping(value = "eliminar_paciente.html", method = RequestMethod.GET)
+    public ModelAndView eliminarPaciente(@RequestParam int dni) {
+
+        ModelAndView mv = new ModelAndView();
+        ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+        PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
+
+        // Obtener paciente por DNI
+        Paciente paciente = pacienteNegocio.ReadOne(dni);
+
+        
+        try {
+        	if (paciente != null) {
+        	pacienteNegocio.Delete(dni);
+        	
+        	}
+	    } catch (Exception e) {
+	        System.out.println("Error al borrar paciente: " + e.getMessage());
+	        
+	        mv.setViewName("redirect:/listarPacientes.html");
+	        mv.addObject("errorMessage", "Error al parsear el DNI: " + e.getMessage());
+	        return mv;
+	    } 
+
+        mv.setViewName("redirect:/listarPacientes.html");
+        mv.addObject("successMessage", "Paciente con DNI " + dni + " eliminado correctamente");
         return mv;
     }
 

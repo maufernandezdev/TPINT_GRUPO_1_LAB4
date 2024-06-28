@@ -90,7 +90,7 @@ public class DaoPaciente implements IdaoPaciente{
 	    try {
 	        session = conexion.abrirConexion();
 	        session.beginTransaction();
-	        session.update(paciente);
+	        session.merge(paciente);
 	        session.flush();
 	        session.getTransaction().commit();
 	        Paciente savedPaciente = (Paciente) session.get(Paciente.class, paciente.getDni());

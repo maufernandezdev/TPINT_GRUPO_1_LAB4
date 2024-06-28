@@ -42,6 +42,7 @@
                     <th>Localidad</th>
                     <th>Fecha de nacimiento</th>
                     <th>estado</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
