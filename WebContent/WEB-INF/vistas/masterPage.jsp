@@ -29,10 +29,9 @@
 		      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Médicos</a>
 		      <div class="dropdown-menu">
 		        <a class="dropdown-item" href="medicos.html" >Alta Médico</a>
-		        <a class="dropdown-item" >Baja Médico</a>
-
-		        <a class="dropdown-item" >Modificar Médico</a>
-		        <a class="dropdown-item" >Listado Médico</a>
+		       <!-- <a class="dropdown-item" >Baja Médico</a>
+		        <a class="dropdown-item" >Modificar Médico</a> -->
+		        <a class="dropdown-item" href="listarMedicos.html">Listado Médico</a>
 
 		      </div>
 		   </li>
@@ -54,7 +53,8 @@
 		    </li>
 		
 			<li class="mt-0 mr-0 mb-0 ml-auto d-flex align-items-center" style="gap: 1rem;">
-				<span style="color: white;">Usuario Admin</span>
+			<% String user = request.getParameter("user"); %>
+				<span style="color: white; margin-right:10px">Usuario ${param.user}</span>
 				<a class="btn btn-danger" href="dashboard-admin.html" > Cerrar sesion</a>
 			</li>
 	  </ul>

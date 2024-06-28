@@ -49,8 +49,9 @@
 </head>
 <body>
 
-	<jsp:include page="masterPage.jsp" /> 
-
+	<jsp:include page="masterPage.jsp"> 
+	 	<jsp:param name="user" value="${user}" />
+	</jsp:include>
     <h1>Dashboard Administradores</h1>
     <h2>Bienvenido ${user}!</h2>
     <!-- <div class="nav">

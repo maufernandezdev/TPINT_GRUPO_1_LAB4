@@ -83,8 +83,6 @@ public class DaoPaciente implements IdaoPaciente{
 	    return paciente != null;
 	}
 	
-	
-	
 	public boolean Update(Paciente paciente) {
 		boolean estado = false;
 	    Session session = null;

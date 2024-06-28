@@ -60,7 +60,14 @@ public class DaoMedico implements IdaoMedico {
         Medico medico = (Medico)session.get(Medico.class,nombreMedico);
         return medico;
 	}
-
+	
+	public Medico ReadOneById(int legajo) {
+		Session session = conexion.abrirConexion();
+		session.beginTransaction();
+        Medico medico = (Medico)session.get(Medico.class,legajo);
+        return medico;
+	}
+	
 	public boolean Update(Medico medico) {
 		boolean estado = true;
 	    Session session = null;
@@ -68,7 +75,8 @@ public class DaoMedico implements IdaoMedico {
 	    try {
 	        session = conexion.abrirConexion();
 	        session.beginTransaction();
-	        session.update(medico);
+	        /*session.update(medico);*/
+	        session.merge(medico);
 	        session.flush();
 	        session.getTransaction().commit();
 	        Medico savedMedico = (Medico) session.get(Medico.class, medico.getUsuario());

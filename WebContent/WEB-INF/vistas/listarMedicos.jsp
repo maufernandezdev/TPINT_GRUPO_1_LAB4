@@ -5,10 +5,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Lista de Pacientes</title>
+<title>Lista de medicos</title>
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+
+<!-- jQuery y DataTables -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 
 <style>
     .modal-dialog {
@@ -22,40 +26,39 @@
 <jsp:include page="masterPage.jsp" /> 
 
 <div class="container mt-5">
-    <h1 class="text-center">Gestión de Pacientes</h1>
-    <h2 class="text-center">Lista de Pacientes</h2>
+    <h1 class="text-center">Gestión de medicos</h1>
+    <h2 class="text-center">Lista de medicos</h2>
     
-    <c:if test="${not empty listaPacientes}">
-        <table id="tablaPacientes" class="table table-striped table-bordered">
+    <c:if test="${not empty listaMedicos}">
+        <table id="tablaMedicos" class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>DNI</th>
+                    <th>Legajo</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Correo</th>
                     <th>Teléfono</th>
                     <th>Dirección</th>
                     <th>Localidad</th>
-                    <th>Provincia</th>
-                    <th>Fecha Nac</th>
-                    <th>Acciones</th>
+                    <th>Fecha de nacimiento</th>
+                    <th>estado</th>
                 </tr>
             </thead>
             <tbody>
-                <c:forEach items="${listaPacientes}" var="paciente">
+                <c:forEach items="${listaMedicos}" var="medico">
                     <tr>
-                        <td>${paciente.dni}</td>
-                        <td>${paciente.nombre}</td>
-                        <td>${paciente.apellido}</td>
-                        <td>${paciente.correo}</td>
-                        <td>${paciente.telefono}</td>
-                        <td>${paciente.direccion}</td>
-                        <td>${paciente.localidad}</td>
-                        <td>${paciente.provincia}</td>
-                        <td>${paciente.fechaNac}</td>
+                        <td>${medico.legajo}</td>
+                        <td>${medico.nombre}</td>
+                        <td>${medico.apellido}</td>
+                        <td>${medico.correo}</td>
+                        <td>${medico.telefono}</td>
+                        <td>${medico.direccion}</td>
+                        <td>${medico.localidad}</td>
+                        <td>${medico.fechaNac}</td>
+                        <td>${medico.estado}</td>
                         <td>
-                            <button type="button" class="btn btn-primary btn-sm editar-paciente" data-toggle="modal" data-target="#modalEditar" data-dni="${paciente.dni}">Modificar</button>
-                            <button type="button" class="btn btn-danger btn-sm">Eliminar</button>
+							<button type="button" class="btn btn-primary btn-sm editar-medico" data-toggle="modal" data-target="#modalEditar" data-legajo="${medico.legajo}">Modificar</button>
+							<button type="button" class="btn btn-danger btn-sm">Eliminar</button>
                         </td>
                     </tr>
                 </c:forEach>
@@ -69,14 +72,14 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalEditarLabel">Modificar Paciente</h5>
+                <h5 class="modal-title" id="modalEditarLabel">Modificar Medico</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="formEditarPaciente" action="modificar_paciente.html" method="post">
+            <form id="formEditarMedico" action="modificar_medico.html" method="post">
                 <div class="modal-body">
-                    <input type="hidden" id="dniEditar" name="dni" value="">
+                <input type="hidden" id="legajoEditar" name="legajo" value="1">
                     <div class="form-group">
                         <label for="nombreEditar">Nombre:</label>
                         <input type="text" class="form-control" id="nombreEditar" name="nombre" required>
@@ -102,10 +105,6 @@
                         <input type="text" class="form-control" id="localidadEditar" name="localidad" required>
                     </div>
                     <div class="form-group">
-                        <label for="provinciaEditar">Provincia:</label>
-                        <input type="text" class="form-control" id="provinciaEditar" name="provincia" required>
-                    </div>
-                    <div class="form-group">
                         <label for="fechaNacEditar">Fecha de Nacimiento:</label>
                         <input type="date" class="form-control" id="fechaNacEditar" name="fechaNac" required>
                     </div>
@@ -118,54 +117,52 @@
         </div>
     </div>
 </div>
-<!-- jQuery y DataTables -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
 <script>
-$(document).ready(function() {
-    $('#tablaPacientes').DataTable({
-        "searching": false,
-        "lengthMenu": [5, 10, 15, 30, 60],
-        "language": {
-            "zeroRecords": "No se encontraron datos",
-            "infoEmpty": "No hay datos para mostrar",
-            "info": "Mostrando del _START_ al _END_, de un total de _TOTAL_ entradas",
-            "lengthMenu": "Mostrar _MENU_ registros",
-            "paginate": {
-                "first": "Primeros",
-                "last": "Últimos",
-                "next": "Siguiente",
-                "previous": "Anterior"
-            }
-        }
-    });
-
-    // Configurar el modal de edición al hacer click en Modificar
-    $('.editar-paciente').click(function() {
-        var dni = $(this).data('dni');
-        var nombre = $(this).closest('tr').find('td:eq(1)').text();
-        var apellido = $(this).closest('tr').find('td:eq(2)').text();
-        var correo = $(this).closest('tr').find('td:eq(3)').text();
-        var telefono = $(this).closest('tr').find('td:eq(4)').text();
-        var direccion = $(this).closest('tr').find('td:eq(5)').text();
-        var localidad = $(this).closest('tr').find('td:eq(6)').text();
-        var provincia = $(this).closest('tr').find('td:eq(7)').text();
-        var fechaNac = $(this).closest('tr').find('td:eq(8)').text();
-
-        $('#dniEditar').val(dni);
-        $('#nombreEditar').val(nombre);
-        $('#apellidoEditar').val(apellido);
-        $('#correoEditar').val(correo);
-        $('#telefonoEditar').val(telefono);
-        $('#direccionEditar').val(direccion);
-        $('#localidadEditar').val(localidad);
-        $('#provinciaEditar').val(provincia);
-        $('#fechaNacEditar').val(fechaNac);
-
-        $('#modalEditar').modal('show');
-    });
-});
+	$(document).ready(function() {
+	    $('#tablaMedicos').DataTable({
+	        "searching": false,
+	        "lengthMenu": [5, 10, 15, 30, 60],
+	        "language": {
+	            "zeroRecords": "No se encontraron datos",
+	            "infoEmpty": "No hay datos para mostrar",
+	            "info": "Mostrando del _START_ al _END_, de un total de _TOTAL_ entradas",
+	            "lengthMenu": "Mostrar _MENU_ registros",
+	            "paginate": {
+	                "first": "Primeros",
+	                "last": "Últimos",
+	                "next": "Siguiente",
+	                "previous": "Anterior"
+	            }
+	        }
+	    });
+	    
+	    $('.editar-medico').click(function() {
+	        var legajo = $(this).data('legajo');
+	        var nombre = $(this).closest('tr').find('td:eq(1)').text();
+	        var apellido = $(this).closest('tr').find('td:eq(2)').text();
+	        var correo = $(this).closest('tr').find('td:eq(3)').text();
+	        var telefono = $(this).closest('tr').find('td:eq(4)').text();
+	        var direccion = $(this).closest('tr').find('td:eq(5)').text();
+	        var localidad = $(this).closest('tr').find('td:eq(6)').text();
+	        var fechaNac = $(this).closest('tr').find('td:eq(7)').text();
+	        
+	        console.log("legajo: ", legajo);
+	        console.log("nombre: ", nombre);
+	        console.log("apellido: ", apellido);
+	        console.log("correo: ", correo);
+	
+	        $('#legajoEditar').val(legajo);
+	        $('#nombreEditar').val(nombre);
+	        $('#apellidoEditar').val(apellido);
+	        $('#correoEditar').val(correo);
+	        $('#telefonoEditar').val(telefono);
+	        $('#direccionEditar').val(direccion);
+	        $('#localidadEditar').val(localidad);
+	        $('#fechaNacEditar').val(fechaNac);
+	        $('#modalEditar').modal('show');
+	    });
+	});
 </script>
-
 </body>
 </html>

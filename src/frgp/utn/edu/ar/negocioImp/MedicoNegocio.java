@@ -35,7 +35,11 @@ public class MedicoNegocio implements IMedicoNegocio {
 	public Medico ReadOne(String nombreMedico) {
 		return daoMedico.ReadOne(nombreMedico);
 	}
-
+	
+	public Medico ReadOneById(int legajo) {
+		return daoMedico.ReadOneById(legajo);
+	}
+	
 	public List<Medico> ReadAll() {
 		return daoMedico.ReadAll();
 	}
