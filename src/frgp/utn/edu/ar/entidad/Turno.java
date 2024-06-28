@@ -1,6 +1,7 @@
 package frgp.utn.edu.ar.entidad;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 
@@ -44,7 +45,7 @@ public class Turno implements Serializable{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idPaciente", nullable = false)
 	private Paciente paciente;
-	private LocalDate fecha;
+	private Date fecha;
 	private Time hora;
 	private String observacion;
 	@Enumerated(EnumType.STRING)
@@ -59,7 +60,7 @@ public class Turno implements Serializable{
 		super();
 	}
 	
-	public Turno(Medico medico, Paciente paciente, LocalDate fecha, Time hora, String observacion,
+	public Turno(Medico medico, Paciente paciente, Date fecha, Time hora, String observacion,
 			String estadoTurno) {
 		super();
 		this.medico = medico;
@@ -71,7 +72,7 @@ public class Turno implements Serializable{
 	}
 	
 	//facilitar
-    public void setTurnoDetails(Medico medico, Paciente paciente, LocalDate fecha, Time hora, String observacion,
+    public void setTurnoDetails(Medico medico, Paciente paciente, Date fecha, Time hora, String observacion,
             String estadoTurno) {
 		this.medico = medico;
 		this.paciente = paciente;
@@ -100,10 +101,10 @@ public class Turno implements Serializable{
 		this.paciente = paciente;
 	}
 
-	public LocalDate getFecha() {
+	public Date getFecha() {
 		return fecha;
 	}
-	public void setFecha(LocalDate fecha) {
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
 	public Time getHora() {

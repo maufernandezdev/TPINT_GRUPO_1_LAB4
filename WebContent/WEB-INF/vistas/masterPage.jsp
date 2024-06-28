@@ -1,3 +1,5 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <head>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
@@ -25,6 +27,8 @@
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 	  <a class="navbar-brand" href="#">Consultorio</a>
 	  <ul class="navbar-nav w-100">
+            <c:set var="tipoUsuario" value="${sessionScope.tipoUsuario}" />
+            <c:if test="${tipoUsuario == 'ADMINISTRADOR'}">
 	  	   <li class="nav-item dropdown">
 		      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Médicos</a>
 		      <div class="dropdown-menu">
@@ -51,10 +55,14 @@
 		    <li class="nav-item">
 		      <a class="nav-link" >Informes y/o Reportes</a>
 		    </li>
-		
+		    </c:if>
+            <c:if test="${tipoUsuario == 'MEDICO'}">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Listado de Turnos</a>
+                </li>
+            </c:if>
 			<li class="mt-0 mr-0 mb-0 ml-auto d-flex align-items-center" style="gap: 1rem;">
-			<% String user = request.getParameter("user"); %>
-				<span style="color: white; margin-right:10px">Usuario ${param.user}</span>
+			    <span style="color: white; margin-right:10px">Usuario ${sessionScope.user}</span>
 				<a class="btn btn-danger" href="dashboard-admin.html" > Cerrar sesion</a>
 			</li>
 	  </ul>

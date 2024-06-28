@@ -15,12 +15,13 @@ import frgp.utn.edu.ar.negocioImp.UsuarioNegocio;
 
 import frgp.utn.edu.ar.entidad.Paciente;
 import frgp.utn.edu.ar.negocioImp.PacienteNegocio;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class PageController {
 	
 	@RequestMapping("dashboard.html")
-	public ModelAndView loginEvent(String username, String password) {
+	public ModelAndView loginEvent(String username, String password, HttpSession session) {
 		ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 		UsuarioNegocio usuarioNegocio = (UsuarioNegocio) appContext.getBean("beanUsuarioNegocio");
 		ModelAndView MV = new ModelAndView();
@@ -36,7 +37,11 @@ public class PageController {
 		}
 		if(password.equals(usuario.getContrasenia())) {
 			System.out.println("login exitoso!");
-			MV.addObject("user", username);
+/*			MV.addObject("user", username);
+	        MV.addObject("tipoUsuario", usuario.getTipoDeUsuario());*/
+            session.setAttribute("user", username);
+            session.setAttribute("tipoUsuario", usuario.getTipoDeUsuario().toString());
+            
 			if(usuario.getTipoDeUsuario().equals(TipoDeUsuario.ADMINISTRADOR)) {
 				 MV.setViewName("dashboard-admin");
 			} else {

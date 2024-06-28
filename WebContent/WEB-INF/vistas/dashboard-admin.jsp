@@ -48,22 +48,9 @@
 
 </head>
 <body>
-
-	<jsp:include page="masterPage.jsp"> 
-	 	<jsp:param name="user" value="${user}" />
-	</jsp:include>
+	<jsp:include page="masterPage.jsp" /> 
     <h1>Dashboard Administradores</h1>
     <h2>Bienvenido ${user}!</h2>
-    <!-- <div class="nav">
-        <ul>
-            <li><a href="pacientes.html" target="content">Pacientes</a></li>
-            <li><a href="medicos.html" target="content">Médicos</a></li>
-            <li><a href="asignacionTurnos.html" target="content">Asignación de Turnos</a></li>
-            <li><a href="informes.html" target="content">Informes</a></li>
-        </ul>
-    </div> 
-    <div id="content">
-        <iframe name="content" style="width:100%; height: 1000px; border: none;"></iframe>
-    </div>-->
+
 </body>
 </html>

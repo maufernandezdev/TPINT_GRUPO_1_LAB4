@@ -15,10 +15,12 @@ import frgp.utn.edu.ar.entidad.Especialidad;
 import frgp.utn.edu.ar.entidad.Medico;
 import frgp.utn.edu.ar.entidad.Medico.Estado;
 import frgp.utn.edu.ar.entidad.Paciente;
+import frgp.utn.edu.ar.entidad.Turno;
 import frgp.utn.edu.ar.entidad.Usuario;
 import frgp.utn.edu.ar.negocioImp.EspecialidadNegocio;
 import frgp.utn.edu.ar.negocioImp.MedicoNegocio;
 import frgp.utn.edu.ar.negocioImp.PacienteNegocio;
+import frgp.utn.edu.ar.negocioImp.TurnoNegocio;
 import frgp.utn.edu.ar.negocioImp.UsuarioNegocio;
 
 @Controller
@@ -180,6 +182,23 @@ public class MedicoController {
 	        mv.addObject("successMessage", "Medico con LEGAJO " + legajo + " eliminado correctamente");
 	        return mv;
 	    }
+	 
+	 
+/*	 @RequestMapping("listarTurnos.html")
+	    public ModelAndView listarTurnos() {
+	    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+	    	TurnoNegocio turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");
+	        ModelAndView mv = new ModelAndView("listarTurnos");
+	        List<Turno> turnos = turnoNegocio.ReadAll();
+	        
+	        mv.addObject("listaTurnos", turnos);
+	        
+	        for (Turno t1: turnos) {
+				System.out.println(t1.toString());
+			}
+	        
+	        return mv;
+	    }*/
 	 
 	 
 }
