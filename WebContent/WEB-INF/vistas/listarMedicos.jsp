@@ -65,6 +65,15 @@
             </tbody>
         </table>
     </c:if>
+    <c:if test="${empty listaMedicos}">
+     <table  class="table table-striped table-bordered">
+      <thead>
+                <tr>
+                    <th class="text-center" style="color: red;">No hay Medicos cargados en el sistema</th>
+                </tr>
+            </thead>
+     </table>
+    </c:if>
 </div>
 
 <!-- Modal de Edición -->
