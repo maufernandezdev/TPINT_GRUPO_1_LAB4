@@ -62,16 +62,18 @@ public class MedicoController {
 			Usuario nuevoUsuario = (Usuario) appContext.getBean("beanUsuario");
 			MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
 			Medico nuevoMedico = (Medico) appContext.getBean("beanMedico");	
+			Especialidad especialidadEncontrada = (Especialidad) appContext.getBean("beanEspecialidad");	
 			EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
 			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
 			int idBuscado = especialidad; 
-			Especialidad especialidadEncontrada = null;
+			especialidadEncontrada = null;
 			for (Especialidad item : especialidades) {
 			    if (item.getId() == idBuscado) {
 			        especialidadEncontrada = item;
 			        break;
 			    }
 			}
+			
 			estado = medicoNegocio.Exist(usuario);
 		     if(estado == false){
 		    	 nuevoUsuario.setNombreUser(usuario);
@@ -79,11 +81,14 @@ public class MedicoController {
 				 usuarioNegocio.Add(nuevoUsuario);
 				 nuevoMedico.setMedicoDetails(nombre,apellido,sexo,LocalDate.parse(fechaDeNac),direccion,localidad,correo,telefono,nuevoUsuario,especialidadEncontrada);
 		    	 medicoNegocio.Add(nuevoMedico);
+		         mv.addObject("successMessage", MENSAJE_AGREGADO);
 		 	     System.out.println(MENSAJE_AGREGADO);	 
 		     }
 		     else {
+		    	 mv.addObject("errorMessage", MENSAJE_YA_EXISTE);
 		    	 System.out.println(MENSAJE_YA_EXISTE);
 		     }
+		     mv.addObject("especialidades", especialidades);
 	        mv.setViewName("medicos");
 	        return mv;
 	 	}
