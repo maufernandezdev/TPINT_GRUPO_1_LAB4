@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import frgp.utn.edu.ar.entidad.Especialidad;
 import frgp.utn.edu.ar.entidad.Medico;
+import frgp.utn.edu.ar.entidad.Medico.Estado;
 import frgp.utn.edu.ar.entidad.Paciente;
 import frgp.utn.edu.ar.entidad.Usuario;
 import frgp.utn.edu.ar.negocioImp.EspecialidadNegocio;
@@ -26,6 +27,7 @@ public class MedicoController {
 	private final static String MENSAJE_AGREGADO = "AGREGADO CORRECTAMENTE";
 	private final static String MENSAJE_YA_EXISTE = "YA EXISTE EN LA BASE DE DATOS";
 	private final static String MENSAJE_MODIFICADO = "MODIFICADO CORRECTAMENTE";
+	private final static String MENSAJE_ELIMINADO = "ELIMINADO CORRECTAMENTE";
 	
 	@RequestMapping("/medicos")
     public ModelAndView medicos() {
@@ -148,4 +150,36 @@ public class MedicoController {
 
 	        return mv;
 	    }
+	 
+	 
+	 @RequestMapping(value = "eliminar_medico.html", method = RequestMethod.GET)
+	    public ModelAndView eliminarMedico(@RequestParam int legajo) {
+		 	System.out.println("legajo: " + legajo);
+
+	        ModelAndView mv = new ModelAndView();
+	        ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+	        MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+
+	        Medico medico = medicoNegocio.ReadOneById(legajo);
+
+	        try {
+	        	if (medico != null) {
+	        		medicoNegocio.Delete(legajo);
+
+	        	}
+		    } catch (Exception e) {
+		        System.out.println("Error al eliminar medico: " + e.getMessage());
+
+		        mv.setViewName("redirect:/listarMedicos.html");
+		        mv.addObject("errorMessage", "Error al parsear el LEGAJO: " + e.getMessage());
+		        return mv;
+		    } 
+	        
+	        
+	        mv.setViewName("redirect:/listarMedicos.html");
+	        mv.addObject("successMessage", "Medico con LEGAJO " + legajo + " eliminado correctamente");
+	        return mv;
+	    }
+	 
+	 
 }

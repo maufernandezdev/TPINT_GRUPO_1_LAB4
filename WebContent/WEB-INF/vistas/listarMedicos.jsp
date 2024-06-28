@@ -58,7 +58,7 @@
                         <td>${medico.estado}</td>
                         <td>
 							<button type="button" class="btn btn-primary btn-sm editar-medico" data-toggle="modal" data-target="#modalEditar" data-legajo="${medico.legajo}">Modificar</button>
-							<button type="button" class="btn btn-danger btn-sm">Eliminar</button>
+							<button type="button" class="btn btn-danger btn-sm eliminar-medico" data-toggle="modal" data-target="#modalEliminar" data-legajo2="${medico.legajo}">Eliminar</button>
                         </td>
                     </tr>
                 </c:forEach>
@@ -127,6 +127,24 @@
     </div>
 </div>
 
+<!-- Modal de Eliminar -->
+<div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEliminarLabel">¿Estas seguro de eliminar al Medico?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="confirmarEliminarMedico">Eliminar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+        </div>
+    </div>
+</div>
+
 <script>
 	$(document).ready(function() {
 	    $('#tablaMedicos').DataTable({
@@ -146,32 +164,51 @@
 	        }
 	    });
 	    
-	    $('.editar-medico').click(function() {
-	        var legajo = $(this).data('legajo');
-	        var nombre = $(this).closest('tr').find('td:eq(1)').text();
-	        var apellido = $(this).closest('tr').find('td:eq(2)').text();
-	        var correo = $(this).closest('tr').find('td:eq(3)').text();
-	        var telefono = $(this).closest('tr').find('td:eq(4)').text();
-	        var direccion = $(this).closest('tr').find('td:eq(5)').text();
-	        var localidad = $(this).closest('tr').find('td:eq(6)').text();
-	        var fechaNac = $(this).closest('tr').find('td:eq(7)').text();
-	        
-	        console.log("legajo: ", legajo);
-	        console.log("nombre: ", nombre);
-	        console.log("apellido: ", apellido);
-	        console.log("correo: ", correo);
-	
-	        $('#legajoEditar').val(legajo);
-	        $('#nombreEditar').val(nombre);
-	        $('#apellidoEditar').val(apellido);
-	        $('#correoEditar').val(correo);
-	        $('#telefonoEditar').val(telefono);
-	        $('#direccionEditar').val(direccion);
-	        $('#localidadEditar').val(localidad);
-	        $('#fechaNacEditar').val(fechaNac);
-	        $('#modalEditar').modal('show');
-	    });
+
+	    
 	});
+	
+    $('.editar-medico').click(function() {
+        var legajo = $(this).data('legajo');
+        var nombre = $(this).closest('tr').find('td:eq(1)').text();
+        var apellido = $(this).closest('tr').find('td:eq(2)').text();
+        var correo = $(this).closest('tr').find('td:eq(3)').text();
+        var telefono = $(this).closest('tr').find('td:eq(4)').text();
+        var direccion = $(this).closest('tr').find('td:eq(5)').text();
+        var localidad = $(this).closest('tr').find('td:eq(6)').text();
+        var fechaNac = $(this).closest('tr').find('td:eq(7)').text();
+        
+        console.log("legajo: ", legajo);
+        console.log("nombre: ", nombre);
+        console.log("apellido: ", apellido);
+        console.log("correo: ", correo);
+
+        $('#legajoEditar').val(legajo);
+        $('#nombreEditar').val(nombre);
+        $('#apellidoEditar').val(apellido);
+        $('#correoEditar').val(correo);
+        $('#telefonoEditar').val(telefono);
+        $('#direccionEditar').val(direccion);
+        $('#localidadEditar').val(localidad);
+        $('#fechaNacEditar').val(fechaNac);
+        $('#modalEditar').modal('show');
+    });
+    
+    $('.eliminar-medico').click(function() {	
+        var legajo = $(this).data('legajo2');
+        legajo = parseInt(legajo); 
+    
+        $('#confirmarEliminarMedico').data('legajo', legajo);
+        $('#modalEliminar').modal('show');
+    });
+    
+    // confirmar eliminar desde el modal
+    $('#confirmarEliminarMedico').click(function() {
+        var legajo = $(this).data('legajo');
+        window.location.href = "eliminar_medico.html?legajo=" + legajo;
+    });
+	
+	
 </script>
 </body>
 </html>
