@@ -133,7 +133,7 @@
         </div>
         <div class="item">
             <label for="telefono">Teléfono:</label>
-            <input type="text" id="telefono" name="telefono" required><br>
+            <input type="number" id="telefono" name="telefono" required><br>
         </div>
         <div class="item">
             <label for="correo">Correo electrónico:</label>

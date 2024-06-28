@@ -140,7 +140,7 @@
 	    	
 	    	 <div class="item"> 
 		        <label for="telefono">Teléfono:</label>
-    	    	<input type="text" id="telefono" name="telefono"><br>
+    	    	<input type="number" id="telefono" name="telefono"><br>
 	    	 </div>    
         	
         	 <div class="item"> 

@@ -132,7 +132,7 @@ public class DaoMedico implements IdaoMedico {
 		conexion = new ConfigHibernate();
 	    Session session = conexion.abrirConexion();
         session.beginTransaction();
-        List<Medico> medicos = session.createQuery("FROM Medico").list();
+        List<Medico> medicos = session.createQuery("FROM Medico where estado =1").list();
         return medicos;
 	}
 	

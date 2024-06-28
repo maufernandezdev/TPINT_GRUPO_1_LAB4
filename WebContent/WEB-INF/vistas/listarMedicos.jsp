@@ -106,7 +106,7 @@
                     </div>
                     <div class="form-group">
                         <label for="telefonoEditar">Teléfono:</label>
-                        <input type="text" class="form-control" id="telefonoEditar" name="telefono" required>
+                        <input type="number" class="form-control" id="telefonoEditar" name="telefono" required>
                     </div>
                     <div class="form-group">
                         <label for="direccionEditar">Dirección:</label>

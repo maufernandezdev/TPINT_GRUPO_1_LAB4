@@ -64,7 +64,7 @@ public class DaoPaciente implements IdaoPaciente{
 		conexion = new ConfigHibernate();
 	    Session session = conexion.abrirConexion();
         session.beginTransaction();
-        List<Paciente> paciente = session.createQuery("FROM Paciente").list();
+        List<Paciente> paciente = session.createQuery("FROM Paciente where estado = 1").list();
         return paciente;
 	}
 
