@@ -58,8 +58,10 @@
                         <td>${medico.fechaNac}</td>
                         <td>${medico.estado}</td>
                         <td>
-							<button type="button" class="btn btn-primary btn-sm editar-medico" data-toggle="modal" data-target="#modalEditar" data-legajo="${medico.legajo}">Modificar</button>
-							<button type="button" class="btn btn-danger btn-sm eliminar-medico" data-toggle="modal" data-target="#modalEliminar" data-legajo2="${medico.legajo}">Eliminar</button>
+							<button type="button" class="btn btn-primary btn-sm editar-medico" data-toggle="modal" data-target="#modalEditar" 
+								data-legajo="${medico.legajo}">Modificar</button>
+							<button type="button" class="btn btn-danger btn-sm eliminar-medico" data-toggle="modal" data-target="#modalEliminar"
+							 	data-legajo2="${medico.legajo}">Eliminar</button>
                         </td>
                     </tr>
                 </c:forEach>
