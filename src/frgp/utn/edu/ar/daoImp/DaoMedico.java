@@ -69,7 +69,7 @@ public class DaoMedico implements IdaoMedico {
 	}
 	
 	public boolean Update(Medico medico) {
-		boolean estado = true;
+		boolean estado = false;
 	    Session session = null;
 
 	    try {
@@ -79,10 +79,10 @@ public class DaoMedico implements IdaoMedico {
 	        session.merge(medico);
 	        session.flush();
 	        session.getTransaction().commit();
-	        Medico savedMedico = (Medico) session.get(Medico.class, medico.getUsuario());
+	        Medico savedMedico = (Medico) session.get(Medico.class, medico.getLegajo());
 	        
-	        if (savedMedico.equals(medico) == false) {
-	            estado = false;
+	        if (savedMedico.getLegajo() == medico.getLegajo()) {
+	            estado = true;
 	        }
 	    } catch (Exception e) {
 	        if (session != null) {
