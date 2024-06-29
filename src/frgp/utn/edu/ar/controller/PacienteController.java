@@ -55,7 +55,7 @@ public class PacienteController {
         PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
         ModelAndView mv = new ModelAndView("listarPacientes");
         List<Paciente> pacientes = pacienteNegocio.listarPacientesActivos();
-        mv.addObject("listaPacientesActivos", pacientes);
+        mv.addObject("listaPacientes", pacientes);
 
         for (Paciente p1 : pacientes) {
             System.out.println(p1.toString());
