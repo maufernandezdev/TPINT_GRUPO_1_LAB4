@@ -23,7 +23,17 @@ public class Paciente implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	public enum Estado {
-	    ACTIVO, INACTIVO
+	    ACTIVO(1), 
+	    INACTIVO(0);
+		private final int valor;
+
+	    Estado(int valor) {
+	        this.valor = valor;
+	    }
+
+	    public int getValor() {
+	        return valor;
+	    }
 	}
 	
 	@Id

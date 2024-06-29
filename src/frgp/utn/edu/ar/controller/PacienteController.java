@@ -71,7 +71,7 @@ public class PacienteController {
 	        dniParsed = Integer.parseInt(dni);
 	    } catch (NumberFormatException e) {
 	        System.out.println("Error al parsear el DNI: " + e.getMessage());
-	        mv.setViewName("pacientes");
+	        mv.setViewName("redirect:/listarPacientes.html");
 	        mv.addObject("errorMessage", "Error al parsear el DNI: " + e.getMessage());
 	        return mv;
 	    }    
@@ -91,12 +91,12 @@ public class PacienteController {
 	        
 	        pacienteNegocio.Add(paciente);
 	        
-	        mv.setViewName("pacientes");
+	        mv.setViewName("redirect:/listarPacientes.html");
 	        mv.addObject("successMessage", "Paciente: " + dniParsed + MENSAJE_AGREGADO);
 
 	    } else {
 	        System.out.println("Paciente: " + dniParsed + MENSAJE_YA_EXISTE);
-	        mv.setViewName("pacientes");
+	        mv.setViewName("redirect:/listarPacientes.html");
 	        mv.addObject("errorMessage", "Paciente: " + dniParsed + MENSAJE_YA_EXISTE);
 	    }
 
@@ -137,14 +137,14 @@ public class PacienteController {
             boolean actualizado = pacienteNegocio.Update(paciente);
 
             if (actualizado) {
-                mv.setViewName("pacientes");
+                mv.setViewName("redirect:/listarPacientes.html"); 
                 mv.addObject("successMessage", "Paciente: " + dni + " " + MENSAJE_MODIFICADO);
             } else {
-                mv.setViewName("pacientes");
+                mv.setViewName("redirect:/listarPacientes.html");
                 mv.addObject("errorMessage", "Error al modificar paciente con DNI: " + dni);
             }
         } else {
-            mv.setViewName("pacientes");
+            mv.setViewName("redirect:/listarPacientes.html");
             mv.addObject("errorMessage", "No se encontró paciente con DNI: " + dni);
         }
 
