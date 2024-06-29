@@ -27,11 +27,6 @@
 		<artifactId>spring-webmvc</artifactId>
 		<version>4.2.5.RELEASE</version>
 	</dependency>
-	<dependency>
-		<groupId>javax.servlet</groupId>
-		<artifactId>jstl</artifactId>
-		<version>1.2</version>
-	</dependency>
   	<dependency>
 	  	<groupId>org.hibernate</groupId>
 	 	 <artifactId>hibernate-core</artifactId>

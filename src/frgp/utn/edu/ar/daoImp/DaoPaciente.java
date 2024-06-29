@@ -60,6 +60,7 @@ public class DaoPaciente implements IdaoPaciente{
 		return paciente;
 	}
 
+	
 	public List<Paciente> ReadAll() {
 		conexion = new ConfigHibernate();
 	    Session session = conexion.abrirConexion();
@@ -139,9 +140,61 @@ public class DaoPaciente implements IdaoPaciente{
 
 	    return estado;
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Paciente> listarPacientesActivos() {
+		List<Paciente> pacientes = null;
+		conexion = new ConfigHibernate();
+	    Session session = conexion.abrirConexion();
+	    session.beginTransaction();
+	    String hql = "FROM Paciente WHERE estado = :estado";
+	    Query query = session.createQuery(hql);
+        
+        query.setParameter("estado", Estado.ACTIVO);
+        
+        pacientes = query.list();
+        
+	    return pacientes;
+	}
+	
+	/*@SuppressWarnings("unchecked")
+	public List<Paciente> listarPacientesActivos() {
+	    Session session = null;
+	    List<Paciente> pacientes = null;
+
+	    try {
+	        session = conexion.abrirConexion();
+	        session.beginTransaction();
+	    
+	        String hql = "FROM Paciente WHERE estado = :estado";
+	        
+	        Query query = session.createQuery(hql);
+	        
+	        query.setParameter("estado", Estado.ACTIVO);
+	        
+	        pacientes = query.list();
+	        
+	        session.getTransaction().commit();
+	    } catch (Exception e) {
+	        if (session != null) {
+	            session.getTransaction().rollback();
+	        }
+	        e.printStackTrace();
+	    } finally {
+	        if (session != null) {
+	            session.close();
+	        }
+	    }
+
+	    return pacientes;
+	}*/
+	
+	
 	public ConfigHibernate getConexion() {
 		return conexion;
 	}
+	
 	public void setConexion(ConfigHibernate conexion) {
 		this.conexion = conexion;
 	}

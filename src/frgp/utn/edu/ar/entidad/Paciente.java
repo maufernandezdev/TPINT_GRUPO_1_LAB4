@@ -25,6 +25,7 @@ public class Paciente implements Serializable{
 	public enum Estado {
 	    ACTIVO(1), 
 	    INACTIVO(0);
+		
 		private final int valor;
 
 	    Estado(int valor) {

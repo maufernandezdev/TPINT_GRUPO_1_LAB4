@@ -51,9 +51,7 @@
 		      <a class="nav-link dropdown-toggle" href="#" id="navbardropPacientes" data-toggle="dropdown">Pacientes</a>
 		      <div class="dropdown-menu">
 		        <a class="dropdown-item" href="pacientes.html">Alta Paciente</a>
-		        <a class="dropdown-item" >Baja Paciente</a>
-		        <a class="dropdown-item" >Modificacion Paciente</a>
-		        <a class="dropdown-item" href="listarPacientes.html" >Listado Paciente</a>
+		        <a class="dropdown-item" href="listarPacientes.html" >Listado Pacientes</a>
 		      </div>
 		    </li>
 		    <li class="nav-item">

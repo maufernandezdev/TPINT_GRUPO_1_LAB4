@@ -11,4 +11,5 @@ public interface IPacienteNegocio {
 	public boolean Update(Paciente paciente);
 	public boolean Delete(int dni);
 	public boolean Exist(int dni);
+	public List<Paciente> listarPacientesActivos(); // nuevo método
 }

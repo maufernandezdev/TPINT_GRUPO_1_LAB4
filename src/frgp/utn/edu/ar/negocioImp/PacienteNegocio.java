@@ -43,6 +43,10 @@ public class PacienteNegocio implements IPacienteNegocio{
 	public boolean Exist(int dni) {
 		return daoPaciente.Exist(dni);
 	}
+	
+	public List<Paciente> listarPacientesActivos() {
+        return daoPaciente.listarPacientesActivos();
+    }
 
 	public IdaoPaciente getDaoPaciente() {
 		return daoPaciente;

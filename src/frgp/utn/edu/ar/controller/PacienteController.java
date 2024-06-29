@@ -49,6 +49,21 @@ public class PacienteController {
         return mv;
     }
     
+    @RequestMapping("listarPacientesActivos.html")
+    public ModelAndView listarPacientesActivos() {
+        ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+        PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
+        ModelAndView mv = new ModelAndView("listarPacientes");
+        List<Paciente> pacientes = pacienteNegocio.listarPacientesActivos();
+        mv.addObject("listaPacientesActivos", pacientes);
+
+        for (Paciente p1 : pacientes) {
+            System.out.println(p1.toString());
+        }
+
+        return mv;
+    }
+    
     @RequestMapping("guardar_paciente.html")
     public ModelAndView guardarPaciente(
             String dni,
@@ -164,20 +179,19 @@ public class PacienteController {
 
         
         try {
-        	if (paciente != null) {
-        	pacienteNegocio.Delete(dni);
-        	
+        	boolean eliminado = pacienteNegocio.Delete(dni);
+        	if (eliminado) {
+        		mv.setViewName("redirect:/listarPacientes.html");
+        		mv.addObject("successMessage", "Paciente con DNI " + dni + " eliminado correctamente");
+        	} else {
+        		mv.setViewName("redirect:/listarPacientes.html");	
+        		mv.addObject("errorMessage","Error al borrar paciente: " + dni );
         	}
 	    } catch (Exception e) {
-	        System.out.println("Error al borrar paciente: " + e.getMessage());
-	        
+	    	System.out.println("Error al borrar paciente: " + e.getMessage());
 	        mv.setViewName("redirect:/listarPacientes.html");
 	        mv.addObject("errorMessage", "Error al parsear el DNI: " + e.getMessage());
-	        return mv;
 	    } 
-
-        mv.setViewName("redirect:/listarPacientes.html");
-        mv.addObject("successMessage", "Paciente con DNI " + dni + " eliminado correctamente");
         return mv;
     }
     
