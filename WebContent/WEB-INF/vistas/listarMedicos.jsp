@@ -27,7 +27,35 @@
 
 <div class="container mt-5">
     <h1 class="text-center">Gestión de medicos</h1>
-    <h2 class="text-center">Lista de medicos</h2>
+    <h2 class="text-center">Lista de medicos</h2> 
+    <br>
+    
+      <!-- Barra de búsqueda -->
+        <form id="barraBusqueda" action="listarMedico_xNombre.html" method="post" class="mb-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Buscar por nombre:</span>
+                        </div>
+                        <input type="text" name="txtBuscarMedico_xNombre" class="form-control" placeholder="Escribe aquí..." required >
+                        <div class="input-group-append">
+                        	<input type="submit" name="btnBuscarMedico" class="btn btn-primary" value="Buscar"> 
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    
+    <form action="listarMedicos.html" method="post">
+	    <div class="row">
+	        <div class="col-md-6">
+	            <input type="submit" name="btnMostrarTodo" class="btn btn-secondary" value="Mostrar todo">
+	        </div>
+	    </div>
+    </form>
+    <br>
     
     <c:if test="${not empty listaMedicos}">
         <table id="tablaMedicos" class="table table-striped table-bordered">

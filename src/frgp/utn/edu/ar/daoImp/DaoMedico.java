@@ -54,6 +54,25 @@ public class DaoMedico implements IdaoMedico {
 	    return estado;
 	}
 	
+	
+	public List<Medico> Medico_xNombre(String nombre) {		
+	    conexion = new ConfigHibernate();
+	    Session session = conexion.abrirConexion();
+	    session.beginTransaction();
+	    
+	    String hql = "FROM Medico WHERE estado = 1 AND nombre LIKE :nombre";
+	    Query query = session.createQuery(hql);
+	    query.setParameter("nombre", "%" + nombre + "%");
+	    
+	    List<Medico> Listmedicos = (List<Medico>)query.list();
+	    
+	    session.getTransaction().commit();
+	    session.close();
+	    
+	    return Listmedicos;
+	}
+	
+	
 	public Medico ReadOne(String nombreMedico) {
 		Session session = conexion.abrirConexion();
 		session.beginTransaction();
@@ -158,4 +177,5 @@ public class DaoMedico implements IdaoMedico {
 	    
 	    return medico != null;
 	}
+	
 }

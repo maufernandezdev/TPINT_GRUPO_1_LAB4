@@ -109,6 +109,22 @@ public class MedicoController {
 	        
 	        return mv;
 	    }
+	 
+	 
+	 @RequestMapping("listarMedico_xNombre.html")
+	    public ModelAndView listarMedico_xNombre(String txtBuscarMedico_xNombre) {
+	    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+	    	MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+	        ModelAndView mv = new ModelAndView("listarMedicos");
+	        List<Medico> medicos = medicoNegocio.Medico_xNombre(txtBuscarMedico_xNombre);
+	        mv.addObject("listaMedicos", medicos);
+	        
+	        for (Medico p1: medicos) {
+				System.out.println(p1.toString());
+			}
+	        
+	        return mv;
+	    }
 	    
 	 @RequestMapping(value = "modificar_medico.html", method = RequestMethod.POST)
 	    public ModelAndView modificarMedico(
@@ -146,14 +162,14 @@ public class MedicoController {
 	            boolean actualizado = medicoNegocio.Update(medico);
 
 	            if (actualizado) {
-	                mv.setViewName("medicos");
+	            	mv.setViewName("redirect:/listarMedicos.html");
 	                mv.addObject("successMessage", "Medico: " + legajo + " " + MENSAJE_MODIFICADO);
 	            } else {
-	                mv.setViewName("medicos");
+	            	mv.setViewName("redirect:/listarMedicos.html");
 	                mv.addObject("errorMessage", "Error al modificar medico con legajo: " + legajo);
 	            }
 	        } else {
-	            mv.setViewName("medicos");
+	        	mv.setViewName("redirect:/listarMedicos.html");
 	            mv.addObject("errorMessage", "No se encontró medico con legajo: " + legajo);
 	        }
 
