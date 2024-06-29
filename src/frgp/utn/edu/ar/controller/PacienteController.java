@@ -180,5 +180,5 @@ public class PacienteController {
         mv.addObject("successMessage", "Paciente con DNI " + dni + " eliminado correctamente");
         return mv;
     }
-
+    
 }

@@ -1,12 +1,107 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Asignación de Turnos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .container {
+            margin-top: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        .btn-submit {
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
 
+<jsp:include page="masterPage.jsp" /> 
+
+<div class="container">
+    <h1 class="text-center">Asignación de Turnos</h1>
+    <div class="form-container">
+        <form action="guardar_turno.html" method="post">
+            <div class="form-group">
+                <label for="medico">Seleccione un Médico:</label>
+                <select id="medico" name="medico" class="form-control" required>
+                    <option value="" disabled selected>Seleccione un Médico</option>
+                    <c:forEach items="${medicos}" var="medico">
+                        <option value="${medico.legajo}">${medico.nombre} ${medico.apellido}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="paciente">Seleccione un Paciente:</label>
+                <select id="paciente" name="paciente" class="form-control" required>
+                    <option value="" disabled selected>Seleccione un Paciente</option>
+                    <c:forEach items="${pacientes}" var="paciente">
+                        <option value="${paciente.dni}">${paciente.nombre} ${paciente.apellido}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="fecha">Seleccione la Fecha:</label>
+                <input type="date" id="fecha" name="fecha" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="horario">Seleccione el Horario:</label>
+                <select id="horario" name="horario" class="form-control" required>
+                    <option value="" disabled selected>Seleccione un Horario</option>
+                    <c:forEach var="hora" begin="8" end="19">
+                        <option value="${hora}:00">${hora}:00</option>
+                        <option value="${hora}:30">${hora}:30</option>
+                    </c:forEach>
+                    <option value="20:00">20:00</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-submit">Asignar Turno</button>
+        </form>
+    </div>
+</div>
+	   <!-- Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Éxito</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                El turno se guardó correctamente.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        var successMessage = "${successMessage}";
+        if (successMessage) {
+            $('#successModal').modal('show');
+        }
+        
+        // Manejar el cierre del modal con la cruz y el botón "Cerrar"
+        $('#successModal .close, #successModal .btn-danger').on('click', function () {
+            $('#successModal').modal('hide');
+        });
+    });
+</script> 
 </body>
 </html>
