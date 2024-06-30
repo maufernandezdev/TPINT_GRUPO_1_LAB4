@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import frgp.utn.edu.ar.entidad.Paciente;
+import frgp.utn.edu.ar.exceptions.PacienteAlreadyExistsException;
 import frgp.utn.edu.ar.negocioImp.PacienteNegocio;
 
 @Controller
@@ -72,13 +73,13 @@ public class PacienteController {
             String provincia,
             String localidad,
             Date fechaNac,
-            String correo) {    
-        ModelAndView mv = new ModelAndView("pacientes"); 
+            String correo) {
+        ModelAndView mv = new ModelAndView("pacientes");
         ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
         PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
         Paciente paciente = (Paciente) appContext.getBean("beanPaciente");
-        boolean yaExiste = false;
-        int dniParsed = 0;            
+        int dniParsed = 0;
+
         // Parsear el DNI a int
         try {
             dniParsed = Integer.parseInt(dni);
@@ -86,10 +87,9 @@ public class PacienteController {
             System.out.println("Error al parsear el DNI: " + e.getMessage());
             mv.addObject("errorMessage", "Error al parsear el DNI: " + e.getMessage());
             return mv;
-        }    
-        yaExiste = pacienteNegocio.Exist(dniParsed);
-        
-        if (!yaExiste) {
+        }
+
+        try {
             paciente.setDni(dniParsed);
             paciente.setNombre(nombre);
             paciente.setApellido(apellido);
@@ -100,16 +100,24 @@ public class PacienteController {
             paciente.setLocalidad(localidad);
             paciente.setCorreo(correo);
             paciente.setEstado(Paciente.Estado.ACTIVO);
-            
-            pacienteNegocio.Add(paciente);
-            
-            mv.addObject("successMessage", "Paciente: " + dniParsed + " " + MENSAJE_AGREGADO);
 
-            // Reiniciar el formulario
-            mv.addObject("paciente", new Paciente());
-        } else {
-            System.out.println("Paciente: " + dniParsed + " " + MENSAJE_YA_EXISTE);
-            mv.addObject("errorMessage", "Paciente: " + dniParsed + " " + MENSAJE_YA_EXISTE);
+            boolean pacienteAgregado = pacienteNegocio.Add(paciente);
+
+            if (pacienteAgregado) {
+                mv.addObject("successMessage", "Paciente: " + dniParsed + " " + MENSAJE_AGREGADO);
+
+                // Reiniciar el formulario
+                mv.addObject("paciente", new Paciente());
+            } else {
+                mv.addObject("errorMessage", "No se pudo agregar el paciente.");
+            }
+            
+        } catch (PacienteAlreadyExistsException e) {
+            System.out.println("Error: " + e.getMessage());
+            mv.addObject("errorMessage", e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error al guardar el paciente: " + e.getMessage());
+            mv.addObject("errorMessage", "Error al guardar el paciente: " + e.getMessage());
         }
 
         return mv;
