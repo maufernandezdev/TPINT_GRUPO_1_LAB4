@@ -110,22 +110,11 @@ public class TurnoController {
 			Usuario usuario = (Usuario) appContext.getBean("beanUsuario");	
 	    	String user = (String) session.getAttribute("user");
 	    	List<Turno> listaTurnos = null;
-	    	
-	    	if (user != null) {
-    	    	medico = medicoNegocio.getMedicoByUser(user);
-    	    	listaTurnos = turnoNegocio.getTurnosPorMedicoLegajo(medico.getLegajo());
-	    	}
-
-	    		    	 
+	    			    	 
 	    	ModelAndView mv = new ModelAndView("listarTurnos");
-/*	        List<Turno> turnos = turnoNegocio.ReadAll();*/
-	        
-	        // filtro no null
-	        List<Turno> turnosLista = listaTurnos.stream()
-	                                          .filter(turno -> turno != null)
-	                                          .collect(Collectors.toList());
+	        List<Turno> turnos = turnoNegocio.ReadAll();	        
 
-	        mv.addObject("listaTurnos", turnosLista);
+	        mv.addObject("listaTurnos", turnos);
 	        
 	        return mv;
 	    }
@@ -160,5 +149,37 @@ public class TurnoController {
 	        return mv;
 	    }
 	 
+	 
+	 @RequestMapping(value = "marcarPresente.html", method = RequestMethod.POST)
+	 public ModelAndView marcarPresente(@RequestParam("idTurno") int idTurno, 
+	                                    @RequestParam("observaciones") String observaciones) {
+	     ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+	     TurnoNegocio turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");
+		 Turno turno = (Turno) appContext.getBean("beanTurno");
 
+	     ModelAndView mv = new ModelAndView("redirect:listarTurnos.html");
+
+	     turno = turnoNegocio.ReadOne(idTurno);
+	     
+	     turno.setObservacion(observaciones);
+	     turno.setEstadoTurno("PRESENTE");
+	     turnoNegocio.Update(turno);
+	     
+
+	     return mv;
+	 }
+	 
+	 @RequestMapping(value = "marcarAusente.html", method = RequestMethod.POST)
+	 public ModelAndView marcarAusente(@RequestParam("idTurno") int idTurno) {
+	     ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+	     TurnoNegocio turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");
+
+	     ModelAndView mv = new ModelAndView("redirect:listarTurnos.html");
+
+	     Turno turno = turnoNegocio.ReadOne(idTurno);
+	     turno.setEstadoTurno("AUSENTE");
+	     turnoNegocio.Update(turno);
+	     
+	     return mv;
+	 }
 }

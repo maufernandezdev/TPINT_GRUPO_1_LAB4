@@ -59,4 +59,7 @@ public class PacienteNegocio implements IPacienteNegocio{
 	public void setDaoPaciente(IdaoPaciente daoPaciente) {
 		this.daoPaciente = daoPaciente;
 	}
+	public List<Paciente> Paciente_xDni(String dni){
+		return this.daoPaciente.Paciente_xDni(dni);
+	}
 }

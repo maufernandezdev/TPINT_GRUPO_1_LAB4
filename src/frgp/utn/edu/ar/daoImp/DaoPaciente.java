@@ -1,5 +1,6 @@
 package frgp.utn.edu.ar.daoImp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -198,5 +199,29 @@ public class DaoPaciente implements IdaoPaciente{
 	public void setConexion(ConfigHibernate conexion) {
 		this.conexion = conexion;
 	}
-
+	
+	public List<Paciente> Paciente_xDni(String dni) {		
+	    conexion = new ConfigHibernate();
+	    Session session = conexion.abrirConexion();
+	    session.beginTransaction();
+	    
+	    // Traer todos los pacientes
+	    String hql = "FROM Paciente WHERE estado = 1";
+	    Query query = session.createQuery(hql);
+	    
+	    List<Paciente> listaPacientes = (List<Paciente>)query.list();
+	    
+	    session.getTransaction().commit();
+	    session.close();
+	    
+	    // Filtrar en memoria
+	    List<Paciente> filteredList = new ArrayList<>();
+	    for (Paciente paciente : listaPacientes) {
+	        if (String.valueOf(paciente.getDni()).contains(dni)) {
+	            filteredList.add(paciente);
+	        }
+	    }
+	    
+	    return filteredList;
+	}
 }

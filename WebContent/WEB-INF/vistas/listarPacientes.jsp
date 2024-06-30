@@ -31,7 +31,24 @@
 <div class="container mt-5">
     <h1 class="text-center">Gestión de Pacientes</h1>
     <h2 class="text-center">Lista de Pacientes</h2>
-
+    
+      <!-- Barra de búsqueda -->
+        <form id="barraBusqueda" action="listarPaciente_xDni.html" method="post" class="mb-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Buscar por dni:</span>
+                        </div>
+                        <input type="text" name="txtBuscarPaciente_xDni" class="form-control" placeholder="Escribe aquí..." required >
+                        <div class="input-group-append">
+                        	<input type="submit" name="btnBuscarPaciente" class="btn btn-primary" value="Buscar">                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        
     <!-- Mensajes de éxito y error -->
     <c:if test="${not empty errorMessage}">
         <div class="error-message">${errorMessage}</div>

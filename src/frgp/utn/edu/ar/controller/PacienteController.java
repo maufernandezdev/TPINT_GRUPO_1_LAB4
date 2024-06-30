@@ -1,6 +1,7 @@
 package frgp.utn.edu.ar.controller;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
@@ -202,5 +203,22 @@ public class PacienteController {
         return mv;
      }
     
+    @RequestMapping("listarPaciente_xDni.html")
+    public ModelAndView listarMedico_xNombre(@RequestParam("txtBuscarPaciente_xDni") String dniStr) {
+        ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+        PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
+
+        ModelAndView mv = new ModelAndView("listarPacientes");
+        
+        if (dniStr != null && !dniStr.isEmpty()) {
+            List<Paciente> pacientes = pacienteNegocio.Paciente_xDni(dniStr);    	        
+            mv.addObject("listaPacientes", pacientes);
+        } else {
+            // Si no se puede parsear, carga la lista de pacientes vacía
+            mv.addObject("listaPacientes", new ArrayList<Paciente>());
+        }
+        
+        return mv;
+    }
     
 }
