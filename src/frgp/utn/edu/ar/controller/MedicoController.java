@@ -240,27 +240,36 @@ public class MedicoController {
 		 	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 			MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
 			PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
-			TurnoNegocio turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");
-
+			TurnoNegocio turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");			
 			Turno turno = (Turno) appContext.getBean("beanTurno");
 			Medico medico = (Medico) appContext.getBean("beanMedico");	
 			Paciente paciente = (Paciente) appContext.getBean("beanPaciente");	
+			boolean existeTurno = false;		
 			List<Turno> listaTurnosCheck = null;
 			listaTurnosCheck = turnoNegocio.ReadAll();
-			
-			medico = medicoNegocio.ReadOneById(medicoLegajo);
-			paciente = pacienteNegocio.ReadOne(pacienteDni);
 			//parse de hora
             Time hora = Time.valueOf(horaCompletaStr); // HH:mm:ss
             
-            for (Turno t : listaTurnosCheck) {
+			medico = medicoNegocio.ReadOneById(medicoLegajo);
+			paciente = pacienteNegocio.ReadOne(pacienteDni);
+
+
+			existeTurno = turnoNegocio.existeTurnoParaMedicoFechaYHora(medicoLegajo, fecha, hora);
+            
+			if (existeTurno) {
+                mv.addObject("errorMessage", "El médico ya tiene un turno asignado en esa fecha y hora.");
+                mv.setViewName("asignacionTurnos");
+                return mv;				
+			}
+            
+/*            for (Turno t : listaTurnosCheck) {
                 if (t.getMedico().getLegajo() == medicoLegajo && t.getFecha().equals(fecha) && t.getHora().equals(hora))
                 {
                     mv.addObject("errorMessage", "El médico ya tiene un turno asignado en esa fecha y hora.");
                     mv.setViewName("asignacionTurnos");
                     return mv;
                 }
-            }
+            }*/
             
 			turno.setTurnoDetails(medico, paciente, fecha, hora, "", "PENDIENTE");
 			turnoNegocio.Add(turno);
