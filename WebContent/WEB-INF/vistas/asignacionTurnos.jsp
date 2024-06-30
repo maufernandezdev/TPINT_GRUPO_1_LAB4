@@ -24,6 +24,7 @@
             width: 100%;
         }
     </style>
+
 </head>
 <body>
 
@@ -33,14 +34,20 @@
     <h1 class="text-center">Asignación de Turnos</h1>
     <div class="form-container">
         <form action="guardar_turno.html" method="post">
+			<div class="form-group">
+			    <label for="especialidad">Seleccione una Especialidad:</label>
+				<select id="especialidad" name="especialidad" class="form-control" onchange="filtrarMedicos()" required>
+				    <option value="" disabled selected>Seleccione una Especialidad</option>
+				    <c:forEach items="${especialidades}" var="especialidad">
+				        <option value="${especialidad.id}">${especialidad.nombre}</option>
+				    </c:forEach>
+				</select>
+			</div>
             <div class="form-group">
                 <label for="medico">Seleccione un Médico:</label>
-                <select id="medico" name="medico" class="form-control" required>
-                    <option value="" disabled selected>Seleccione un Médico</option>
-                    <c:forEach items="${medicos}" var="medico">
-                        <option value="${medico.legajo}">${medico.nombre} ${medico.apellido}</option>
-                    </c:forEach>
-                </select>
+    <select id="medico" name="medico" class="form-control" required>
+        <option value="" disabled selected>Seleccione un Médico</option>
+    </select>
             </div>
             <div class="form-group">
                 <label for="paciente">Seleccione un Paciente:</label>
@@ -91,6 +98,18 @@
 </div>
 
 <script>
+
+var allMedicos = [
+    <c:forEach items="${medicos}" var="medico">
+        {
+            id: "${medico.legajo}",
+            nombre: "${medico.nombre}",
+            apellido: "${medico.apellido}",
+            id_especialidad: "${medico.especialidad.id}"
+        },
+    </c:forEach>
+];
+	
     $(document).ready(function() {
         var successMessage = "${successMessage}";
         if (successMessage) {
@@ -101,7 +120,30 @@
         $('#successModal .close, #successModal .btn-danger').on('click', function () {
             $('#successModal').modal('hide');
         });
+              
     });
+    
+    document.addEventListener('DOMContentLoaded', (event) => {
+        var especialidadSelect = document.getElementById('especialidad');
+        especialidadSelect.addEventListener('change', filtrarMedicos);
+    });
+
+    function filtrarMedicos() {
+        var especialidadId = document.getElementById('especialidad').value;
+        var medicoSelect = document.getElementById('medico');
+        medicoSelect.innerHTML = '<option value="" disabled selected>Seleccione un Médico</option>';
+
+        var filteredMedicos = allMedicos.filter(function(medico) {
+            return medico.id_especialidad == especialidadId;
+        });
+
+        filteredMedicos.forEach(function(medico) {
+            var option = document.createElement('option');
+            option.value = medico.id;
+            option.text = medico.nombre + ' ' + medico.apellido;
+            medicoSelect.appendChild(option);
+        });
+    }
 </script> 
 </body>
 </html>

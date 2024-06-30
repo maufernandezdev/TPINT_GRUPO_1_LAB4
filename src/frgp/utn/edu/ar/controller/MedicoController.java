@@ -2,16 +2,22 @@ package frgp.utn.edu.ar.controller;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import frgp.utn.edu.ar.entidad.Especialidad;
 import frgp.utn.edu.ar.entidad.Medico;
@@ -25,14 +31,14 @@ import frgp.utn.edu.ar.negocioImp.PacienteNegocio;
 import frgp.utn.edu.ar.negocioImp.TurnoNegocio;
 import frgp.utn.edu.ar.negocioImp.UsuarioNegocio;
 
-@Controller
+@RestController
 public class MedicoController {
 	
 	private final static String MENSAJE_AGREGADO = "AGREGADO CORRECTAMENTE";
 	private final static String MENSAJE_YA_EXISTE = "YA EXISTE EN LA BASE DE DATOS";
 	private final static String MENSAJE_MODIFICADO = "MODIFICADO CORRECTAMENTE";
 	private final static String MENSAJE_ELIMINADO = "ELIMINADO CORRECTAMENTE";
-	
+
 	@RequestMapping("/medicos")
     public ModelAndView medicos() {
 		ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
@@ -191,20 +197,22 @@ public class MedicoController {
 	    }
 	  
 	 
-	 
 	 @RequestMapping("asignacionTurnos.html")
 	    public ModelAndView asignacionTurnos() {
 	    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 			PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
 			MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+		    EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
 
 			ModelAndView mv = new ModelAndView("asignacionTurnos");	
 			
 	        List<Paciente> pacientes = pacienteNegocio.ReadAll();
 	        List<Medico> medicos = medicoNegocio.ReadAll();
+	        List<Especialidad> especialidades = especialidadNegocio.ReadAll();
 	        
 	        mv.addObject("medicos", medicos);
 	        mv.addObject("pacientes", pacientes);
+	        mv.addObject("especialidades", especialidades);
 	        
 	        for (Paciente p1: pacientes) {
 				System.out.println(p1.toString());

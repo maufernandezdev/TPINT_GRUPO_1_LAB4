@@ -158,4 +158,20 @@ public class DaoMedico implements IdaoMedico {
 	    
 	    return medico != null;
 	}
+	
+	public List<Medico> getMedicosByEspecialidadId(int especialidadId) {
+	    conexion = new ConfigHibernate();
+	    Session session = conexion.abrirConexion();
+	    session.beginTransaction();
+	    
+	    String hql = "FROM Medico WHERE especialidad.id = :especialidadId AND estado = 1";
+	    List<Medico> medicos = session.createQuery(hql)
+	                                  .setParameter("especialidadId", especialidadId)
+	                                  .list();
+	    
+	    session.getTransaction().commit();
+	    conexion.cerrarSession();
+	    
+	    return medicos;
+	}
 }

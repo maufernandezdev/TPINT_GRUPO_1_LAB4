@@ -11,4 +11,5 @@ public interface IdaoMedico {
 	public boolean Exist(String nombreUsuario);
 	public boolean Update(Medico medico);
 	public boolean Delete(int legajo);
+	public List<Medico> getMedicosByEspecialidadId(int especialidadId);
 }

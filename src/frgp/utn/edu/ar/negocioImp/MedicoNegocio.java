@@ -63,4 +63,7 @@ public class MedicoNegocio implements IMedicoNegocio {
 	public boolean Exist(String nombreUsuario) {
 		return daoMedico.Exist(nombreUsuario);
 	}
+	public List<Medico> getMedicosByEspecialidadId(int especialidadId) {
+		return daoMedico.getMedicosByEspecialidadId(especialidadId);	
+	}
 }

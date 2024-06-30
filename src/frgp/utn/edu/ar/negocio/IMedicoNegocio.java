@@ -11,4 +11,5 @@ public interface IMedicoNegocio {
 	public boolean Update(Medico medico);
 	public boolean Delete(int legajo);
 	public boolean Exist(String nombreUsuario);
+	public List<Medico> getMedicosByEspecialidadId(int especialidadId);
 }
