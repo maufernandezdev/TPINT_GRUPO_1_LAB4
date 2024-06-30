@@ -178,6 +178,8 @@ public class MedicoController {
 	            @RequestParam int legajo,
 	            @RequestParam String nombre,
 	            @RequestParam String apellido,
+	            @RequestParam String especialidad,
+	            @RequestParam String sexo,
 	            @RequestParam String correo,
 	            @RequestParam String telefono,
 	            @RequestParam String direccion,
@@ -186,6 +188,8 @@ public class MedicoController {
 		 	System.out.println("legajo: " + legajo);
 		 	System.out.println("nombre: " + nombre);
 		 	System.out.println("apellido: " + apellido);
+		 	System.out.println("especialidad: " + especialidad);
+		 	System.out.println("sexo: " + sexo);
 		 	System.out.println("correo: " + correo);
 		 	System.out.println("telefono: " + telefono);
 		 	System.out.println("direccion: " + direccion);
@@ -194,12 +198,26 @@ public class MedicoController {
 	        ModelAndView mv = new ModelAndView();
 	        ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 	        MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+	        
+	        Especialidad especialidadEncontrada = (Especialidad) appContext.getBean("beanEspecialidad");	
+			EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
+			String nombreEspecialidad = especialidad; 
+			especialidadEncontrada = null;
+			for (Especialidad item : especialidades) {
+			    if (item.getNombre().equals(nombreEspecialidad)) {
+			        especialidadEncontrada = item;
+			        break;
+			    }
+			}
 
 	        Medico medico = medicoNegocio.ReadOneById(legajo);
 
 	        if (medico != null) {
 	        	medico.setNombre(nombre);
 	        	medico.setApellido(apellido);
+	        	medico.setEspecialidad(especialidadEncontrada);
+	        	medico.setSexo(sexo);
 	        	medico.setTelefono(telefono);
 	        	medico.setDireccion(direccion);
 	        	medico.setLocalidad(localidad);

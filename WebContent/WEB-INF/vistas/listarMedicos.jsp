@@ -159,6 +159,18 @@
                         <label for="apellidoEditar">Apellido:</label>
                         <input type="text" class="form-control" id="apellidoEditar" name="apellido" required>
                     </div>
+                    
+                    
+                    <div class="form-group">
+                        <label for="especialidadEditar">Especialidad:</label>
+                        <input type="text" class="form-control" id="especialidadEditar" name="especialidad" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sexoEditar">Sexo:</label>
+                        <input type="text" class="form-control" id="sexoEditar" name="sexo" required>
+                    </div>
+                    
+                    
                     <div class="form-group">
                         <label for="correoEditar">Correo electrónico:</label>
                         <input type="email" class="form-control" id="correoEditar" name="correo" required>
@@ -234,11 +246,13 @@
         var legajo = $(this).data('legajo');
         var nombre = $(this).closest('tr').find('td:eq(1)').text();
         var apellido = $(this).closest('tr').find('td:eq(2)').text();
-        var correo = $(this).closest('tr').find('td:eq(3)').text();
-        var telefono = $(this).closest('tr').find('td:eq(4)').text();
-        var direccion = $(this).closest('tr').find('td:eq(5)').text();
-        var localidad = $(this).closest('tr').find('td:eq(6)').text();
-        var fechaNac = $(this).closest('tr').find('td:eq(7)').text();
+        var especialidad = $(this).closest('tr').find('td:eq(3)').text();
+        var sexo = $(this).closest('tr').find('td:eq(4)').text();
+        var correo = $(this).closest('tr').find('td:eq(5)').text();
+        var telefono = $(this).closest('tr').find('td:eq(6)').text();
+        var direccion = $(this).closest('tr').find('td:eq(7)').text();
+        var localidad = $(this).closest('tr').find('td:eq(8)').text();
+        var fechaNac = $(this).closest('tr').find('td:eq(9)').text();
         
         console.log("legajo: ", legajo);
         console.log("nombre: ", nombre);
@@ -248,6 +262,8 @@
         $('#legajoEditar').val(legajo);
         $('#nombreEditar').val(nombre);
         $('#apellidoEditar').val(apellido);
+        $('#especialidadEditar').val(especialidad);
+        $('#sexoEditar').val(sexo);
         $('#correoEditar').val(correo);
         $('#telefonoEditar').val(telefono);
         $('#direccionEditar').val(direccion);
