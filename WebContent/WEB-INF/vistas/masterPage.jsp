@@ -68,7 +68,7 @@
             </c:if>
 			<li class="mt-0 mr-0 mb-0 ml-auto d-flex align-items-center" style="gap: 1rem;">
 			    <span style="color: white; margin-right:10px">Usuario ${sessionScope.user}</span>
-				<a class="btn btn-danger" href="dashboard-admin.html" > Cerrar sesion</a>
+				<a class="btn btn-danger" href="redirect_login.html" > Cerrar sesion</a>
 			</li>
 	  </ul>
 	</nav>
