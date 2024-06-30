@@ -102,9 +102,15 @@ public class MedicoController {
 	    public ModelAndView listarMedicos() {
 	    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 	    	MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+	    	
+	    	//se cargan las especialidades para el filtro de buscar
+	    	EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
+	    	
 	        ModelAndView mv = new ModelAndView("listarMedicos");
 	        List<Medico> medicos = medicoNegocio.ReadAll();
 	        mv.addObject("listaMedicos", medicos);
+	        mv.addObject("especialidades", especialidades);
 	        
 	        for (Medico p1: medicos) {
 				System.out.println(p1.toString());
@@ -118,22 +124,64 @@ public class MedicoController {
 	    public ModelAndView listarMedico_xNombre(String txtBuscarMedico_xNombre) {
 	    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 	    	MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+	    	
+	    	//se cargan las especialidades para el filtro de buscar
+	    	EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
+	    	
 	        ModelAndView mv = new ModelAndView("listarMedicos");
 	        List<Medico> medicos = medicoNegocio.Medico_xNombre(txtBuscarMedico_xNombre);
 	        mv.addObject("listaMedicos", medicos);
-	        
-	        for (Medico p1: medicos) {
-				System.out.println(p1.toString());
-			}
+	        mv.addObject("especialidades", especialidades);
 	        
 	        return mv;
 	    }
+	 
+	 
+	 @RequestMapping("listarMedico_xSexo.html")
+	    public ModelAndView listarMedico_xSexo(@RequestParam("ddl_sexo") String ddl_sexo ) {
+		    ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+	    	MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+	    	
+	    	//se cargan las especialidades para el filtro de buscar
+	    	EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
+	    	
+	        ModelAndView mv = new ModelAndView("listarMedicos");
+	        List<Medico> medicos = medicoNegocio.filtrarMedico_xSexo(ddl_sexo);
+	        mv.addObject("listaMedicos", medicos);
+	        mv.addObject("especialidades", especialidades);
+	        
+	        for (Medico p1: medicos) {
+				System.out.println(p1.toString());
+			}	        
+	        return mv;
+	 }
+	 
+	 @RequestMapping("listarMedico_xEspecialidad.html")
+	    public ModelAndView listarMedico_xEspecialidad(@RequestParam("ddl_especialidad") String ddl_especialidad ) {
+		    ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+	    	MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+	    	
+	    	//se cargan las especialidades para el filtro de buscar
+	    	EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
+	    	
+	        ModelAndView mv = new ModelAndView("listarMedicos");
+	        List<Medico> medicos = medicoNegocio.filtrarMedico_xEspecialidad(ddl_especialidad);
+	        mv.addObject("listaMedicos", medicos);
+	        mv.addObject("especialidades", especialidades);
+	                
+	        return mv;
+	 }
 	    
 	 @RequestMapping(value = "modificar_medico.html", method = RequestMethod.POST)
 	    public ModelAndView modificarMedico(
 	            @RequestParam int legajo,
 	            @RequestParam String nombre,
 	            @RequestParam String apellido,
+	            @RequestParam String especialidad,
+	            @RequestParam String sexo,
 	            @RequestParam String correo,
 	            @RequestParam String telefono,
 	            @RequestParam String direccion,
@@ -142,6 +190,8 @@ public class MedicoController {
 		 	System.out.println("legajo: " + legajo);
 		 	System.out.println("nombre: " + nombre);
 		 	System.out.println("apellido: " + apellido);
+		 	System.out.println("especialidad: " + especialidad);
+		 	System.out.println("sexo: " + sexo);
 		 	System.out.println("correo: " + correo);
 		 	System.out.println("telefono: " + telefono);
 		 	System.out.println("direccion: " + direccion);
@@ -150,12 +200,26 @@ public class MedicoController {
 	        ModelAndView mv = new ModelAndView();
 	        ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 	        MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+	        
+	        Especialidad especialidadEncontrada = (Especialidad) appContext.getBean("beanEspecialidad");	
+			EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
+			String nombreEspecialidad = especialidad; 
+			especialidadEncontrada = null;
+			for (Especialidad item : especialidades) {
+			    if (item.getNombre().equals(nombreEspecialidad)) {
+			        especialidadEncontrada = item;
+			        break;
+			    }
+			}
 
 	        Medico medico = medicoNegocio.ReadOneById(legajo);
 
 	        if (medico != null) {
 	        	medico.setNombre(nombre);
 	        	medico.setApellido(apellido);
+	        	medico.setEspecialidad(especialidadEncontrada);
+	        	medico.setSexo(sexo);
 	        	medico.setTelefono(telefono);
 	        	medico.setDireccion(direccion);
 	        	medico.setLocalidad(localidad);
