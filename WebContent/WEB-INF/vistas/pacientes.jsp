@@ -96,48 +96,48 @@
 <h1>Gestión de Pacientes</h1>
 <div id="formularioAlta" class="container">
     <h2>Alta Paciente</h2>
-        <c:if test="${not empty errorMessage}">
+    <c:if test="${not empty errorMessage}">
         <div class="error-message">${errorMessage}</div>
     </c:if>
-        <c:if test="${not empty successMessage}">
+    <c:if test="${not empty successMessage}">
         <div class="success-message">${successMessage}</div>
     </c:if>
     <form id="formAltaPaciente" action="guardar_paciente.html" method="post">
         <div class="item">
             <label for="dni">DNI:</label>
-            <input type="text" id="dni" name="dni" required><br>
+            <input type="text" id="dni" name="dni" value="${paciente.dni}" required><br>
         </div>
         <div class="item">
             <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" required><br>
+            <input type="text" id="nombre" name="nombre" value="${paciente.nombre}" required><br>
         </div>
         <div class="item">
             <label for="apellido">Apellido:</label>
-            <input type="text" id="apellido" name="apellido" required><br>
+            <input type="text" id="apellido" name="apellido" value="${paciente.apellido}" required><br>
         </div>
         <div class="item">
             <label for="fechaNac">Fecha de nacimiento:</label>
-            <input type="date" id="fechaNac" name="fechaNac" required><br>
+            <input type="text" id="fechaNac" name="fechaNac" value="${paciente.fechaNac}" required><br>
         </div>
         <div class="item">
             <label for="direccion">Dirección:</label>
-            <input type="text" id="direccion" name="direccion" required><br>
+            <input type="text" id="direccion" name="direccion" value="${paciente.direccion}" required><br>
         </div>
         <div class="item">
             <label for="provincia">Provincia:</label>
-            <input type="text" id="provincia" name="provincia" required><br>
+            <input type="text" id="provincia" name="provincia" value="${paciente.provincia}" required><br>
         </div>
         <div class="item">
             <label for="localidad">Localidad:</label>
-            <input type="text" id="localidad" name="localidad" required><br>
+            <input type="text" id="localidad" name="localidad" value="${paciente.localidad}" required><br>
         </div>
         <div class="item">
             <label for="telefono">Teléfono:</label>
-            <input type="text" id="telefono" name="telefono" required><br>
+            <input type="number" id="telefono" name="telefono" value="${paciente.telefono}" required><br>
         </div>
         <div class="item">
             <label for="correo">Correo electrónico:</label>
-            <input type="email" id="correo" name="correo" required><br>
+            <input type="email" id="correo" name="correo" value="${paciente.correo}" required><br>
         </div>
         <div class="buttonContainer">
             <button type="submit">Guardar</button>

@@ -1,5 +1,7 @@
 package frgp.utn.edu.ar.negocioImp;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 import frgp.utn.edu.ar.dao.IdaoMedico;
@@ -51,5 +53,7 @@ private IdaoTurno daoTurno;
 	public boolean Exist(int idTurno) {
 		return daoTurno.Exist(idTurno);
 	}
-
+	public boolean existeTurnoParaMedicoFechaYHora(int medicoLegajo, Date fecha, Time hora) {
+		return daoTurno.existeTurnoParaMedicoFechaYHora(medicoLegajo, fecha, hora);
+	}	
 }

@@ -1,3 +1,5 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <head>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
@@ -23,10 +25,19 @@
 
 <div class="w-100">
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-	  <a class="navbar-brand" href="#">Consultorio</a>
+<c:choose>
+  <c:when test="${tipoUsuario == 'ADMINISTRADOR'}">
+    <a class="navbar-brand" href="dashboard-admin.html">Consultorio</a>
+  </c:when>
+  <c:otherwise>
+    <a class="navbar-brand" href="#">Consultorio</a>
+  </c:otherwise>
+</c:choose>
 	  <ul class="navbar-nav w-100">
+            <c:set var="tipoUsuario" value="${sessionScope.tipoUsuario}" />
+            <c:if test="${tipoUsuario == 'ADMINISTRADOR'}">
 	  	   <li class="nav-item dropdown">
-		      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Médicos</a>
+		      <a class="nav-link dropdown-toggle" href="#" id="navbardropMedicos" data-toggle="dropdown">Médicos</a>
 		      <div class="dropdown-menu">
 		        <a class="dropdown-item" href="medicos.html" >Alta Médico</a>
 		       <!-- <a class="dropdown-item" >Baja Médico</a>
@@ -37,24 +48,26 @@
 		   </li>
 		   
 		    <li class="nav-item dropdown">
-		      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Pacientes</a>
+		      <a class="nav-link dropdown-toggle" href="#" id="navbardropPacientes" data-toggle="dropdown">Pacientes</a>
 		      <div class="dropdown-menu">
 		        <a class="dropdown-item" href="pacientes.html">Alta Paciente</a>
-		        <a class="dropdown-item" >Baja Paciente</a>
-		        <a class="dropdown-item" >Modificacion Paciente</a>
-		        <a class="dropdown-item" href="listarPacientes.html" >Listado Paciente</a>
+		        <a class="dropdown-item" href="listarPacientesActivos.html" >Listado Pacientes</a>
 		      </div>
 		    </li>
 		    <li class="nav-item">
-		      <a class="nav-link" >Asignación de Turnos</a>
+		      <a class="nav-link" href="asignacionTurnos.html" >Asignación de Turnos</a>
 		    </li>
 		    <li class="nav-item">
 		      <a class="nav-link" >Informes y/o Reportes</a>
 		    </li>
-		
+		    </c:if>
+            <c:if test="${tipoUsuario == 'MEDICO'}">
+                <li class="nav-item">
+                    <a class="nav-link" href="listarTurnos.html">Listado de Turnos</a>
+                </li>
+            </c:if>
 			<li class="mt-0 mr-0 mb-0 ml-auto d-flex align-items-center" style="gap: 1rem;">
-			<% String user = request.getParameter("user"); %>
-				<span style="color: white; margin-right:10px">Usuario ${param.user}</span>
+			    <span style="color: white; margin-right:10px">Usuario ${sessionScope.user}</span>
 				<a class="btn btn-danger" href="dashboard-admin.html" > Cerrar sesion</a>
 			</li>
 	  </ul>

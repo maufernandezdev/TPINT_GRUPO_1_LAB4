@@ -89,6 +89,7 @@
 		<h1>Gestión de Medicos</h1>
 	    <div id="formularioAlta" class="container">
 	        <h2>Alta Médico</h2>
+	   
 			<form id="formAltaMedico" action="guardar_medico.html" method="post">
 	  		
 	  		<div class="item">
@@ -113,42 +114,42 @@
 	        
 	        <div class="item">
 		        <label for="fechaDeNac">Fecha de nacimiento:</label>
-		        <input type="date"  name="fechaDeNac"/>
+		        <input type="date"  name="fechaDeNac" required/>
 	        </div>
 	        
 	        <div class="item"> 
 	        	<label for="direccion">Dirección:</label>
-	        	<input type="text" id="direccion" name="direccion"><br>
+	        	<input type="text" id="direccion" name="direccion" required><br>
 	        </div>
 	        
 	         <div class="item"> 
 		        <label for="localidad">Localidad:</label>
-		        <input type="text" id="localidad" name="localidad"><br>
+		        <input type="text" id="localidad" name="localidad" required><br>
 	         </div>
 	        
 	         <div class="item"> 
 		        <label for="correo">Correo electrónico:</label>
-		        <input type="email" id="correo" name="correo"><br>
+		        <input type="email" id="correo" name="correo" required><br>
 	         </div>
 	    	
 	    	 <div class="item"> 
 		        <label for="telefono">Teléfono:</label>
-    	    	<input type="text" id="telefono" name="telefono"><br>
+    	    	<input type="number" id="telefono" name="telefono" required><br>
 	    	 </div>    
         	
         	 <div class="item"> 
 	        	<label for="usuario">Nombre de usuario:</label>
-    	    	<input type="text" id="usuario" name="usuario"><br>
+    	    	<input type="text" id="usuario" name="usuario" required><br>
         	 </div>
         	
         	 <div class="item"> 
 	        	<label for="contrasenia">Contraseña:</label>
-    	    	<input type="password" id="contrasenia" name="contrasenia"><br>
+    	    	<input type="password" id="contrasenia" name="contrasenia" required><br>
         	 </div>
         	
         	 <div class="item"> 
 	        	<label for="especialidad">Seleccione una especialidad:</label>
-		        <select id="especialidad" name="especialidad">
+		        <select id="especialidad" name="especialidad" required>
 		        	<option value="" disabled selected>especialidad</option>
 			        <c:forEach items="${especialidades}" var="especialidad">
 			         <option value="${especialidad.id}">${especialidad.nombre}</option>
@@ -162,5 +163,72 @@
 	    	
 	        </form>
 	    </div>
+	   <!-- Modal Agregado -->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Éxito</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                El médico se guardó correctamente.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+	   <!-- Modal UsuarioExistente -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                El usuario ingresado ya existe.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    
+    $(document).ready(function() {
+        var successMessage = "${successMessage}";
+        if (successMessage) {
+            $('#successModal').modal('show');
+        }
+        
+        // Manejar el cierre del modal con la cruz y el botón "Cerrar"
+        $('#successModal .close, #successModal .btn-danger').on('click', function () {
+            $('#successModal').modal('hide');
+        });
+    });
+
+    $(document).ready(function() {
+        var errorMessage = "${errorMessage}";
+        if (errorMessage) {
+            $('#errorModal').modal('show');
+        }
+        
+        $('#errorModal .close, #errorModal .btn-danger').on('click', function () {
+            $('#errorModal').modal('hide');
+        });
+    });
+    
+</script> 
+
 	</body>
 </html>

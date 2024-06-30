@@ -1,5 +1,7 @@
 package frgp.utn.edu.ar.daoImp;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -142,5 +144,38 @@ public class DaoTurno implements IdaoTurno{
 	    
 	    return turno != null;
 	}
-}
+	
+	public boolean existeTurnoParaMedicoFechaYHora(int medicoLegajo, Date fecha, Time hora) {
+		conexion = new ConfigHibernate();
+		Session session = null;
+
+	    try {
+			session = conexion.abrirConexion();
+		    session.beginTransaction();
+		    
+
+	        String hql = "SELECT COUNT(*) FROM Turno t WHERE t.medico.legajo = :medicoLegajo AND t.fecha = :fecha AND t.hora = :hora";
+	        Query query = session.createQuery(hql);
+	        query.setParameter("medicoLegajo", medicoLegajo);
+	        query.setParameter("fecha", fecha);
+	        query.setParameter("hora", hora);
+
+	        Long count = (Long) query.uniqueResult();
+
+	        session.getTransaction().commit();
+
+	        return count != null && count > 0;
+	    } catch (Exception e) {
+	        if (session != null && session.getTransaction() != null) {
+	            session.getTransaction().rollback();
+	        }
+	        e.printStackTrace();
+	        return false; 
+	    } finally {
+	        if (session != null) {
+	            session.close();
+	        }
+	    }
+	}
+	}
 

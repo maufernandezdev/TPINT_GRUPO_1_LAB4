@@ -4,18 +4,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Lista de Pacientes</title>
-
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
-
-<style>
-    .modal-dialog {
-        max-width: 800px !important;
-    }
-</style>
-
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Lista de Pacientes</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+    <style>
+        .container {
+            padding-top: 20px;
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .success-message {
+            color: green;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+    </style>
 </head>
 <body>
 
@@ -24,7 +31,15 @@
 <div class="container mt-5">
     <h1 class="text-center">Gestión de Pacientes</h1>
     <h2 class="text-center">Lista de Pacientes</h2>
-    
+
+    <!-- Mensajes de éxito y error -->
+    <c:if test="${not empty errorMessage}">
+        <div class="error-message">${errorMessage}</div>
+    </c:if>
+    <c:if test="${not empty successMessage}">
+        <div class="success-message">${successMessage}</div>
+    </c:if>
+
     <c:if test="${not empty listaPacientes}">
         <table id="tablaPacientes" class="table table-striped table-bordered">
             <thead>
@@ -55,7 +70,7 @@
                         <td>${paciente.fechaNac}</td>
                         <td>
                             <button type="button" class="btn btn-primary btn-sm editar-paciente" data-toggle="modal" data-target="#modalEditar" data-dni="${paciente.dni}">Modificar</button>
-                            <button type="button" class="btn btn-danger btn-sm">Eliminar</button>
+                            <button type="button" class="btn btn-danger btn-sm eliminar-paciente" data-toggle="modal" data-target="#modalEliminar" data-dni="${paciente.dni}">Eliminar</button>
                         </td>
                     </tr>
                 </c:forEach>
@@ -91,7 +106,7 @@
                     </div>
                     <div class="form-group">
                         <label for="telefonoEditar">Teléfono:</label>
-                        <input type="text" class="form-control" id="telefonoEditar" name="telefono" required>
+                        <input type="number" class="form-control" id="telefonoEditar" name="telefono" required>
                     </div>
                     <div class="form-group">
                         <label for="direccionEditar">Dirección:</label>
@@ -118,6 +133,28 @@
         </div>
     </div>
 </div>
+
+<!-- Modal de Confirmación de Eliminación -->
+<div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEliminarLabel">Confirmar Eliminación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>¿Está seguro que desea eliminar este paciente?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmarEliminar">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- jQuery y DataTables -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
@@ -140,6 +177,18 @@ $(document).ready(function() {
         }
     });
 
+    // Modal eliminar
+    $('.eliminar-paciente').click(function() {
+        var dni = $(this).data('dni');
+        $('#confirmarEliminar').data('dni', dni);
+        $('#modalEliminar').modal('show');
+    });
+
+    // Confirmar eliminar desde el modal
+    $('#confirmarEliminar').click(function() {
+        var dni = $(this).data('dni');
+        window.location.href = "eliminar_paciente.html?dni=" + dni;
+    });
     // Configurar el modal de edición al hacer click en Modificar
     $('.editar-paciente').click(function() {
         var dni = $(this).data('dni');
@@ -151,7 +200,6 @@ $(document).ready(function() {
         var localidad = $(this).closest('tr').find('td:eq(6)').text();
         var provincia = $(this).closest('tr').find('td:eq(7)').text();
         var fechaNac = $(this).closest('tr').find('td:eq(8)').text();
-
         $('#dniEditar').val(dni);
         $('#nombreEditar').val(nombre);
         $('#apellidoEditar').val(apellido);
@@ -161,8 +209,6 @@ $(document).ready(function() {
         $('#localidadEditar').val(localidad);
         $('#provinciaEditar').val(provincia);
         $('#fechaNacEditar').val(fechaNac);
-
-        $('#modalEditar').modal('show');
     });
 });
 </script>

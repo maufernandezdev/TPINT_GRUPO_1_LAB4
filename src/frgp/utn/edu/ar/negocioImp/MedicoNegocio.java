@@ -31,6 +31,10 @@ public class MedicoNegocio implements IMedicoNegocio {
 	public boolean Add(Medico medico) {
 		return daoMedico.Add(medico);
 	}
+	
+	public List<Medico> Medico_xNombre(String nombre){
+		return daoMedico.Medico_xNombre(nombre);
+	}
 
 	public Medico ReadOne(String nombreMedico) {
 		return daoMedico.ReadOne(nombreMedico);
@@ -62,5 +66,8 @@ public class MedicoNegocio implements IMedicoNegocio {
 	
 	public boolean Exist(String nombreUsuario) {
 		return daoMedico.Exist(nombreUsuario);
+	}
+	public List<Medico> getMedicosByEspecialidadId(int especialidadId) {
+		return daoMedico.getMedicosByEspecialidadId(especialidadId);	
 	}
 }

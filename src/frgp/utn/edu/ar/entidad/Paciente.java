@@ -23,7 +23,7 @@ public class Paciente implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	public enum Estado {
-	    ACTIVO, INACTIVO
+	    INACTIVO, ACTIVO
 	}
 	
 	@Id

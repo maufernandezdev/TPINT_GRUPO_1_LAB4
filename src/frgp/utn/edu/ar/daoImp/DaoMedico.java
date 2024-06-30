@@ -54,6 +54,25 @@ public class DaoMedico implements IdaoMedico {
 	    return estado;
 	}
 	
+	
+	public List<Medico> Medico_xNombre(String nombre) {		
+	    conexion = new ConfigHibernate();
+	    Session session = conexion.abrirConexion();
+	    session.beginTransaction();
+	    
+	    String hql = "FROM Medico WHERE estado = 1 AND nombre LIKE :nombre";
+	    Query query = session.createQuery(hql);
+	    query.setParameter("nombre", "%" + nombre + "%");
+	    
+	    List<Medico> Listmedicos = (List<Medico>)query.list();
+	    
+	    session.getTransaction().commit();
+	    session.close();
+	    
+	    return Listmedicos;
+	}
+	
+	
 	public Medico ReadOne(String nombreMedico) {
 		Session session = conexion.abrirConexion();
 		session.beginTransaction();
@@ -69,7 +88,7 @@ public class DaoMedico implements IdaoMedico {
 	}
 	
 	public boolean Update(Medico medico) {
-		boolean estado = true;
+		boolean estado = false;
 	    Session session = null;
 
 	    try {
@@ -79,10 +98,10 @@ public class DaoMedico implements IdaoMedico {
 	        session.merge(medico);
 	        session.flush();
 	        session.getTransaction().commit();
-	        Medico savedMedico = (Medico) session.get(Medico.class, medico.getUsuario());
+	        Medico savedMedico = (Medico) session.get(Medico.class, medico.getLegajo());
 	        
-	        if (savedMedico.equals(medico) == false) {
-	            estado = false;
+	        if (savedMedico.getLegajo() == medico.getLegajo()) {
+	            estado = true;
 	        }
 	    } catch (Exception e) {
 	        if (session != null) {
@@ -132,7 +151,7 @@ public class DaoMedico implements IdaoMedico {
 		conexion = new ConfigHibernate();
 	    Session session = conexion.abrirConexion();
         session.beginTransaction();
-        List<Medico> medicos = session.createQuery("FROM Medico").list();
+        List<Medico> medicos = session.createQuery("FROM Medico where estado =1").list();
         return medicos;
 	}
 	
@@ -158,4 +177,21 @@ public class DaoMedico implements IdaoMedico {
 	    
 	    return medico != null;
 	}
-}
+	
+	public List<Medico> getMedicosByEspecialidadId(int especialidadId){
+	    conexion = new ConfigHibernate();
+	    Session session = conexion.abrirConexion();
+	    session.beginTransaction();
+	    
+	    String hql = "FROM Medico WHERE especialidad.id = :especialidadId AND estado = 1";
+	    List<Medico> medicos = session.createQuery(hql)
+	                                  .setParameter("especialidadId", especialidadId)
+	                                  .list();
+	    
+	    session.getTransaction().commit();
+	    conexion.cerrarSession();
+	    
+	    return medicos;
+		}
+	}
+

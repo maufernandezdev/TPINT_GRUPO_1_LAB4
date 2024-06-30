@@ -11,4 +11,5 @@ public interface IdaoPaciente {
 	public boolean Exist(int dni);
 	public boolean Update(Paciente paciente);
 	public boolean Delete(int dni);
+	public List<Paciente> listarPacientesActivos(); // Nuevo método
 }

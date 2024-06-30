@@ -47,7 +47,9 @@
 	</bean>
 	
 	<!-- entidad beans -->
-	<bean id="beanUsuario" class="frgp.utn.edu.ar.entidad.Usuario" scope="prototype"></bean>
+	<bean id="beanUsuario" class="frgp.utn.edu.ar.entidad.Usuario" scope="prototype">
+		 	<property name="TipoDeUsuario" value="MEDICO"/>
+	</bean>
 	<bean id="beanEspecialidad" class="frgp.utn.edu.ar.entidad.Especialidad" scope="prototype"></bean>
 	<bean id="beanHorario" class="frgp.utn.edu.ar.entidad.Horario" scope="prototype"></bean>	
 	<bean id="beanMedico" class="frgp.utn.edu.ar.entidad.Medico" scope="prototype">
