@@ -21,6 +21,7 @@ import frgp.utn.edu.ar.entidad.Medico;
 import frgp.utn.edu.ar.entidad.Medico.Estado;
 import frgp.utn.edu.ar.entidad.Paciente;
 import frgp.utn.edu.ar.entidad.Turno;
+import frgp.utn.edu.ar.entidad.Turno.EstadoT;
 import frgp.utn.edu.ar.entidad.Usuario;
 import frgp.utn.edu.ar.negocioImp.EspecialidadNegocio;
 import frgp.utn.edu.ar.negocioImp.MedicoNegocio;
@@ -354,8 +355,7 @@ public class MedicoController {
 	    	 }
 	    		    	 
 	    	ModelAndView mv = new ModelAndView("listarTurnos");
-/*	        List<Turno> turnos = turnoNegocio.ReadAll();*/
-	        
+	    	
 	        // filtro no null
 	        List<Turno> turnosLista = listaTurnos.stream()
 	                                          .filter(turno -> turno != null)
@@ -366,5 +366,37 @@ public class MedicoController {
 	        return mv;
 	    }
 	 
+	 @RequestMapping(value = "marcarPresente.html", method = RequestMethod.POST)
+	 public ModelAndView marcarPresente(@RequestParam("idTurno") int idTurno, 
+	                                    @RequestParam("observaciones") String observaciones) {
+	     ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+	     TurnoNegocio turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");
+		 Turno turno = (Turno) appContext.getBean("beanTurno");
+
+	     ModelAndView mv = new ModelAndView("redirect:listarTurnos.html");
+
+	     turno = turnoNegocio.ReadOne(idTurno);
+	     
+	     turno.setObservacion(observaciones);
+	     turno.setEstadoTurno("PRESENTE");
+	     turnoNegocio.Update(turno);
+	     
+
+	     return mv;
+	 }
+	 
+	 @RequestMapping(value = "marcarAusente.html", method = RequestMethod.POST)
+	 public ModelAndView marcarAusente(@RequestParam("idTurno") int idTurno) {
+	     ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+	     TurnoNegocio turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");
+
+	     ModelAndView mv = new ModelAndView("redirect:listarTurnos.html");
+
+	     Turno turno = turnoNegocio.ReadOne(idTurno);
+	     turno.setEstadoTurno("AUSENTE");
+	     turnoNegocio.Update(turno);
+	     
+	     return mv;
+	 }
 	 
 }
