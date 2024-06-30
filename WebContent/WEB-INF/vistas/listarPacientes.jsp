@@ -47,8 +47,15 @@
                     </div>
                 </div>
             </div>
-        </form>
-        
+        </form>      
+        	<form action="listarPacientes.html" method="post">
+	    <div class="row">
+	        <div class="col-md-6">
+	            <input type="submit" name="btnMostrarTodo" class="btn btn-secondary" value="Mostrar todo">
+	        </div>
+	    </div>
+    </form>
+    <br>
     <!-- Mensajes de éxito y error -->
     <c:if test="${not empty errorMessage}">
         <div class="error-message">${errorMessage}</div>
@@ -93,6 +100,16 @@
                 </c:forEach>
             </tbody>
         </table>
+    </c:if>
+
+        <c:if test="${empty listaPacientes}">
+     <table  class="table table-striped table-bordered">
+      <thead>
+                <tr>
+                    <th class="text-center" style="color: red;">Sin resultados.</th>
+                </tr>
+            </thead>
+     </table>
     </c:if>
 </div>
 
