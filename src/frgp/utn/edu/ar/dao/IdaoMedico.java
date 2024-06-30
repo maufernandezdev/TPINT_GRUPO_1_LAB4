@@ -6,6 +6,8 @@ import frgp.utn.edu.ar.entidad.Medico;
 public interface IdaoMedico {
 	public boolean Add(Medico medico);
 	public List<Medico> Medico_xNombre(String nombre);
+	public List<Medico> filtrarMedico_xSexo(String sexoMedico);
+	public List<Medico> filtrarMedico_xEspecialidad(String especialidadMedico);
 	public Medico ReadOne(String nombreMedico);
 	public Medico ReadOneById(int legajo);
 	public List<Medico> ReadAll();
@@ -13,4 +15,5 @@ public interface IdaoMedico {
 	public boolean Update(Medico medico);
 	public boolean Delete(int legajo);
 	public List<Medico> getMedicosByEspecialidadId(int especialidadId);
+	public Medico getMedicoByUser(String user);
 }

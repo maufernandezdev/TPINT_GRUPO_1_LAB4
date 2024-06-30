@@ -56,4 +56,8 @@ private IdaoTurno daoTurno;
 	public boolean existeTurnoParaMedicoFechaYHora(int medicoLegajo, Date fecha, Time hora) {
 		return daoTurno.existeTurnoParaMedicoFechaYHora(medicoLegajo, fecha, hora);
 	}	
+	
+	public List<Turno> getTurnosPorMedicoLegajo(int medicoLegajo){
+		return daoTurno.getTurnosPorMedicoLegajo(medicoLegajo);
+	}
 }

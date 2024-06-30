@@ -35,6 +35,14 @@ public class MedicoNegocio implements IMedicoNegocio {
 	public List<Medico> Medico_xNombre(String nombre){
 		return daoMedico.Medico_xNombre(nombre);
 	}
+	
+	public List<Medico> filtrarMedico_xSexo(String sexoMedico){
+		return daoMedico.filtrarMedico_xSexo(sexoMedico);
+	}
+	public List<Medico> filtrarMedico_xEspecialidad(String especialidadMedico){
+		return daoMedico.filtrarMedico_xEspecialidad(especialidadMedico);
+	}
+	
 
 	public Medico ReadOne(String nombreMedico) {
 		return daoMedico.ReadOne(nombreMedico);
@@ -69,5 +77,8 @@ public class MedicoNegocio implements IMedicoNegocio {
 	}
 	public List<Medico> getMedicosByEspecialidadId(int especialidadId) {
 		return daoMedico.getMedicosByEspecialidadId(especialidadId);	
+	}
+	public Medico getMedicoByUser(String user) {
+		return daoMedico.getMedicoByUser(user);
 	}
 }

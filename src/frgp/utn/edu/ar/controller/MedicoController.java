@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,7 @@ import frgp.utn.edu.ar.entidad.Medico;
 import frgp.utn.edu.ar.entidad.Medico.Estado;
 import frgp.utn.edu.ar.entidad.Paciente;
 import frgp.utn.edu.ar.entidad.Turno;
+import frgp.utn.edu.ar.entidad.Turno.EstadoT;
 import frgp.utn.edu.ar.entidad.Usuario;
 import frgp.utn.edu.ar.negocioImp.EspecialidadNegocio;
 import frgp.utn.edu.ar.negocioImp.MedicoNegocio;
@@ -100,9 +103,15 @@ public class MedicoController {
 	    public ModelAndView listarMedicos() {
 	    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 	    	MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+	    	
+	    	//se cargan las especialidades para el filtro de buscar
+	    	EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
+	    	
 	        ModelAndView mv = new ModelAndView("listarMedicos");
 	        List<Medico> medicos = medicoNegocio.ReadAll();
 	        mv.addObject("listaMedicos", medicos);
+	        mv.addObject("especialidades", especialidades);
 	        
 	        for (Medico p1: medicos) {
 				System.out.println(p1.toString());
@@ -116,22 +125,64 @@ public class MedicoController {
 	    public ModelAndView listarMedico_xNombre(String txtBuscarMedico_xNombre) {
 	    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 	    	MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+	    	
+	    	//se cargan las especialidades para el filtro de buscar
+	    	EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
+	    	
 	        ModelAndView mv = new ModelAndView("listarMedicos");
 	        List<Medico> medicos = medicoNegocio.Medico_xNombre(txtBuscarMedico_xNombre);
 	        mv.addObject("listaMedicos", medicos);
-	        
-	        for (Medico p1: medicos) {
-				System.out.println(p1.toString());
-			}
+	        mv.addObject("especialidades", especialidades);
 	        
 	        return mv;
 	    }
+	 
+	 
+	 @RequestMapping("listarMedico_xSexo.html")
+	    public ModelAndView listarMedico_xSexo(@RequestParam("ddl_sexo") String ddl_sexo ) {
+		    ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+	    	MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+	    	
+	    	//se cargan las especialidades para el filtro de buscar
+	    	EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
+	    	
+	        ModelAndView mv = new ModelAndView("listarMedicos");
+	        List<Medico> medicos = medicoNegocio.filtrarMedico_xSexo(ddl_sexo);
+	        mv.addObject("listaMedicos", medicos);
+	        mv.addObject("especialidades", especialidades);
+	        
+	        for (Medico p1: medicos) {
+				System.out.println(p1.toString());
+			}	        
+	        return mv;
+	 }
+	 
+	 @RequestMapping("listarMedico_xEspecialidad.html")
+	    public ModelAndView listarMedico_xEspecialidad(@RequestParam("ddl_especialidad") String ddl_especialidad ) {
+		    ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+	    	MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+	    	
+	    	//se cargan las especialidades para el filtro de buscar
+	    	EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
+	    	
+	        ModelAndView mv = new ModelAndView("listarMedicos");
+	        List<Medico> medicos = medicoNegocio.filtrarMedico_xEspecialidad(ddl_especialidad);
+	        mv.addObject("listaMedicos", medicos);
+	        mv.addObject("especialidades", especialidades);
+	                
+	        return mv;
+	 }
 	    
 	 @RequestMapping(value = "modificar_medico.html", method = RequestMethod.POST)
 	    public ModelAndView modificarMedico(
 	            @RequestParam int legajo,
 	            @RequestParam String nombre,
 	            @RequestParam String apellido,
+	            @RequestParam String especialidad,
+	            @RequestParam String sexo,
 	            @RequestParam String correo,
 	            @RequestParam String telefono,
 	            @RequestParam String direccion,
@@ -140,6 +191,8 @@ public class MedicoController {
 		 	System.out.println("legajo: " + legajo);
 		 	System.out.println("nombre: " + nombre);
 		 	System.out.println("apellido: " + apellido);
+		 	System.out.println("especialidad: " + especialidad);
+		 	System.out.println("sexo: " + sexo);
 		 	System.out.println("correo: " + correo);
 		 	System.out.println("telefono: " + telefono);
 		 	System.out.println("direccion: " + direccion);
@@ -148,12 +201,26 @@ public class MedicoController {
 	        ModelAndView mv = new ModelAndView();
 	        ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 	        MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+	        
+	        Especialidad especialidadEncontrada = (Especialidad) appContext.getBean("beanEspecialidad");	
+			EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
+			String nombreEspecialidad = especialidad; 
+			especialidadEncontrada = null;
+			for (Especialidad item : especialidades) {
+			    if (item.getNombre().equals(nombreEspecialidad)) {
+			        especialidadEncontrada = item;
+			        break;
+			    }
+			}
 
 	        Medico medico = medicoNegocio.ReadOneById(legajo);
 
 	        if (medico != null) {
 	        	medico.setNombre(nombre);
 	        	medico.setApellido(apellido);
+	        	medico.setEspecialidad(especialidadEncontrada);
+	        	medico.setSexo(sexo);
 	        	medico.setTelefono(telefono);
 	        	medico.setDireccion(direccion);
 	        	medico.setLocalidad(localidad);
@@ -262,15 +329,6 @@ public class MedicoController {
                 return mv;				
 			}
             
-/*            for (Turno t : listaTurnosCheck) {
-                if (t.getMedico().getLegajo() == medicoLegajo && t.getFecha().equals(fecha) && t.getHora().equals(hora))
-                {
-                    mv.addObject("errorMessage", "El médico ya tiene un turno asignado en esa fecha y hora.");
-                    mv.setViewName("asignacionTurnos");
-                    return mv;
-                }
-            }*/
-            
 			turno.setTurnoDetails(medico, paciente, fecha, hora, "", "PENDIENTE");
 			turnoNegocio.Add(turno);
 			
@@ -281,15 +339,25 @@ public class MedicoController {
 	 	}
 	 
 	 @RequestMapping("listarTurnos.html")
-	    public ModelAndView listarTurnos() {
+	    public ModelAndView listarTurnos(HttpSession session) {
 	    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 	    	TurnoNegocio turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");
-
+			UsuarioNegocio usuarioNegocio = (UsuarioNegocio) appContext.getBean("beanUsuarioNegocio");	
+			MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");	
+			Medico medico = (Medico) appContext.getBean("beanMedico");
+			Usuario usuario= (Usuario) appContext.getBean("beanUsuario");	
+	    	String user = (String) session.getAttribute("user");
+	    	List<Turno> listaTurnos = null;
+	    	
+	    	if (user != null) {
+	    	    	medico = medicoNegocio.getMedicoByUser(user);  
+	    	    	listaTurnos = turnoNegocio.getTurnosPorMedicoLegajo(medico.getLegajo());
+	    	 }
+	    		    	 
 	    	ModelAndView mv = new ModelAndView("listarTurnos");
-	        List<Turno> turnos = turnoNegocio.ReadAll();
-	        
+	    	
 	        // filtro no null
-	        List<Turno> turnosLista = turnos.stream()
+	        List<Turno> turnosLista = listaTurnos.stream()
 	                                          .filter(turno -> turno != null)
 	                                          .collect(Collectors.toList());
 
@@ -298,5 +366,37 @@ public class MedicoController {
 	        return mv;
 	    }
 	 
+	 @RequestMapping(value = "marcarPresente.html", method = RequestMethod.POST)
+	 public ModelAndView marcarPresente(@RequestParam("idTurno") int idTurno, 
+	                                    @RequestParam("observaciones") String observaciones) {
+	     ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+	     TurnoNegocio turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");
+		 Turno turno = (Turno) appContext.getBean("beanTurno");
+
+	     ModelAndView mv = new ModelAndView("redirect:listarTurnos.html");
+
+	     turno = turnoNegocio.ReadOne(idTurno);
+	     
+	     turno.setObservacion(observaciones);
+	     turno.setEstadoTurno("PRESENTE");
+	     turnoNegocio.Update(turno);
+	     
+
+	     return mv;
+	 }
+	 
+	 @RequestMapping(value = "marcarAusente.html", method = RequestMethod.POST)
+	 public ModelAndView marcarAusente(@RequestParam("idTurno") int idTurno) {
+	     ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+	     TurnoNegocio turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");
+
+	     ModelAndView mv = new ModelAndView("redirect:listarTurnos.html");
+
+	     Turno turno = turnoNegocio.ReadOne(idTurno);
+	     turno.setEstadoTurno("AUSENTE");
+	     turnoNegocio.Update(turno);
+	     
+	     return mv;
+	 }
 	 
 }

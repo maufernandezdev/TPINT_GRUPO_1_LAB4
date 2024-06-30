@@ -73,6 +73,42 @@ public class DaoMedico implements IdaoMedico {
 	}
 	
 	
+	public List<Medico> filtrarMedico_xSexo(String sexoMedico) {		
+		conexion = new ConfigHibernate();
+	    Session session = conexion.abrirConexion();
+        session.beginTransaction();
+        
+        String hql = "FROM Medico WHERE estado = 1 AND sexo = :sexoMedico";
+        Query query = session.createQuery(hql);
+        query.setParameter("sexoMedico", sexoMedico);
+        
+        List<Medico> Listmedicos = (List<Medico>)query.list();
+        
+        session.getTransaction().commit();
+	    session.close();
+	    
+	    return Listmedicos;
+	}
+	
+	
+	public List<Medico> filtrarMedico_xEspecialidad(String especialidadMedico) {		
+		conexion = new ConfigHibernate();
+	    Session session = conexion.abrirConexion();
+        session.beginTransaction();
+        
+        String hql = "FROM Medico WHERE estado = 1 AND id_especialidad = :especialidadMedico";
+        Query query = session.createQuery(hql);
+        query.setParameter("especialidadMedico", especialidadMedico);
+        
+        List<Medico> Listmedicos = (List<Medico>)query.list();
+        
+        session.getTransaction().commit();
+	    session.close();
+	    
+	    return Listmedicos;
+	}
+	
+	
 	public Medico ReadOne(String nombreMedico) {
 		Session session = conexion.abrirConexion();
 		session.beginTransaction();
@@ -193,5 +229,23 @@ public class DaoMedico implements IdaoMedico {
 	    
 	    return medicos;
 		}
+	
+	public Medico getMedicoByUser(String user) {
+	    conexion = new ConfigHibernate();
+	    Session session = conexion.abrirConexion();
+	    session.beginTransaction();
+
+	    String hql = "FROM Medico WHERE usuario_c = :user AND estado = 1";
+	    Query query = session.createQuery(hql);
+	    query.setParameter("user", user);  
+
+	    Medico medico = (Medico) query.uniqueResult();
+
+	    session.getTransaction().commit();
+	    conexion.cerrarSession();
+
+	    return medico;
 	}
+	
+}
 

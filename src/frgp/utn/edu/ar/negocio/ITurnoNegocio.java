@@ -15,7 +15,7 @@ public interface ITurnoNegocio {
 	public boolean Update(Turno turno);
 	public boolean Delete(int idTurno);
 	public boolean existeTurnoParaMedicoFechaYHora(int medicoLegajo, Date fecha, Time hora);
-	
+	public List<Turno> getTurnosPorMedicoLegajo(int medicoLegajo);
 }
 
 

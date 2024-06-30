@@ -56,8 +56,9 @@ public class PageController {
 	}
 	
 	@RequestMapping("redirect_login.html")
-	public ModelAndView initEvent() {
+	public ModelAndView initEvent(HttpSession session) {
 		ModelAndView MV = new ModelAndView();
+		session.invalidate();
 		MV.setViewName("login");
 		return MV;
 	}
