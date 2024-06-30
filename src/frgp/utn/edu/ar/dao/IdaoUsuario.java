@@ -7,4 +7,5 @@ public interface IdaoUsuario {
 	public boolean Delete(String nombreUser);
 	public boolean Exist(String nombreUser);
 	public Usuario Login(String nombreUser);
+	public Usuario ReadOne(String usuario);
 }

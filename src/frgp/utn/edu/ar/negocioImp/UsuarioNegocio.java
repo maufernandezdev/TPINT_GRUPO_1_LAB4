@@ -40,4 +40,7 @@ public class UsuarioNegocio implements IUsuarioNegocio{
 	public void setDaoUsuario(IdaoUsuario daoUsuario) {
 		this.daoUsuario = daoUsuario;
 	}
+	public Usuario ReadOne(String usuario) {
+		return this.daoUsuario.ReadOne(usuario);
+	}
 }

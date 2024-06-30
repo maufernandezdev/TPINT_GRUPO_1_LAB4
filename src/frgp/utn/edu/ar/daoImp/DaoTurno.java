@@ -177,5 +177,22 @@ public class DaoTurno implements IdaoTurno{
 	        }
 	    }
 	}
+	
+	public List<Turno> getTurnosPorMedicoLegajo(int medicoLegajo) {
+	    Session session = conexion.abrirConexion();
+	    session.beginTransaction();
+
+	    String hql = "FROM Turno t WHERE t.medico.legajo = :medicoLegajo";
+	    Query query = session.createQuery(hql);
+	    query.setParameter("medicoLegajo", medicoLegajo);
+
+	    List<Turno> turnos = query.list();
+
+	    session.getTransaction().commit();
+	    session.close();
+
+	    return turnos;
+	}
+	
 	}
 

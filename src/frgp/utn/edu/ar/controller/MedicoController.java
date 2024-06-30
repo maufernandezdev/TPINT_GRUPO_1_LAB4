@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -262,15 +264,6 @@ public class MedicoController {
                 return mv;				
 			}
             
-/*            for (Turno t : listaTurnosCheck) {
-                if (t.getMedico().getLegajo() == medicoLegajo && t.getFecha().equals(fecha) && t.getHora().equals(hora))
-                {
-                    mv.addObject("errorMessage", "El médico ya tiene un turno asignado en esa fecha y hora.");
-                    mv.setViewName("asignacionTurnos");
-                    return mv;
-                }
-            }*/
-            
 			turno.setTurnoDetails(medico, paciente, fecha, hora, "", "PENDIENTE");
 			turnoNegocio.Add(turno);
 			
@@ -281,15 +274,26 @@ public class MedicoController {
 	 	}
 	 
 	 @RequestMapping("listarTurnos.html")
-	    public ModelAndView listarTurnos() {
+	    public ModelAndView listarTurnos(HttpSession session) {
 	    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 	    	TurnoNegocio turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");
-
+			UsuarioNegocio usuarioNegocio = (UsuarioNegocio) appContext.getBean("beanUsuarioNegocio");	
+			MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");	
+			Medico medico = (Medico) appContext.getBean("beanMedico");
+			Usuario usuario= (Usuario) appContext.getBean("beanUsuario");	
+	    	String user = (String) session.getAttribute("user");
+	    	List<Turno> listaTurnos = null;
+	    	
+	    	if (user != null) {
+	    	    	medico = medicoNegocio.getMedicoByUser(user);  
+	    	    	listaTurnos = turnoNegocio.getTurnosPorMedicoLegajo(medico.getLegajo());
+	    	 }
+	    		    	 
 	    	ModelAndView mv = new ModelAndView("listarTurnos");
-	        List<Turno> turnos = turnoNegocio.ReadAll();
+/*	        List<Turno> turnos = turnoNegocio.ReadAll();*/
 	        
 	        // filtro no null
-	        List<Turno> turnosLista = turnos.stream()
+	        List<Turno> turnosLista = listaTurnos.stream()
 	                                          .filter(turno -> turno != null)
 	                                          .collect(Collectors.toList());
 

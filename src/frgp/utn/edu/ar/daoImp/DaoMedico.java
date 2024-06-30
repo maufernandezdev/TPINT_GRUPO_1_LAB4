@@ -193,5 +193,23 @@ public class DaoMedico implements IdaoMedico {
 	    
 	    return medicos;
 		}
+	
+	public Medico getMedicoByUser(String user) {
+	    conexion = new ConfigHibernate();
+	    Session session = conexion.abrirConexion();
+	    session.beginTransaction();
+
+	    String hql = "FROM Medico WHERE usuario_c = :user AND estado = 1";
+	    Query query = session.createQuery(hql);
+	    query.setParameter("user", user);  
+
+	    Medico medico = (Medico) query.uniqueResult();
+
+	    session.getTransaction().commit();
+	    conexion.cerrarSession();
+
+	    return medico;
 	}
+	
+}
 
