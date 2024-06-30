@@ -7,11 +7,11 @@ import java.util.stream.Collectors;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import frgp.utn.edu.ar.entidad.Especialidad;
@@ -26,7 +26,7 @@ import frgp.utn.edu.ar.negocioImp.PacienteNegocio;
 import frgp.utn.edu.ar.negocioImp.TurnoNegocio;
 import frgp.utn.edu.ar.negocioImp.UsuarioNegocio;
 
-@RestController
+@Controller
 public class MedicoController {
 	
 	private final static String MENSAJE_AGREGADO = "AGREGADO CORRECTAMENTE";
@@ -223,11 +223,7 @@ public class MedicoController {
 	        
 	        mv.addObject("medicos", medicos);
 	        mv.addObject("pacientes", pacientes);
-	        mv.addObject("especialidades", especialidades);
-	        
-	        for (Paciente p1: pacientes) {
-				System.out.println(p1.toString());
-			}
+	        mv.addObject("especialidades", especialidades);	        
 	        
 	        return mv;
 	    }
@@ -249,16 +245,27 @@ public class MedicoController {
 			Turno turno = (Turno) appContext.getBean("beanTurno");
 			Medico medico = (Medico) appContext.getBean("beanMedico");	
 			Paciente paciente = (Paciente) appContext.getBean("beanPaciente");	
+			List<Turno> listaTurnosCheck = null;
+			listaTurnosCheck = turnoNegocio.ReadAll();
 			
 			medico = medicoNegocio.ReadOneById(medicoLegajo);
 			paciente = pacienteNegocio.ReadOne(pacienteDni);
 			//parse de hora
             Time hora = Time.valueOf(horaCompletaStr); // HH:mm:ss
             
+            for (Turno t : listaTurnosCheck) {
+                if (t.getMedico().getLegajo() == medicoLegajo && t.getFecha().equals(fecha) && t.getHora().equals(hora))
+                {
+                    mv.addObject("errorMessage", "El médico ya tiene un turno asignado en esa fecha y hora.");
+                    mv.setViewName("asignacionTurnos");
+                    return mv;
+                }
+            }
+            
 			turno.setTurnoDetails(medico, paciente, fecha, hora, "", "PENDIENTE");
 			turnoNegocio.Add(turno);
 			
-	        mv.addObject("successMessage", MENSAJE_AGREGADO);
+	        mv.addObject("successMessage", "El turno ha sido agregado correctamente");
 	        mv.setViewName("asignacionTurnos");
 	        
 	        return mv;
@@ -278,10 +285,6 @@ public class MedicoController {
 	                                          .collect(Collectors.toList());
 
 	        mv.addObject("listaTurnos", turnosLista);
-	        
-	        for (Turno t1: turnos) {
-				System.out.println(t1.toString());
-			}
 	        
 	        return mv;
 	    }

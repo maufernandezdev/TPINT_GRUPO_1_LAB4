@@ -76,18 +76,25 @@
         </form>
     </div>
 </div>
-	   <!-- Modal -->
-<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal -->
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Éxito</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Mensaje</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                El turno se guardó correctamente.
+                <c:choose>
+                    <c:when test="${not empty successMessage}">
+                        ${successMessage}
+                    </c:when>
+                    <c:when test="${not empty errorMessage}">
+                        ${errorMessage}
+                    </c:when>
+                </c:choose>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
@@ -97,45 +104,48 @@
 </div>
 
 <script>
-
-var allMedicos = [
-    <c:forEach items="${medicos}" var="medico">
-        {
-            id: "${medico.legajo}",
-            nombre: "${medico.nombre}",
-            apellido: "${medico.apellido}",
-            id_especialidad: "${medico.especialidad.id}"
-        },
-    </c:forEach>
-];
-	
+    var allMedicos = [
+        <c:forEach items="${medicos}" var="medico">
+            {
+                id: "${medico.legajo}",
+                nombre: "${medico.nombre}",
+                apellido: "${medico.apellido}",
+                id_especialidad: "${medico.especialidad.id}"
+            },
+        </c:forEach>
+    ];
+    
     $(document).ready(function() {
         var successMessage = "${successMessage}";
-        if (successMessage) {
-            $('#successModal').modal('show');
+        var errorMessage = "${errorMessage}";
+        
+        if (successMessage || errorMessage) {
+            $('#messageModal').modal('show');
         }
         
         // Manejar el cierre del modal con la cruz y el botón "Cerrar"
-        $('#successModal .close, #successModal .btn-danger').on('click', function () {
-            $('#successModal').modal('hide');
+        $('#messageModal .close, #messageModal .btn-danger').on('click', function () {
+            $('#messageModal').modal('hide');
+            
+            window.location.href = "asignacionTurnos.html";
+
         });
-              
     });
     
     document.addEventListener('DOMContentLoaded', (event) => {
         var especialidadSelect = document.getElementById('especialidad');
         especialidadSelect.addEventListener('change', filtrarMedicos);
     });
-
+    
     function filtrarMedicos() {
         var especialidadId = document.getElementById('especialidad').value;
         var medicoSelect = document.getElementById('medico');
         medicoSelect.innerHTML = '<option value="" disabled selected>Seleccione un Médico</option>';
-
+    
         var filteredMedicos = allMedicos.filter(function(medico) {
             return medico.id_especialidad == especialidadId;
         });
-
+    
         filteredMedicos.forEach(function(medico) {
             var option = document.createElement('option');
             option.value = medico.id;
@@ -143,6 +153,7 @@ var allMedicos = [
             medicoSelect.appendChild(option);
         });
     }
-</script> 
+</script>
+
 </body>
 </html>
