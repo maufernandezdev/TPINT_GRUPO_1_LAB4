@@ -54,8 +54,12 @@
 		        <a class="dropdown-item" href="listarPacientesActivos.html" >Listado Pacientes</a>
 		      </div>
 		    </li>
-		    <li class="nav-item">
-		      <a class="nav-link" href="asignacionTurnos.html" >Asignación de Turnos</a>
+		      <li class="nav-item dropdown">
+		      <a class="nav-link dropdown-toggle" href="#" id="navbardropTurnos" data-toggle="dropdown">Turnos</a>
+		      <div class="dropdown-menu">
+		        <a class="dropdown-item" href="turnos.html">Asignación de Turnos</a>
+		        <a class="dropdown-item" href="listarTurnos.html" >Listado Turnos</a>
+		      </div>
 		    </li>
 		    <li class="nav-item">
 		      <a class="nav-link" >Informes y/o Reportes</a>
@@ -63,7 +67,7 @@
 		    </c:if>
             <c:if test="${tipoUsuario == 'MEDICO'}">
                 <li class="nav-item">
-                    <a class="nav-link" href="listarTurnos.html">Listado de Turnos</a>
+                    <a class="nav-link" href="listarTurnosAsignados.html">Listado de Turnos</a>
                 </li>
             </c:if>
 			<li class="mt-0 mr-0 mb-0 ml-auto d-flex align-items-center" style="gap: 1rem;">

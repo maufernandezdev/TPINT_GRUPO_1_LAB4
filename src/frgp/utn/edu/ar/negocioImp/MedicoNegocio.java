@@ -78,6 +78,7 @@ public class MedicoNegocio implements IMedicoNegocio {
 	public List<Medico> getMedicosByEspecialidadId(int especialidadId) {
 		return daoMedico.getMedicosByEspecialidadId(especialidadId);	
 	}
+
 	public Medico getMedicoByUser(String user) {
 		return daoMedico.getMedicoByUser(user);
 	}
