@@ -100,9 +100,15 @@ public class MedicoController {
 	    public ModelAndView listarMedicos() {
 	    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 	    	MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+	    	
+	    	//se cargan las especialidades para el filtro de buscar
+	    	EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
+	    	
 	        ModelAndView mv = new ModelAndView("listarMedicos");
 	        List<Medico> medicos = medicoNegocio.ReadAll();
 	        mv.addObject("listaMedicos", medicos);
+	        mv.addObject("especialidades", especialidades);
 	        
 	        for (Medico p1: medicos) {
 				System.out.println(p1.toString());
@@ -116,16 +122,56 @@ public class MedicoController {
 	    public ModelAndView listarMedico_xNombre(String txtBuscarMedico_xNombre) {
 	    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 	    	MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+	    	
+	    	//se cargan las especialidades para el filtro de buscar
+	    	EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
+	    	
 	        ModelAndView mv = new ModelAndView("listarMedicos");
 	        List<Medico> medicos = medicoNegocio.Medico_xNombre(txtBuscarMedico_xNombre);
 	        mv.addObject("listaMedicos", medicos);
-	        
-	        for (Medico p1: medicos) {
-				System.out.println(p1.toString());
-			}
+	        mv.addObject("especialidades", especialidades);
 	        
 	        return mv;
 	    }
+	 
+	 
+	 @RequestMapping("listarMedico_xSexo.html")
+	    public ModelAndView listarMedico_xSexo(@RequestParam("ddl_sexo") String ddl_sexo ) {
+		    ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+	    	MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+	    	
+	    	//se cargan las especialidades para el filtro de buscar
+	    	EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
+	    	
+	        ModelAndView mv = new ModelAndView("listarMedicos");
+	        List<Medico> medicos = medicoNegocio.filtrarMedico_xSexo(ddl_sexo);
+	        mv.addObject("listaMedicos", medicos);
+	        mv.addObject("especialidades", especialidades);
+	        
+	        for (Medico p1: medicos) {
+				System.out.println(p1.toString());
+			}	        
+	        return mv;
+	 }
+	 
+	 @RequestMapping("listarMedico_xEspecialidad.html")
+	    public ModelAndView listarMedico_xEspecialidad(@RequestParam("ddl_especialidad") String ddl_especialidad ) {
+		    ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+	    	MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+	    	
+	    	//se cargan las especialidades para el filtro de buscar
+	    	EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
+	    	
+	        ModelAndView mv = new ModelAndView("listarMedicos");
+	        List<Medico> medicos = medicoNegocio.filtrarMedico_xEspecialidad(ddl_especialidad);
+	        mv.addObject("listaMedicos", medicos);
+	        mv.addObject("especialidades", especialidades);
+	                
+	        return mv;
+	 }
 	    
 	 @RequestMapping(value = "modificar_medico.html", method = RequestMethod.POST)
 	    public ModelAndView modificarMedico(

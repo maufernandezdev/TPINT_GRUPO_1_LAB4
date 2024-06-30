@@ -25,11 +25,10 @@
 
 <jsp:include page="masterPage.jsp" /> 
 
-<div class="container mt-5">
-    <h1 class="text-center">Gestión de medicos</h1>
-    <h2 class="text-center">Lista de medicos</h2> 
-    <br>
-    
+<h1 class="text-center">Gestión de Médicos</h1>
+    <h2 class="text-center">Lista de Médicos</h2> 
+<div class="container mt-3">
+
       <!-- Barra de búsqueda -->
         <form id="barraBusqueda" action="listarMedico_xNombre.html" method="post" class="mb-4">
             <div class="row">
@@ -40,15 +39,45 @@
                         </div>
                         <input type="text" name="txtBuscarMedico_xNombre" class="form-control" placeholder="Escribe aquí..." required >
                         <div class="input-group-append">
-                        	<input type="submit" name="btnBuscarMedico" class="btn btn-primary" value="Buscar"> 
-                            
+                        	<input type="submit" name="btnBuscarMedico" class="btn btn-primary" value="Buscar">                            
                         </div>
                     </div>
                 </div>
             </div>
         </form>
-    
-    <form action="listarMedicos.html" method="post">
+
+<div class="w-100">
+    <nav class="navbar navbar-expand-sm ">
+        <div class="row w-100">
+            <div class="col-md-0">
+                <div class="input-group form-inline">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Filtrar por :</span>
+                    </div>
+                    <form action="listarMedico_xSexo.html" method="post" id="sexoForm" class="mr-2">
+                        <select id="sexo" name="ddl_sexo" class="form-control" required onchange="document.getElementById('sexoForm').submit();">
+                            <option value="" disabled selected>sexo</option>
+                            <option value="M">Masculino</option>
+                            <option value="F">Femenino</option>
+                            <option value="O">Otro</option>
+                            <option value="N">Prefiero no decirlo</option>
+                        </select>
+                    </form>
+                    <form action="listarMedico_xEspecialidad.html" method="post" id="especialidadForm">
+                        <select id="especialidad" name="ddl_especialidad" class="form-control" required onchange="document.getElementById('especialidadForm').submit();">
+                            <option value="" disabled selected>especialidad</option>
+                            <c:forEach items="${especialidades}" var="especialidad">
+                                <option value="${especialidad.id}">${especialidad.nombre}</option>
+                            </c:forEach>
+                        </select>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+
+	<form action="listarMedicos.html" method="post">
 	    <div class="row">
 	        <div class="col-md-6">
 	            <input type="submit" name="btnMostrarTodo" class="btn btn-secondary" value="Mostrar todo">
@@ -58,18 +87,19 @@
     <br>
     
     <c:if test="${not empty listaMedicos}">
-        <table id="tablaMedicos" class="table table-striped table-bordered">
+        <table id="tablaMedicos" class="table table-striped table-bordered ">
             <thead>
                 <tr>
                     <th>Legajo</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
+                    <th>Especialidad</th>
+                    <th>Sexo</th>
                     <th>Correo</th>
                     <th>Teléfono</th>
                     <th>Dirección</th>
                     <th>Localidad</th>
                     <th>Fecha de nacimiento</th>
-                    <th>estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -79,16 +109,17 @@
                         <td>${medico.legajo}</td>
                         <td>${medico.nombre}</td>
                         <td>${medico.apellido}</td>
+                        <td>${medico.especialidad.nombre}</td>
+                        <td>${medico.sexo}</td>
                         <td>${medico.correo}</td>
                         <td>${medico.telefono}</td>
                         <td>${medico.direccion}</td>
                         <td>${medico.localidad}</td>
                         <td>${medico.fechaNac}</td>
-                        <td>${medico.estado}</td>
                         <td>
-							<button type="button" class="btn btn-primary btn-sm editar-medico" data-toggle="modal" data-target="#modalEditar" 
+							<button type="button" class="btn btn-primary btn-sm editar-medico" style="width: 100px;" data-toggle="modal" data-target="#modalEditar" 
 								data-legajo="${medico.legajo}">Modificar</button>
-							<button type="button" class="btn btn-danger btn-sm eliminar-medico" data-toggle="modal" data-target="#modalEliminar"
+							<button type="button" class="btn btn-danger btn-sm eliminar-medico" style="width: 100px;" data-toggle="modal" data-target="#modalEliminar"
 							 	data-legajo2="${medico.legajo}">Eliminar</button>
                         </td>
                     </tr>
