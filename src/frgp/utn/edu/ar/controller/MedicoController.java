@@ -2,22 +2,17 @@ package frgp.utn.edu.ar.controller;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import frgp.utn.edu.ar.entidad.Especialidad;
 import frgp.utn.edu.ar.entidad.Medico;
@@ -115,6 +110,22 @@ public class MedicoController {
 	        
 	        return mv;
 	    }
+	 
+	 
+	 @RequestMapping("listarMedico_xNombre.html")
+	    public ModelAndView listarMedico_xNombre(String txtBuscarMedico_xNombre) {
+	    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+	    	MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+	        ModelAndView mv = new ModelAndView("listarMedicos");
+	        List<Medico> medicos = medicoNegocio.Medico_xNombre(txtBuscarMedico_xNombre);
+	        mv.addObject("listaMedicos", medicos);
+	        
+	        for (Medico p1: medicos) {
+				System.out.println(p1.toString());
+			}
+	        
+	        return mv;
+	    }
 	    
 	 @RequestMapping(value = "modificar_medico.html", method = RequestMethod.POST)
 	    public ModelAndView modificarMedico(
@@ -152,14 +163,14 @@ public class MedicoController {
 	            boolean actualizado = medicoNegocio.Update(medico);
 
 	            if (actualizado) {
-	                mv.setViewName("medicos");
+	            	mv.setViewName("redirect:/listarMedicos.html");
 	                mv.addObject("successMessage", "Medico: " + legajo + " " + MENSAJE_MODIFICADO);
 	            } else {
-	                mv.setViewName("medicos");
+	            	mv.setViewName("redirect:/listarMedicos.html");
 	                mv.addObject("errorMessage", "Error al modificar medico con legajo: " + legajo);
 	            }
 	        } else {
-	            mv.setViewName("medicos");
+	        	mv.setViewName("redirect:/listarMedicos.html");
 	            mv.addObject("errorMessage", "No se encontró medico con legajo: " + legajo);
 	        }
 

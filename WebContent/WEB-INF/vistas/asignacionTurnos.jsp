@@ -66,10 +66,9 @@
                 <label for="horario">Seleccione el Horario:</label>
                 <select id="horario" name="horario" class="form-control" required>
                     <option value="" disabled selected>Seleccione un Horario</option>
-                    <c:forEach var="hora" begin="8" end="19">
-                        <option value="${hora}:00">${hora}:00</option>
-                        <option value="${hora}:30">${hora}:30</option>
-                    </c:forEach>
+					<c:forEach var="hora" begin="8" end="20">
+					        <option value="${hora}:00">${hora}:00</option>
+					    </c:forEach>
                     <option value="20:00">20:00</option>
                 </select>
             </div>

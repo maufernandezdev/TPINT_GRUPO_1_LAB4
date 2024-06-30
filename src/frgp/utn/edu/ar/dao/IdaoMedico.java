@@ -5,6 +5,7 @@ import frgp.utn.edu.ar.entidad.Medico;
 
 public interface IdaoMedico {
 	public boolean Add(Medico medico);
+	public List<Medico> Medico_xNombre(String nombre);
 	public Medico ReadOne(String nombreMedico);
 	public Medico ReadOneById(int legajo);
 	public List<Medico> ReadAll();
