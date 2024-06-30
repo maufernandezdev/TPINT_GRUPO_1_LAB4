@@ -58,7 +58,7 @@
 		      <a class="nav-link" href="asignacionTurnos.html" >Asignación de Turnos</a>
 		    </li>
 		    <li class="nav-item">
-		      <a class="nav-link" >Informes y/o Reportes</a>
+		      <a class="nav-link" href="reportes.html" >Informes y/o Reportes</a>
 		    </li>
 		    </c:if>
             <c:if test="${tipoUsuario == 'MEDICO'}">

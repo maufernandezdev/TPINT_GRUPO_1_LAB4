@@ -3,6 +3,7 @@ package frgp.utn.edu.ar.negocioImp;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
+import java.util.Map;
 
 import frgp.utn.edu.ar.dao.IdaoMedico;
 import frgp.utn.edu.ar.dao.IdaoTurno;
@@ -59,5 +60,9 @@ private IdaoTurno daoTurno;
 	
 	public List<Turno> getTurnosPorMedicoLegajo(int medicoLegajo){
 		return daoTurno.getTurnosPorMedicoLegajo(medicoLegajo);
+	}
+	
+	public Map<String, Long> ObtenerPresentesAusentesEntreFechas(){
+		return daoTurno.ObtenerPresentesAusentesEntreFechas();
 	}
 }
