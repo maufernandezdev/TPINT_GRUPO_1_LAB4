@@ -11,8 +11,13 @@
 <jsp:include page="masterPage.jsp" /> 
 
 <div class="container mt-5">
-    <h1 class="text-center">Gestión de Turnos</h1>
-    <h2 class="text-center">Mis turnos asignados</h2>
+ 	<c:if test="${tipoUsuario == 'MEDICO'}">
+	    <h1 class="text-center">Gestión de Turnos</h1>
+	    <h2 class="text-center">Mis turnos asignados</h2>
+	</c:if>
+    <c:if test="${tipoUsuario == 'ADMINISTRADOR'}">
+	    <h1 class="text-center">Listado de Turnos</h1>
+	</c:if>
     
       <!-- Barra de búsqueda -->
         <form id="barraBusqueda" action="listarTurno_xDni.html" method="post" class="mb-4">
@@ -42,7 +47,10 @@
                     <th>Fecha</th>
                     <th>Hora</th>
                     <th>Estado</th>
-                    <th>Acción</th>
+                    <c:if test="${tipoUsuario == 'MEDICO'}">
+                    	<th>Acción</th>
+		            </c:if>
+
                 </tr>
             </thead>
             <tbody>
@@ -54,7 +62,8 @@
                         <td>${turno.fecha}</td>
                         <td>${turno.hora}</td>
 						<td>${turno.estadoTurno == 'AUSENTE' ? 'AUSENTE' : turno.estadoTurno == 'PRESENTE' ? 'PRESENTE' : turno.estadoTurno == 'PENDIENTE' ? 'PENDIENTE' : '-'}</td>
-                        <td>
+                        <c:if test="${tipoUsuario == 'MEDICO'}">
+                    	<td >
                             <c:choose>
                                 <c:when test="${turno.estadoTurno != 'AUSENTE' && turno.estadoTurno != 'PRESENTE'}">
                                     <!-- Formulario para marcar como AUSENTE -->
@@ -70,6 +79,8 @@
                                 </c:otherwise>
                             </c:choose>
                         </td>
+		            	</c:if>
+                        
                     </tr>
                 </c:forEach>
             </tbody>
