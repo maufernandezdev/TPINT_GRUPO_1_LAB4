@@ -180,7 +180,7 @@ public class MedicoController {
 	            @RequestParam int legajo,
 	            @RequestParam String nombre,
 	            @RequestParam String apellido,
-	            @RequestParam String especialidad,
+	            @RequestParam int especialidad,
 	            @RequestParam String sexo,
 	            @RequestParam String correo,
 	            @RequestParam String telefono,
@@ -206,10 +206,10 @@ public class MedicoController {
 	        Especialidad especialidadEncontrada = (Especialidad) appContext.getBean("beanEspecialidad");	
 			EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
 			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
-			String nombreEspecialidad = especialidad; 
+			int idEspecialidad = especialidad; 
 			especialidadEncontrada = null;
 			for (Especialidad item : especialidades) {
-			    if (item.getNombre().equals(nombreEspecialidad)) {
+			    if (item.getId() == idEspecialidad) {
 			        especialidadEncontrada = item;
 			        break;
 			    }
