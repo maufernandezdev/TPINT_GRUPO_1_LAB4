@@ -2,6 +2,7 @@ package frgp.utn.edu.ar.controller;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -115,7 +116,6 @@ public class MedicoController {
 	        for (Medico p1: medicos) {
 				System.out.println(p1.toString());
 			}
-	        
 	        return mv;
 	    }
 	 
@@ -185,7 +185,8 @@ public class MedicoController {
 	            @RequestParam String correo,
 	            @RequestParam String telefono,
 	            @RequestParam String direccion,
-	            @RequestParam String localidad
+	            @RequestParam String localidad,
+	            @RequestParam String fechaNac
 	            ) {
 		 	System.out.println("legajo: " + legajo);
 		 	System.out.println("nombre: " + nombre);
@@ -196,6 +197,7 @@ public class MedicoController {
 		 	System.out.println("telefono: " + telefono);
 		 	System.out.println("direccion: " + direccion);
 		 	System.out.println("localidad: " + localidad);
+		 	System.out.println("fechaNac: " + fechaNac);
 		 	
 	        ModelAndView mv = new ModelAndView();
 	        ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
@@ -223,7 +225,7 @@ public class MedicoController {
 	        	medico.setTelefono(telefono);
 	        	medico.setDireccion(direccion);
 	        	medico.setLocalidad(localidad);
-	        	/*medico.setFechaNac(fechaNac);*/
+	        	medico.setFechaNac(LocalDate.parse(fechaNac));
 	        	medico.setCorreo(correo);
 
 	            boolean actualizado = medicoNegocio.Update(medico);

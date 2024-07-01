@@ -109,13 +109,19 @@
                         <td>${medico.legajo}</td>
                         <td>${medico.nombre}</td>
                         <td>${medico.apellido}</td>
-                        <td>${medico.especialidad.nombre}</td>
+                        <td>
+                        	${medico.especialidad.nombre}
+                        	<input value="${medico.especialidad.id}" hidden />
+                        </td>
                         <td>${medico.sexo}</td>
                         <td>${medico.correo}</td>
                         <td>${medico.telefono}</td>
                         <td>${medico.direccion}</td>
                         <td>${medico.localidad}</td>
                         <td>${medico.fechaNac}</td>
+                        <!--  
+                        <td style="visibility: hidden;">${medico.especialidad.id}</td>
+                         -->
                         <td>
 							<button type="button" class="btn btn-primary btn-sm editar-medico" style="width: 100px;" data-toggle="modal" data-target="#modalEditar" 
 								data-legajo="${medico.legajo}">Modificar</button>
@@ -160,16 +166,33 @@
                         <input type="text" class="form-control" id="apellidoEditar" name="apellido" required>
                     </div>
                     
-                    
+                    <!-- 
                     <div class="form-group">
                         <label for="especialidadEditar">Especialidad:</label>
                         <input type="text" class="form-control" id="especialidadEditar" name="especialidad" required>
                     </div>
-                    <div class="form-group">
-                        <label for="sexoEditar">Sexo:</label>
-                        <input type="text" class="form-control" id="sexoEditar" name="sexo" required>
-                    </div>
+                     -->
                     
+                    <div class="form-group"> 
+			        	<label for="especialidadEditar">Seleccione una especialidad:</label>
+				        <select id="especialidadEditar" name="especialidad" class="form-control" required>
+				        	<option value="" disabled selected>especialidad</option>
+					        <c:forEach items="${especialidades}" var="especialidad">
+					         <option value="${especialidad.id}">${especialidad.nombre}</option>
+				            </c:forEach>
+				        </select>
+		        	 </div>
+		        	 
+                    <div class=form-group>
+			       		<label for="sexoEditar">Seleccione su sexo:</label>
+			       		<select id="sexoEditar" name="sexo" class="form-control" required>
+			            <option value="" disabled selected>sexo</option>
+			            <option value="M">Masculino</option>
+			            <option value="F">Femenino</option>
+			            <option value="O">Otro</option>
+			            <option value="N">Prefiero no decirlo</option>
+			        	</select>
+        			</div>
                     
                     <div class="form-group">
                         <label for="correoEditar">Correo electrónico:</label>
@@ -193,7 +216,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-primary modificar-medico">Guardar Cambios</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </form>
@@ -218,6 +241,22 @@
         </div>
     </div>
 </div>
+
+
+<!-- 
+<div class="modal fade" id="modalModificar" tabindex="-1" role="dialog" aria-labelledby="modalModificarLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" th:text="${successMessage != null ? successMessage : errorMessage}"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+--> 
 
 <script>
 	$(document).ready(function() {
@@ -247,13 +286,15 @@
         var nombre = $(this).closest('tr').find('td:eq(1)').text();
         var apellido = $(this).closest('tr').find('td:eq(2)').text();
         var especialidad = $(this).closest('tr').find('td:eq(3)').text();
+        var idEspecialidad = $(this).closest('tr').find('td:eq(3) input').val();
         var sexo = $(this).closest('tr').find('td:eq(4)').text();
         var correo = $(this).closest('tr').find('td:eq(5)').text();
         var telefono = $(this).closest('tr').find('td:eq(6)').text();
         var direccion = $(this).closest('tr').find('td:eq(7)').text();
         var localidad = $(this).closest('tr').find('td:eq(8)').text();
         var fechaNac = $(this).closest('tr').find('td:eq(9)').text();
-        
+        // var idEspecialidadText = $(this).closest('tr').find('td:eq(10)').text();
+        idEspecialidad = parseInt(idEspecialidad, 10);
         console.log("legajo: ", legajo);
         console.log("nombre: ", nombre);
         console.log("apellido: ", apellido);
@@ -262,7 +303,7 @@
         $('#legajoEditar').val(legajo);
         $('#nombreEditar').val(nombre);
         $('#apellidoEditar').val(apellido);
-        $('#especialidadEditar').val(especialidad);
+        $('#especialidadEditar').val(idEspecialidad);
         $('#sexoEditar').val(sexo);
         $('#correoEditar').val(correo);
         $('#telefonoEditar').val(telefono);
@@ -285,6 +326,11 @@
         var legajo = $(this).data('legajo');
         window.location.href = "eliminar_medico.html?legajo=" + legajo;
     });
+    
+    // modificar medico
+    // $('.modificar-medico').click(function() {	
+    //    $('#modalModificar').modal('show');
+    // });
 	
 	
 </script>

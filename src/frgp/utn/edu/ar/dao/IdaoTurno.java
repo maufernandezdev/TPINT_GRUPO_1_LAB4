@@ -3,6 +3,7 @@ package frgp.utn.edu.ar.dao;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
+import java.util.Map;
 
 import frgp.utn.edu.ar.entidad.Turno;
 
@@ -15,6 +16,7 @@ public interface IdaoTurno {
 	public boolean Delete(int idTurno);
 	public boolean existeTurnoParaMedicoFechaYHora(int medicoLegajo, Date fecha, Time hora);
 	public List<Turno> getTurnosPorMedicoLegajo(int medicoLegajo);
+	public Map<String, Long> ObtenerPresentesAusentesEntreFechas();
 }
 
 
