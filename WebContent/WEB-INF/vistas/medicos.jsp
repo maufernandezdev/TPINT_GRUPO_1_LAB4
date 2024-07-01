@@ -81,6 +81,27 @@
 	      	}
 	      	
     	</style>
+    	
+    	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    	
+    	<script>
+        function validarContrasenias() {
+            var contrasenia = document.getElementById("contrasenia").value;
+            var repetirContrasenia = document.getElementById("repetirContrasenia").value;
+
+            if (contrasenia !== repetirContrasenia) {
+            	Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Las contraseñas no coinciden.'
+                });
+                return false;
+            }
+            return true;
+        }
+    </script>
+    	
+    	
 	</head>
 	<body>
 	
@@ -90,7 +111,7 @@
 	    <div id="formularioAlta" class="container">
 	        <h2>Alta Médico</h2>
 	   
-			<form id="formAltaMedico" action="guardar_medico.html" method="post">
+			<form id="formAltaMedico" action="guardar_medico.html" method="post" onsubmit="return validarContrasenias()">
 	  		
 	  		<div class="item">
 	        	<label for="nombre">Nombre:</label>
@@ -141,13 +162,18 @@
 	        	<label for="usuario">Nombre de usuario:</label>
     	    	<input type="text" id="usuario" name="usuario" required><br>
         	 </div>
-        	
-        	 <div class="item"> 
-	        	<label for="contrasenia">Contraseña:</label>
-    	    	<input type="password" id="contrasenia" name="contrasenia" required><br>
-        	 </div>
-        	
-        	 <div class="item"> 
+
+			<div class="item">
+				<label for="contrasenia">Contraseña:</label> <input type="password"
+					id="contrasenia" name="contrasenia" required><br>
+			</div>
+
+			<div class="item">
+				<label for="repetirContrasenia">Repetir Contraseña:</label> <input
+					type="password" id="repetirContrasenia" name="repetirContrasenia" required><br>
+			</div>
+
+			<div class="item"> 
 	        	<label for="especialidad">Seleccione una especialidad:</label>
 		        <select id="especialidad" name="especialidad" required>
 		        	<option value="" disabled selected>especialidad</option>
