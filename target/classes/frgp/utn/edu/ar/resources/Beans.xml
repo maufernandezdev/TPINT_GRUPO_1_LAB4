@@ -25,7 +25,7 @@
     <bean id="beanDaoPaciente" class="frgp.utn.edu.ar.daoImp.DaoPaciente">
     	<constructor-arg ref="beanConexion" />
     </bean>
-    <bean id="beanDaoTurno" class="frgp.utn.edu.ar.daoImp.DaoTurno">
+    <bean id="beanDaoTurno" class="frgp.utn.edu.ar.daoImp.DaoTurno" scope="singleton">
 	    <constructor-arg ref="beanConexion" />
 	</bean>
 	
@@ -42,7 +42,7 @@
     <bean id="beanPacienteNegocio" class="frgp.utn.edu.ar.negocioImp.PacienteNegocio">
     	<property name="daoPaciente" ref="beanDaoPaciente" />
     </bean>
-    <bean id="beanTurnoNegocio" class="frgp.utn.edu.ar.negocioImp.TurnoNegocio">
+    <bean id="beanTurnoNegocio" class="frgp.utn.edu.ar.negocioImp.TurnoNegocio" scope="singleton">
 	    <property name="daoTurno" ref="beanDaoTurno" />
 	</bean>
 	

@@ -12,4 +12,5 @@ public interface IPacienteNegocio {
 	public boolean Delete(int dni);
 	public boolean Exist(int dni);
 	public List<Paciente> listarPacientesActivos(); // nuevo método
+	public List<Paciente> Paciente_xDni(String dni);
 }

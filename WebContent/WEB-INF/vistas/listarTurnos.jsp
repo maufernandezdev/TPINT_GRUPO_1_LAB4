@@ -11,8 +11,31 @@
 <jsp:include page="masterPage.jsp" /> 
 
 <div class="container mt-5">
-    <h1 class="text-center">Gestión de Turnos</h1>
-    <h2 class="text-center">Mis turnos asignados</h2>
+ 	<c:if test="${tipoUsuario == 'MEDICO'}">
+	    <h1 class="text-center">Gestión de Turnos</h1>
+	    <h2 class="text-center">Mis turnos asignados</h2>
+	</c:if>
+    <c:if test="${tipoUsuario == 'ADMINISTRADOR'}">
+	    <h1 class="text-center">Listado de Turnos</h1>
+	</c:if>
+    
+      <!-- Barra de búsqueda -->
+        <form id="barraBusqueda" action="listarTurno_xDni.html" method="post" class="mb-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Buscar por dni:</span>
+                        </div>
+                        <input type="text" name="txtBuscarTurno_xDni" class="form-control" placeholder="Escribe aquí..." required >
+                        <div class="input-group-append">
+                        	<input type="submit" name="btnBuscarTurno" class="btn btn-primary" value="Buscar"> 
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     
     <c:if test="${not empty listaTurnos}">
         <table id="tablaTurnos" class="table table-striped table-bordered">
@@ -24,7 +47,10 @@
                     <th>Fecha</th>
                     <th>Hora</th>
                     <th>Estado</th>
-                    <th>Acción</th>
+                    <c:if test="${tipoUsuario == 'MEDICO'}">
+                    	<th>Acción</th>
+		            </c:if>
+
                 </tr>
             </thead>
             <tbody>
@@ -35,8 +61,9 @@
                         <td>${turno.paciente.dni}</td>
                         <td>${turno.fecha}</td>
                         <td>${turno.hora}</td>
-                        <td>${turno.estadoTurno == 'AUSENTE' ? 'AUSENTE' : turno.estadoTurno == 'PRESENTE' ? 'PRESENTE' : '-'}</td>
-                        <td>
+						<td>${turno.estadoTurno == 'AUSENTE' ? 'AUSENTE' : turno.estadoTurno == 'PRESENTE' ? 'PRESENTE' : turno.estadoTurno == 'PENDIENTE' ? 'PENDIENTE' : '-'}</td>
+                        <c:if test="${tipoUsuario == 'MEDICO'}">
+                    	<td >
                             <c:choose>
                                 <c:when test="${turno.estadoTurno != 'AUSENTE' && turno.estadoTurno != 'PRESENTE'}">
                                     <!-- Formulario para marcar como AUSENTE -->
@@ -52,10 +79,21 @@
                                 </c:otherwise>
                             </c:choose>
                         </td>
+		            	</c:if>
+                        
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
+    </c:if>
+        <c:if test="${empty listaTurnos}">
+     <table  class="table table-striped table-bordered">
+      <thead>
+                <tr>
+                    <th class="text-center" style="color: red;">No hay turnos asignados.</th>
+                </tr>
+            </thead>
+     </table>
     </c:if>
 </div>
 <!-- Modal para observaciones -->

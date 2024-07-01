@@ -12,4 +12,5 @@ public interface IdaoPaciente {
 	public boolean Update(Paciente paciente);
 	public boolean Delete(int dni);
 	public List<Paciente> listarPacientesActivos(); // Nuevo método
+	public List<Paciente> Paciente_xDni(String dni);
 }
