@@ -36,3 +36,28 @@ VALUES
 (0, 'ACTIVO', '2024-09-15', '11:00:00', 'Observación 13', 1, 56789012),
 (0, 'ACTIVO', '2024-09-20', '12:00:00', 'Observación 14', 2, 34567890),
 (0, 'ACTIVO', '2024-10-25', '13:00:00', 'Observación 15', 3, 78901234);
+
+/* Provincias y localidades*/
+
+insert into provincias(nombre) values
+('Buenos Aires'),
+('Cordoba'),
+('Mendoza'),
+('Entre Rios') ;
+
+
+insert into localidades (nombre, id_provincia) values
+('Tigre', 1),
+('Escobar', 1),
+('Pilar', 1),
+('Río Cuarto', 2),
+('Santa Maria', 2),
+('Calamuchita', 2),
+('Tunuyán', 3),
+('Malargue', 3),
+('Guaymallén',3),
+('Colón', 4),
+('Gualeguaychú', 4),
+('Paraná', 4)
+
+
