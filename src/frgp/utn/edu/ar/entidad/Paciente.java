@@ -10,7 +10,10 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -32,8 +35,15 @@ public class Paciente implements Serializable{
 	private String apellido;
 	private String telefono;
 	private String direccion;
-	private String provincia;
-	private String localidad;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_provincia")
+	private Provincia provincia;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_localidad")
+	private Localidad localidad;
+	
 	private Date fechaNac;
 	private String correo;
     private Estado estado;
@@ -53,8 +63,8 @@ public class Paciente implements Serializable{
 
 	public Paciente ( ) {}
 	
-	public Paciente(int dni, String nombre, String apellido, String telefono, String direccion, String provincia,
-			String localidad, Date fechaNac, String correo) {
+	public Paciente(int dni, String nombre, String apellido, String telefono, String direccion, Provincia provincia,
+			Localidad localidad, Date fechaNac, String correo) {
 		super();
 		this.dni = dni;
 		this.nombre = nombre;
@@ -70,7 +80,7 @@ public class Paciente implements Serializable{
 	
 	//facilitar
     public void setPacienteDetails(int dni, String nombre, String apellido, String telefono, String direccion,
-            String provincia, String localidad, Date fechaNac, String correo) {
+    		Provincia provincia, Localidad localidad, Date fechaNac, String correo) {
 		this.dni = dni;
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -122,19 +132,19 @@ public class Paciente implements Serializable{
 		this.direccion = direccion;
 	}
 
-	public String getProvincia() {
+	public Provincia getProvincia() {
 		return provincia;
 	}
 
-	public void setProvincia(String provincia) {
+	public void setProvincia(Provincia provincia) {
 		this.provincia = provincia;
 	}
 
-	public String getLocalidad() {
+	public Localidad getLocalidad() {
 		return localidad;
 	}
 
-	public void setLocalidad(String localidad) {
+	public void setLocalidad(Localidad localidad) {
 		this.localidad = localidad;
 	}
 
@@ -165,7 +175,7 @@ public class Paciente implements Serializable{
 	@Override
 	public String toString() {
 		return "Paciente [dni=" + dni + ", nombre=" + nombre + ", apellido=" + apellido + ", telefono=" + telefono
-				+ ", direccion=" + direccion + ", provincia=" + provincia + ", localidad=" + localidad + ", fechaNac="
+				+ ", direccion=" + direccion + ", provincia=" + provincia.getNombre() + ", localidad=" + localidad.getNombre() + ", fechaNac="
 				+ fechaNac + ", correo=" + correo + ", estado=" + estado + ", listaTurnos=" + listaTurnos + "]";
 	}
 	

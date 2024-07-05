@@ -14,9 +14,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.servlet.ModelAndView;
 
+import frgp.utn.edu.ar.entidad.Especialidad;
+import frgp.utn.edu.ar.entidad.Localidad;
 import frgp.utn.edu.ar.entidad.Paciente;
+import frgp.utn.edu.ar.entidad.Provincia;
 import frgp.utn.edu.ar.exceptions.PacienteAlreadyExistsException;
+import frgp.utn.edu.ar.negocioImp.EspecialidadNegocio;
+import frgp.utn.edu.ar.negocioImp.LocalidadNegocio;
 import frgp.utn.edu.ar.negocioImp.PacienteNegocio;
+import frgp.utn.edu.ar.negocioImp.ProvinciaNegocio;
 
 @Controller
 public class PacienteController {
@@ -29,7 +35,16 @@ public class PacienteController {
 	
     @RequestMapping("/pacientes")
     public ModelAndView pacientes() {
+    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+		ProvinciaNegocio provinciaNegocio = (ProvinciaNegocio) appContext.getBean("beanProvinciaNegocio");
+		LocalidadNegocio localidadNegocio = (LocalidadNegocio) appContext.getBean("beanLocalidadNegocio");
+    	
         ModelAndView mv = new ModelAndView();
+        List<Provincia> provincias = provinciaNegocio.ReadAll();
+        List<Localidad> localidades = localidadNegocio.ReadAll();
+        
+        mv.addObject("provincias", provincias);
+        mv.addObject("localidades", localidades);
         mv.setViewName("pacientes");
         return mv;
     }
@@ -53,6 +68,9 @@ public class PacienteController {
     public ModelAndView listarPacientesActivos() {
         ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
         PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
+        
+		ProvinciaNegocio provinciaNegocio = (ProvinciaNegocio) appContext.getBean("beanProvinciaNegocio");
+		LocalidadNegocio localidadNegocio = (LocalidadNegocio) appContext.getBean("beanLocalidadNegocio");
         ModelAndView mv = new ModelAndView("listarPacientes");
         List<Paciente> pacientes = pacienteNegocio.listarPacientesActivos();
         mv.addObject("listaPacientes", pacientes);
@@ -71,16 +89,21 @@ public class PacienteController {
             String apellido,
             String telefono,
             String direccion,
-            String provincia,
-            String localidad,
+            int id_provincia,
+            int id_localidad,
             Date fechaNac,
             String correo) {
         ModelAndView mv = new ModelAndView("pacientes");
         ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
         PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
         Paciente paciente = (Paciente) appContext.getBean("beanPaciente");
+		ProvinciaNegocio provinciaNegocio = (ProvinciaNegocio) appContext.getBean("beanProvinciaNegocio");
+		Provincia provincia = (Provincia) appContext.getBean("beanProvincia");
+		LocalidadNegocio localidadNegocio = (LocalidadNegocio) appContext.getBean("beanLocalidadNegocio");
+		Localidad localidad = (Localidad) appContext.getBean("beanLocalidad");
         int dniParsed = 0;
-
+        provincia = provinciaNegocio.ReadOneById(id_provincia);
+        localidad = localidadNegocio.ReadOneById(id_localidad);
         // Parsear el DNI a int
         try {
             dniParsed = Integer.parseInt(dni);
@@ -89,7 +112,6 @@ public class PacienteController {
             mv.addObject("errorMessage", "Error al parsear el DNI: " + e.getMessage());
             return mv;
         }
-
         try {
             paciente.setDni(dniParsed);
             paciente.setNombre(nombre);
@@ -101,7 +123,6 @@ public class PacienteController {
             paciente.setLocalidad(localidad);
             paciente.setCorreo(correo);
             paciente.setEstado(Paciente.Estado.ACTIVO);
-
             boolean pacienteAgregado = pacienteNegocio.Add(paciente);
 
             if (pacienteAgregado) {
@@ -112,7 +133,6 @@ public class PacienteController {
             } else {
                 mv.addObject("errorMessage", "No se pudo agregar el paciente.");
             }
-            
         } catch (PacienteAlreadyExistsException e) {
             System.out.println("Error: " + e.getMessage());
             mv.addObject("errorMessage", e.getMessage());
@@ -120,7 +140,6 @@ public class PacienteController {
             System.out.println("Error al guardar el paciente: " + e.getMessage());
             mv.addObject("errorMessage", "Error al guardar el paciente: " + e.getMessage());
         }
-
         return mv;
     }
     
@@ -132,8 +151,8 @@ public class PacienteController {
             @RequestParam String apellido,
             @RequestParam String telefono,
             @RequestParam String direccion,
-            @RequestParam String provincia,
-            @RequestParam String localidad,
+            @RequestParam int idProvincia,
+            @RequestParam int idLocalidad,
             @RequestParam Date fechaNac,
             @RequestParam String correo) {
 
@@ -143,6 +162,15 @@ public class PacienteController {
 
         // Obtener paciente por DNI
         Paciente paciente = pacienteNegocio.ReadOne(dni);
+        
+		ProvinciaNegocio provinciaNegocio = (ProvinciaNegocio) appContext.getBean("beanProvinciaNegocio");
+		Provincia provincia = (Provincia) appContext.getBean("beanProvincia");
+		
+		LocalidadNegocio localidadNegocio = (LocalidadNegocio) appContext.getBean("beanLocalidadNegocio");
+		Localidad localidad = (Localidad) appContext.getBean("beanLocalidad");
+        
+        provincia = provinciaNegocio.ReadOneById(idProvincia);
+        localidad = localidadNegocio.ReadOneById(idLocalidad);
 
         if (paciente != null) {
             paciente.setNombre(nombre);

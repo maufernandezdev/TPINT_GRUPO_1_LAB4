@@ -89,8 +89,8 @@
                         <td>${paciente.correo}</td>
                         <td>${paciente.telefono}</td>
                         <td>${paciente.direccion}</td>
-                        <td>${paciente.localidad}</td>
-                        <td>${paciente.provincia}</td>
+                        <td>${paciente.localidad.nombre}</td>
+                        <td>${paciente.provincia.nombre}</td>
                         <td>${paciente.fechaNac}</td>
                         <td>
                             <button type="button" class="btn btn-primary btn-sm editar-paciente" data-toggle="modal" data-target="#modalEditar" data-dni="${paciente.dni}">Modificar</button>

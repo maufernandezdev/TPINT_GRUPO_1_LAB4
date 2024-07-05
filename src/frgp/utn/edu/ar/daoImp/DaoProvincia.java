@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 
 import frgp.utn.edu.ar.dao.IdaoProvincia;
+import frgp.utn.edu.ar.entidad.Medico;
 import frgp.utn.edu.ar.entidad.Provincia;
 import frgp.utn.edu.ar.entidad.Turno;
 
@@ -26,5 +27,12 @@ public class DaoProvincia implements IdaoProvincia{
         session.beginTransaction();
         List<Provincia> listProvincia = session.createQuery("FROM Provincia").list();
         return listProvincia;
+	}
+	
+	public Provincia ReadOneById(int id_provincia) {
+		Session session = conexion.abrirConexion();
+		session.beginTransaction();
+		Provincia provincia = (Provincia)session.get(Provincia.class,id_provincia);
+        return provincia;
 	}
 }

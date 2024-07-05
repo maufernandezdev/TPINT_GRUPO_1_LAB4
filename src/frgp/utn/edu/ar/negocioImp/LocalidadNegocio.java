@@ -5,6 +5,7 @@ import java.util.List;
 import frgp.utn.edu.ar.dao.IdaoLocalidad;
 import frgp.utn.edu.ar.daoImp.DaoLocalidad;
 import frgp.utn.edu.ar.entidad.Localidad;
+import frgp.utn.edu.ar.entidad.Provincia;
 import frgp.utn.edu.ar.negocio.ILocalidadNegocio;
 
 public class LocalidadNegocio implements ILocalidadNegocio{
@@ -32,6 +33,10 @@ public class LocalidadNegocio implements ILocalidadNegocio{
 	
 	public List<Localidad> ReadAll() {
 		return daoLocalidad.ReadAll();
+	}
+	
+	public Localidad ReadOneById(int idLocalidad) {
+		return daoLocalidad.ReadOneById(idLocalidad);
 	}
 
 	

@@ -123,14 +123,35 @@
             <label for="direccion">Dirección:</label>
             <input type="text" id="direccion" name="direccion" value="${paciente.direccion}" required><br>
         </div>
-        <div class="item">
+        
+        <div class="item"> 
+	      <label for="provincia">Provincia:</label>
+		  <select id="provincia" name="provincia" required>
+		      <option value="" disabled selected>provincia</option>
+			    <c:forEach items="${provincias}" var="provincia">
+			      <option value="${provincia.id_provincia}">${provincia.nombre}</option>
+		        </c:forEach>
+		  </select>
+        </div>
+        
+        <div class="item"> 
+	      <label for="localidad">Localidad:</label>
+		  <select id="localidad" name="localidad" required>
+		      <option value="" disabled selected>localidad</option>
+			    <c:forEach items="${localidades}" var="localidad">
+			      <option value="${localidad.id_localidad}">${localidad.nombre}</option>
+		        </c:forEach>
+		  </select>
+        </div>
+        
+    <!--      <div class="item">
             <label for="provincia">Provincia:</label>
             <input type="text" id="provincia" name="provincia" value="${paciente.provincia}" required><br>
         </div>
         <div class="item">
             <label for="localidad">Localidad:</label>
             <input type="text" id="localidad" name="localidad" value="${paciente.localidad}" required><br>
-        </div>
+        </div>  -->
         <div class="item">
             <label for="telefono">Teléfono:</label>
             <input type="number" id="telefono" name="telefono" value="${paciente.telefono}" required><br>
