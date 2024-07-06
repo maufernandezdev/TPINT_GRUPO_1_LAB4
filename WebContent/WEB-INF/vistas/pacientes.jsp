@@ -126,7 +126,7 @@
         
         <div class="item"> 
 	      <label for="provincia">Provincia:</label>
-		  <select id="provincia" name="provincia" required>
+		  <select id="provincia" name="id_provincia" required>
 		      <option value="" disabled selected>provincia</option>
 			    <c:forEach items="${provincias}" var="provincia">
 			      <option value="${provincia.id_provincia}">${provincia.nombre}</option>
@@ -136,7 +136,7 @@
         
         <div class="item"> 
 	      <label for="localidad">Localidad:</label>
-		  <select id="localidad" name="localidad" required>
+		  <select id="localidad" name="id_localidad" required>
 		      <option value="" disabled selected>localidad</option>
 			    <c:forEach items="${localidades}" var="localidad">
 			      <option value="${localidad.id_localidad}">${localidad.nombre}</option>
