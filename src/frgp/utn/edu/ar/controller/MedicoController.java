@@ -18,14 +18,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import frgp.utn.edu.ar.entidad.Especialidad;
+import frgp.utn.edu.ar.entidad.Localidad;
 import frgp.utn.edu.ar.entidad.Medico;
 import frgp.utn.edu.ar.entidad.Medico.Estado;
 import frgp.utn.edu.ar.entidad.Paciente;
+import frgp.utn.edu.ar.entidad.Provincia;
 import frgp.utn.edu.ar.entidad.Turno;
 import frgp.utn.edu.ar.entidad.Usuario;
 import frgp.utn.edu.ar.negocioImp.EspecialidadNegocio;
+import frgp.utn.edu.ar.negocioImp.LocalidadNegocio;
 import frgp.utn.edu.ar.negocioImp.MedicoNegocio;
 import frgp.utn.edu.ar.negocioImp.PacienteNegocio;
+import frgp.utn.edu.ar.negocioImp.ProvinciaNegocio;
 import frgp.utn.edu.ar.negocioImp.TurnoNegocio;
 import frgp.utn.edu.ar.negocioImp.UsuarioNegocio;
 
@@ -41,9 +45,16 @@ public class MedicoController {
     public ModelAndView medicos() {
 		ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 		EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+		ProvinciaNegocio provinciaNegocio = (ProvinciaNegocio) appContext.getBean("beanProvinciaNegocio");
+		LocalidadNegocio localidadNegocio = (LocalidadNegocio) appContext.getBean("beanLocalidadNegocio");
         ModelAndView mv = new ModelAndView();
         List<Especialidad> especialidades = especialidadNegocio.ReadAll();
+        List<Provincia> provincias = provinciaNegocio.ReadAll();
+        List<Localidad> localidades = localidadNegocio.ReadAll();        
+		
         mv.addObject("especialidades", especialidades);
+        mv.addObject("provincias", provincias);
+        mv.addObject("localidades", localidades);
         mv.setViewName("medicos");
         return mv;
     }
@@ -53,9 +64,9 @@ public class MedicoController {
 	    		String nombre, 
 	    		String apellido,
 	    		String sexo, 
-	    		String fechaDeNac,
+	    		Date fechaDeNac,
 	    		String direccion,
-	    		String localidad,
+	    		Integer localidadId, // Cambiado a Integer para recibir el id de la localidad
 	    		String correo,
 	    		String telefono,
 	    		String usuario,
@@ -69,7 +80,11 @@ public class MedicoController {
 			MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
 			Medico nuevoMedico = (Medico) appContext.getBean("beanMedico");	
 			Especialidad especialidadEncontrada = (Especialidad) appContext.getBean("beanEspecialidad");	
+			Localidad localidadEncontrada = (Localidad) appContext.getBean("beanLocalidad");	
 			EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+			LocalidadNegocio localidadNegocio = (LocalidadNegocio) appContext.getBean("beanLocalidadNegocio");
+			localidadEncontrada = localidadNegocio.ReadOneById(localidadId);
+					
 			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
 			int idBuscado = especialidad; 
 			especialidadEncontrada = null;
@@ -85,7 +100,7 @@ public class MedicoController {
 		    	 nuevoUsuario.setNombreUser(usuario);
 				 nuevoUsuario.setContrasenia(contrasenia);
 				 usuarioNegocio.Add(nuevoUsuario);
-				 nuevoMedico.setMedicoDetails(nombre,apellido,sexo,LocalDate.parse(fechaDeNac),direccion,localidad,correo,telefono,nuevoUsuario,especialidadEncontrada);
+				 nuevoMedico.setMedicoDetails(nombre,apellido,sexo,fechaDeNac,direccion,localidadEncontrada,correo,telefono,nuevoUsuario,especialidadEncontrada);
 		    	 medicoNegocio.Add(nuevoMedico);
 		         mv.addObject("successMessage", MENSAJE_AGREGADO);
 		 	     System.out.println(MENSAJE_AGREGADO);	 
@@ -97,13 +112,18 @@ public class MedicoController {
 		     mv.addObject("especialidades", especialidades);
 	        mv.setViewName("medicos");
 	        return mv;
-	 	}
-	 
-	 @RequestMapping("listarMedicos.html")
+	 	}	 
+
+	@RequestMapping("listarMedicos.html")
 	    public ModelAndView listarMedicos() {
 	    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 	    	MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
-	    	
+	    	/*agregado 7-5 para provincia y localidad*/
+	    	ProvinciaNegocio provinciaNegocio = (ProvinciaNegocio) appContext.getBean("beanProvinciaNegocio");
+			LocalidadNegocio localidadNegocio = (LocalidadNegocio) appContext.getBean("beanLocalidadNegocio");
+	        List<Localidad> localidades = localidadNegocio.ReadAll();
+	        List<Provincia> provincias = provinciaNegocio.ReadAll();
+	        
 	    	//se cargan las especialidades para el filtro de buscar
 	    	EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
 			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
@@ -111,6 +131,8 @@ public class MedicoController {
 	        ModelAndView mv = new ModelAndView("listarMedicos");
 	        List<Medico> medicos = medicoNegocio.ReadAll();
 	        mv.addObject("listaMedicos", medicos);
+	        mv.addObject("localidades", localidades);
+	        mv.addObject("provincias", provincias);
 	        mv.addObject("especialidades", especialidades);
 	        
 	        for (Medico p1: medicos) {
@@ -185,8 +207,9 @@ public class MedicoController {
 	            @RequestParam String correo,
 	            @RequestParam String telefono,
 	            @RequestParam String direccion,
-	            @RequestParam String localidad,
-	            @RequestParam String fechaNac
+	            @RequestParam(name = "provincia") int provincia,
+	            @RequestParam(name = "localidad") int localidad,
+	            @RequestParam Date fechaNac
 	            ) {
 		 	System.out.println("legajo: " + legajo);
 		 	System.out.println("nombre: " + nombre);
@@ -205,6 +228,10 @@ public class MedicoController {
 	        
 	        Especialidad especialidadEncontrada = (Especialidad) appContext.getBean("beanEspecialidad");	
 			EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+			Localidad localidadEncontrada = (Localidad) appContext.getBean("beanLocalidad");	
+			LocalidadNegocio localidadNegocio = (LocalidadNegocio) appContext.getBean("beanLocalidadNegocio");
+			localidadEncontrada = localidadNegocio.ReadOneById(localidad);
+			
 			List<Especialidad> especialidades = especialidadNegocio.ReadAll();
 			int idEspecialidad = especialidad; 
 			especialidadEncontrada = null;
@@ -224,8 +251,8 @@ public class MedicoController {
 	        	medico.setSexo(sexo);
 	        	medico.setTelefono(telefono);
 	        	medico.setDireccion(direccion);
-	        	medico.setLocalidad(localidad);
-	        	medico.setFechaNac(LocalDate.parse(fechaNac));
+	        	medico.setLocalidad(localidadEncontrada);
+	        	medico.setFechaNac(fechaNac);
 	        	medico.setCorreo(correo);
 
 	            boolean actualizado = medicoNegocio.Update(medico);

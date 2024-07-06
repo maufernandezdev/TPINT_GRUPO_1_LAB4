@@ -1,5 +1,17 @@
 INSERT INTO usuario (nombreUser, contrasenia, tipoDeUsuario) VALUES ('admin', 'admin', 1);
 INSERT INTO usuario (nombreUser, contrasenia, tipoDeUsuario) VALUES ('frgp_admin', '1234', 1);
+/*Usuarios medico*/
+INSERT INTO usuario (nombreUser, contrasenia, tipoDeUsuario) VALUES ('medico1', 'medico1', 0);
+INSERT INTO usuario (nombreUser, contrasenia, tipoDeUsuario) VALUES ('medico2', 'medico2', 0);
+INSERT INTO usuario (nombreUser, contrasenia, tipoDeUsuario) VALUES ('medico3', 'medico3', 0);
+INSERT INTO usuario (nombreUser, contrasenia, tipoDeUsuario) VALUES ('medico4', 'medico4', 0);
+INSERT INTO usuario (nombreUser, contrasenia, tipoDeUsuario) VALUES ('medico5', 'medico5', 0);
+INSERT INTO usuario (nombreUser, contrasenia, tipoDeUsuario) VALUES ('medico6', 'medico6', 0);
+INSERT INTO usuario (nombreUser, contrasenia, tipoDeUsuario) VALUES ('medico7', 'medico7', 0);
+INSERT INTO usuario (nombreUser, contrasenia, tipoDeUsuario) VALUES ('medico8', 'medico8', 0);
+INSERT INTO usuario (nombreUser, contrasenia, tipoDeUsuario) VALUES ('medico9', 'medico9', 0);
+INSERT INTO usuario (nombreUser, contrasenia, tipoDeUsuario) VALUES ('medico10', 'medico10', 0);
+
 INSERT INTO especialidad (nombre) VALUES
 ('Cardiología'),
 ('Dermatología'),
@@ -59,5 +71,37 @@ insert into localidades (nombre, id_provincia) values
 ('Colón', 4),
 ('Gualeguaychú', 4),
 ('Paraná', 4)
+
+
+/*medicos*/
+INSERT INTO medicos (apellido, correo, direccion, estado, fechaNac, horario_id, nombre, sexo, telefono, id_especialidad, id_localidad, usuario_c)
+VALUES ('Gonzalez', 'gonzalez@example.com', 'Calle 123', 1, '1980-05-15', 1, 'Juan', 'M', '123456789', 1, 2, 'medico1');
+
+INSERT INTO medicos (apellido, correo, direccion, estado, fechaNac, horario_id, nombre, sexo, telefono, id_especialidad, id_localidad, usuario_c)
+VALUES ('Perez', 'perez@example.com', 'Avenida 456', 1, '1975-02-20', 1, 'Maria', 'F', '987654321', 1, 2, 'medico2');
+
+INSERT INTO medicos (apellido, correo, direccion, estado, fechaNac, horario_id, nombre, sexo, telefono, id_especialidad, id_localidad, usuario_c)
+VALUES ('Rodriguez', 'rodriguez@example.com', 'Boulevard 789', 1, '1988-11-11', 1, 'Carlos', 'M', '112233445', 1, 2, 'medico3');
+
+INSERT INTO medicos (apellido, correo, direccion, estado, fechaNac, horario_id, nombre, sexo, telefono, id_especialidad, id_localidad, usuario_c)
+VALUES ('Martinez', 'martinez@example.com', 'Pasaje 101', 1, '1992-09-25', 1, 'Lucia', 'F', '223344556', 1, 2, 'medico4');
+
+INSERT INTO medicos (apellido, correo, direccion, estado, fechaNac, horario_id, nombre, sexo, telefono, id_especialidad, id_localidad, usuario_c)
+VALUES ('Lopez', 'lopez@example.com', 'Calle 202', 1, '1985-07-30', 1, 'Pedro', 'M', '334455667', 1, 2, 'medico5');
+
+INSERT INTO medicos (apellido, correo, direccion, estado, fechaNac, horario_id, nombre, sexo, telefono, id_especialidad, id_localidad, usuario_c)
+VALUES ('Fernandez', 'fernandez@example.com', 'Avenida 303', 1, '1978-12-12', 1, 'Ana', 'F', '445566778', 1, 2, 'medico6');
+
+INSERT INTO medicos (apellido, correo, direccion, estado, fechaNac, horario_id, nombre, sexo, telefono, id_especialidad, id_localidad, usuario_c)
+VALUES ('Garcia', 'garcia@example.com', 'Boulevard 404', 1, '1990-03-14', 1, 'Miguel', 'M', '556677889', 1, 2, 'medico7');
+
+INSERT INTO medicos (apellido, correo, direccion, estado, fechaNac, horario_id, nombre, sexo, telefono, id_especialidad, id_localidad, usuario_c)
+VALUES ('Hernandez', 'hernandez@example.com', 'Pasaje 505', 1, '1983-08-22', 1, 'Elena', 'F', '667788990', 1, 2, 'medico8');
+
+INSERT INTO medicos (apellido, correo, direccion, estado, fechaNac, horario_id, nombre, sexo, telefono, id_especialidad, id_localidad, usuario_c)
+VALUES ('Torres', 'torres@example.com', 'Calle 606', 1, '1986-01-01', 1, 'Jorge', 'M', '778899001', 1, 2, 'medico9');
+
+INSERT INTO medicos (apellido, correo, direccion, estado, fechaNac, horario_id, nombre, sexo, telefono, id_especialidad, id_localidad, usuario_c)
+VALUES ('Sanchez', 'sanchez@example.com', 'Avenida 707', 1, '1993-04-04', 1, 'Isabel', 'F', '889900112', 1, 2, 'medico10');
 
 

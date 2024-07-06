@@ -61,8 +61,7 @@ public class Localidad {
 
 	@Override
 	public String toString() {
-		return "Localidad [id_localidad=" + id_localidad + ", nombre=" + nombre + ", provincia=" + provincia + "]";
+	    return "Localidad [id_localidad=" + id_localidad + ", nombre=" + nombre + "]";
 	}
-	
 	
 }

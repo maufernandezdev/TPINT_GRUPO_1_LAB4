@@ -98,6 +98,8 @@
                     <th>Correo</th>
                     <th>Teléfono</th>
                     <th>Dirección</th>
+                    <!-- Agregado 7-5 -->
+                    <th>Provincia</th>
                     <th>Localidad</th>
                     <th>Fecha de nacimiento</th>
                     <th>Acciones</th>
@@ -117,7 +119,15 @@
                         <td>${medico.correo}</td>
                         <td>${medico.telefono}</td>
                         <td>${medico.direccion}</td>
-                        <td>${medico.localidad}</td>
+                        <!-- Agregado 7-5 localidad y provincia-->
+                        <td>
+                                <input type="hidden" value="${medico.localidad.provincia.id_provincia}" />
+                                ${medico.localidad.provincia.nombre}
+                        </td>
+                        <td>
+                        <input type="hidden" value="${medico.localidad.id_localidad}" />
+                        ${medico.localidad.nombre}
+                        </td>
                         <td>${medico.fechaNac}</td>
                         <!--  
                         <td style="visibility: hidden;">${medico.especialidad.id}</td>
@@ -206,10 +216,28 @@
                         <label for="direccionEditar">Dirección:</label>
                         <input type="text" class="form-control" id="direccionEditar" name="direccion" required>
                     </div>
-                    <div class="form-group">
+					<!-- Dropdown de Provincias -->
+					<div class="form-group">
+					    <label for="provinciaEditar">Provincia:</label>
+					    <select id="provinciaEditar" name="provincia" class="form-control" required>
+					        <option value="">Selecciona una provincia</option>
+					        <c:forEach items="${provincias}" var="provincia">
+					            <option value="${provincia.id_provincia}">${provincia.nombre}</option>
+					        </c:forEach>
+					    </select>
+					</div>
+					
+					<!-- Dropdown de Localidades -->
+					<div class="form-group">
+					    <label for="localidadEditar">Localidad:</label>
+					    <select id="localidadEditar" name="localidad" class="form-control" required>
+					        <!-- Options se cargarán dinámicamente con JavaScript -->
+					    </select>
+					</div>
+<!--                     <div class="form-group">
                         <label for="localidadEditar">Localidad:</label>
                         <input type="text" class="form-control" id="localidadEditar" name="localidad" required>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label for="fechaNacEditar">Fecha de Nacimiento:</label>
                         <input type="date" class="form-control" id="fechaNacEditar" name="fechaNac" required>
@@ -291,15 +319,19 @@
         var correo = $(this).closest('tr').find('td:eq(5)').text();
         var telefono = $(this).closest('tr').find('td:eq(6)').text();
         var direccion = $(this).closest('tr').find('td:eq(7)').text();
-        var localidad = $(this).closest('tr').find('td:eq(8)').text();
-        var fechaNac = $(this).closest('tr').find('td:eq(9)').text();
+        var provinciaId = $(this).closest('tr').find('td:eq(8) input').val(); // Cambiado a ID de la provincia
+        var localidadId = $(this).closest('tr').find('td:eq(9) input').val(); // Cambiado a ID de la localidad
+        var fechaNac = $(this).closest('tr').find('td:eq(10)').text();
         // var idEspecialidadText = $(this).closest('tr').find('td:eq(10)').text();
         idEspecialidad = parseInt(idEspecialidad, 10);
         console.log("legajo: ", legajo);
         console.log("nombre: ", nombre);
         console.log("apellido: ", apellido);
         console.log("correo: ", correo);
+        console.log("localidadId:", localidadId);
+        console.log("provinciaId", provinciaId);
 
+        
         $('#legajoEditar').val(legajo);
         $('#nombreEditar').val(nombre);
         $('#apellidoEditar').val(apellido);
@@ -308,8 +340,15 @@
         $('#correoEditar').val(correo);
         $('#telefonoEditar').val(telefono);
         $('#direccionEditar').val(direccion);
-        $('#localidadEditar').val(localidad);
+/*         $('#provinciaEditar').val(provincia);  */
+/*         $('#localidadEditar').val(localidad);  */
         $('#fechaNacEditar').val(fechaNac);
+        
+        // Asignar provincia y cargar localidades
+        $('#provinciaEditar').val(provinciaId);
+        cargarLocalidadesEditar(localidadId);
+
+        // Mostrar el modal
         $('#modalEditar').modal('show');
     });
     
@@ -335,6 +374,31 @@
 	$('.modal button.close, .modal .btn-secondary').click(function() {
         $('.modal-backdrop').remove();
     });
+
+	// Función para cargar localidades basadas en la provincia seleccionada
+	function cargarLocalidadesEditar(localidadSeleccionadaId) {
+	    var provinciaId = document.getElementById("provinciaEditar").value;
+	    var localidadDropdown = document.getElementById("localidadEditar");
+	    localidadDropdown.innerHTML = "";  // Limpiar opciones existentes
+
+	    // Mostrar solo las localidades correspondientes a la provincia seleccionada
+	    <c:forEach items="${localidades}" var="localidad">
+	        if ("${localidad.provincia.id_provincia}" === provinciaId) {
+	            var option = document.createElement("option");
+	            option.value = "${localidad.id_localidad}";
+	            option.textContent = "${localidad.nombre}";
+	            if ("${localidad.id_localidad}" === localidadSeleccionadaId) {
+	                option.selected = true;
+	            }
+	            localidadDropdown.appendChild(option);
+	        }
+	    </c:forEach>
+
+	    // Habilitar el dropdown de localidades
+	    localidadDropdown.disabled = false;
+	}
+
+	document.getElementById("provinciaEditar").addEventListener("change", cargarLocalidadesEditar);
 	
 </script>
 </body>

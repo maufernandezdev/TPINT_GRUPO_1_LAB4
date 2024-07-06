@@ -31,7 +31,7 @@ private ConfigHibernate conexion;
 	public Localidad ReadOneById(int id_localiad) {
 		Session session = conexion.abrirConexion();
 		session.beginTransaction();
-		Localidad localiad = (Localidad)session.get(Provincia.class,id_localiad);
+		Localidad localiad = (Localidad)session.get(Localidad.class,id_localiad);
         return localiad;
 	}
 	

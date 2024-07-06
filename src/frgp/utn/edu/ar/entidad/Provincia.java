@@ -53,7 +53,7 @@ public class Provincia {
 
 	@Override
 	public String toString() {
-		return "Provincia [id_provincia=" + id_provincia + ", nombre=" + nombre + ", localidades=" + localidades + "]";
+	    return "Provincia [id_provincia=" + id_provincia + ", nombre=" + nombre + "]";
 	}
 	
 }

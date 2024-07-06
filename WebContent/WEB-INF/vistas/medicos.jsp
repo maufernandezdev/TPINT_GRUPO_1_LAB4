@@ -80,6 +80,7 @@
 	      		width: 100%;
 	      	}
 	      	
+
     	</style>
     	
     	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
@@ -137,16 +138,28 @@
 		        <label for="fechaDeNac">Fecha de nacimiento:</label>
 		        <input type="date"  name="fechaDeNac" required/>
 	        </div>
-	        
-	        <div class="item"> 
+	        	           
+			<!-- Dropdown de Provincias -->
+ 	        <div class="item"> 
+				    <label for="provinciaId">Provincia:</label>
+				    <select id="provinciaId" onchange="cargarLocalidades()" required>
+				        <option value="">Selecciona una provincia</option>
+				        <c:forEach items="${provincias}" var="provincia">
+				            <option value="${provincia.id_provincia}">${provincia.nombre}</option>
+				        </c:forEach>
+				   </select>
+	        </div> 
+    <div class="item"> 
+        <label for="localidadId">Localidad:</label>
+        <select id="localidadId" name="localidadId" required>
+            <!-- Options se cargarán dinámicamente con JavaScript -->
+        </select>
+    </div> 	    
+		    
+		    <div class="item"> 
 	        	<label for="direccion">Dirección:</label>
 	        	<input type="text" id="direccion" name="direccion" required><br>
-	        </div>
-	        
-	         <div class="item"> 
-		        <label for="localidad">Localidad:</label>
-		        <input type="text" id="localidad" name="localidad" required><br>
-	         </div>
+	        </div> 	
 	        
 	         <div class="item"> 
 		        <label for="correo">Correo electrónico:</label>
@@ -182,7 +195,12 @@
 		            </c:forEach>
 		        </select>
         	 </div>
-	        
+  
+        <div id="listaHorarios">
+            <h4>Horarios Agregados</h4>
+            <div id="horariosAgregados"></div>
+        </div>
+        
 	        <div class="item"> 
 	    		<button type="submit">Guardar</button>
 	    	</div>
@@ -254,7 +272,32 @@
         });
     });
     
-</script> 
+    function cargarLocalidades() {
+        var provinciaId = document.getElementById("provinciaId").value;
+        var localidadDropdown = document.getElementById("localidadId");
+        localidadDropdown.innerHTML = "";  // Limpiar opciones existentes
+
+        // Mostrar solo las localidades correspondientes a la provincia seleccionada
+        <c:forEach items="${localidades}" var="localidad">
+            if ("${localidad.provincia.id_provincia}" === provinciaId) {
+                var option = document.createElement("option");
+                option.value = "${localidad.id_localidad}";
+                option.textContent = "${localidad.nombre}";
+                localidadDropdown.appendChild(option);
+            }
+        </c:forEach>
+
+        // Habilitar el dropdown de localidades
+        localidadDropdown.disabled = false;
+    }
+
+    document.getElementById("provinciaId").addEventListener("change", cargarLocalidades);
+
+    document.querySelector("form").addEventListener("submit", function(event) {
+        var localidadId = document.getElementById("localidadId").value;
+    });
+    
+</script>
 
 	</body>
 </html>

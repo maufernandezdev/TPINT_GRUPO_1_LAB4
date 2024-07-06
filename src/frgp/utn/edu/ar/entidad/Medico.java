@@ -40,11 +40,9 @@ public class Medico implements Serializable{
 	@Column(name="sexo")
 	private String sexo;
 	@Column(name="fechaNac")
-	private LocalDate fechaNac;
+	private Date fechaNac;
 	@Column(name="direccion")
 	private String direccion;
-	@Column(name="localidad")
-	private String localidad;
 	@Column(name="correo")
 	private String correo;
 	@Column(name="telefono")
@@ -66,6 +64,11 @@ public class Medico implements Serializable{
 	@OneToMany(mappedBy = "medico", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
 	private List<Turno> listaTurnos = new ArrayList<Turno>();
 	
+	// TIPO DE RELACION CON LOCALIDAD
+    @ManyToOne
+    @JoinColumn(name = "id_localidad")
+    private Localidad localidad;
+	
 	// Nueva columna para la relación con los horarios
     @Column(name="horario_id")
     private Long horarioId;	
@@ -85,15 +88,14 @@ public class Medico implements Serializable{
     
     public void setHorarioId(Long horarioId) {
         this.horarioId = horarioId;
-    }
-	
+    }	
     
     // Contructor y demás métodos
 	public Medico() {	}
 	
 	
-	public Medico(String nombre, String apellido, String sexo, LocalDate fechaNac, String direccion,
-			String localidad, String correo, String telefono, Usuario usuario, Especialidad especialidad) {
+	public Medico(String nombre, String apellido, String sexo, Date fechaNac, String direccion,
+			Localidad localidad, String correo, String telefono, Usuario usuario, Especialidad especialidad) {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.sexo = sexo;
@@ -108,8 +110,8 @@ public class Medico implements Serializable{
 	
 
 	//Para facilitar 
-	public void setMedicoDetails(String nombre, String apellido, String sexo, LocalDate fechaNac, String direccion,
-		            String localidad, String correo, String telefono, Usuario usuario, Especialidad especialidad) {
+	public void setMedicoDetails(String nombre, String apellido, String sexo, Date fechaNac, String direccion,
+		            Localidad localidad, String correo, String telefono, Usuario usuario, Especialidad especialidad) {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.sexo = sexo;
@@ -163,11 +165,11 @@ public class Medico implements Serializable{
 		this.sexo = sexo;
 	}
 
-	public LocalDate getFechaNac() {
+	public Date getFechaNac() {
 		return fechaNac;
 	}
 
-	public void setFechaNac(LocalDate fechaNac) {
+	public void setFechaNac(Date fechaNac) {
 		this.fechaNac = fechaNac;
 	}
 
@@ -179,13 +181,13 @@ public class Medico implements Serializable{
 		this.direccion = direccion;
 	}
 
-	public String getLocalidad() {
-		return localidad;
-	}
+    public Localidad getLocalidad() {
+        return localidad;
+    }
 
-	public void setLocalidad(String localidad) {
-		this.localidad = localidad;
-	}
+    public void setLocalidad(Localidad localidad) {
+        this.localidad = localidad;
+    }
 
 	public String getCorreo() {
 		return correo;
