@@ -20,10 +20,13 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class PageController {
 	
+	
+    private ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+    private UsuarioNegocio usuarioNegocio = (UsuarioNegocio) appContext.getBean("beanUsuarioNegocio");
+	
 	@RequestMapping("dashboard.html")
 	public ModelAndView loginEvent(String username, String password, HttpSession session) {
-		ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-		UsuarioNegocio usuarioNegocio = (UsuarioNegocio) appContext.getBean("beanUsuarioNegocio");
+	
 		ModelAndView MV = new ModelAndView();
 		MV.addObject("error", "");
 		System.out.println("username: " + username);
