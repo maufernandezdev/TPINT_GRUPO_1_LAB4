@@ -85,6 +85,7 @@
     	
     	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     	
+    	<!-- verificacion de que ambas contraseñas ingresadas sean iguales -->
     	<script>
         function validarContrasenias() {
             var contrasenia = document.getElementById("contrasenia").value;

@@ -234,11 +234,7 @@
 					        <!-- Options se cargarán dinámicamente con JavaScript -->
 					    </select>
 					</div>
-<!--                     <div class="form-group">
-                        <label for="localidadEditar">Localidad:</label>
-                        <input type="text" class="form-control" id="localidadEditar" name="localidad" required>
-                    </div> -->
-                    <div class="form-group">
+					<div class="form-group">
                         <label for="fechaNacEditar">Fecha de Nacimiento:</label>
                         <input type="date" class="form-control" id="fechaNacEditar" name="fechaNac" required>
                     </div>
@@ -270,22 +266,6 @@
     </div>
 </div>
 
-
-<!-- 
-<div class="modal fade" id="modalModificar" tabindex="-1" role="dialog" aria-labelledby="modalModificarLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" th:text="${successMessage != null ? successMessage : errorMessage}"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
---> 
-
 <script>
 	$(document).ready(function() {
 	    $('#tablaMedicos').DataTable({
@@ -304,9 +284,6 @@
 	            }
 	        }
 	    });
-	    
-
-	    
 	});
 	
     $('.editar-medico').click(function() {
@@ -365,11 +342,7 @@
         var legajo = $(this).data('legajo');
         window.location.href = "eliminar_medico.html?legajo=" + legajo;
     });
-    
-    // modificar medico
-    // $('.modificar-medico').click(function() {	
-    //    $('#modalModificar').modal('show');
-    // });
+
     
 	$('.modal button.close, .modal .btn-secondary').click(function() {
         $('.modal-backdrop').remove();
