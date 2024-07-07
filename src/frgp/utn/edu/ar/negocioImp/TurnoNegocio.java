@@ -43,6 +43,23 @@ private IdaoTurno daoTurno;
 	public List<Turno> ReadAll() {
 		return daoTurno.ReadAll();
 	}
+	
+	
+	
+	public List<Turno> Turno_xDni(int dni){
+		return daoTurno.Turno_xDni(dni);
+	}
+	
+	public List<Turno> filtrarTurnos_xMedicos(String idMedico){
+		return daoTurno.filtrarTurnos_xMedicos(idMedico);
+	}
+	
+	public List<Turno> filtrarTurnos_xEstado(String estadoTurno){
+		return daoTurno.filtrarTurnos_xEstado(estadoTurno);
+	}
+	
+	
+	
 
 	public boolean Update(Turno turno) {
 		return daoTurno.Update(turno);
