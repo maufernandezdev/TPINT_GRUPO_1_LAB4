@@ -125,33 +125,22 @@
         </div>
         
         <div class="item"> 
-	      <label for="provincia">Provincia:</label>
-		  <select id="provincia" name="id_provincia" required>
-		      <option value="" disabled selected>provincia</option>
-			    <c:forEach items="${provincias}" var="provincia">
-			      <option value="${provincia.id_provincia}">${provincia.nombre}</option>
-		        </c:forEach>
-		  </select>
-        </div>
+				    <label for="provinciaId">Provincia:</label>
+				    <select id="provinciaId" onchange="cargarLocalidades()" required>
+				        <option value="">Selecciona una provincia</option>
+				        <c:forEach items="${provincias}" var="provincia">
+				            <option value="${provincia.id_provincia}">${provincia.nombre}</option>
+				        </c:forEach>
+				   </select>
+	        </div> 
         
         <div class="item"> 
-	      <label for="localidad">Localidad:</label>
-		  <select id="localidad" name="id_localidad" required>
-		      <option value="" disabled selected>localidad</option>
-			    <c:forEach items="${localidades}" var="localidad">
-			      <option value="${localidad.id_localidad}">${localidad.nombre}</option>
-		        </c:forEach>
-		  </select>
-        </div>
-        
-    <!--      <div class="item">
-            <label for="provincia">Provincia:</label>
-            <input type="text" id="provincia" name="provincia" value="${paciente.provincia}" required><br>
-        </div>
-        <div class="item">
-            <label for="localidad">Localidad:</label>
-            <input type="text" id="localidad" name="localidad" value="${paciente.localidad}" required><br>
-        </div>  -->
+	        <label for="localidadId">Localidad:</label>
+	        <select id="localidadId" name="localidadId" value="${paciente.telefono}" required>
+	            <!-- Options se cargarán dinámicamente con JavaScript -->
+	        </select>
+        </div> 
+    
         <div class="item">
             <label for="telefono">Teléfono:</label>
             <input type="number" id="telefono" name="telefono" value="${paciente.telefono}" required><br>
@@ -166,5 +155,33 @@
     </form>
 </div>
 
+
+<script>
+function cargarLocalidades() {
+    var provinciaId = document.getElementById("provinciaId").value;
+    var localidadDropdown = document.getElementById("localidadId");
+    localidadDropdown.innerHTML = "";  // Limpiar opciones existentes
+
+    // Mostrar solo las localidades correspondientes a la provincia seleccionada
+    <c:forEach items="${localidades}" var="localidad">
+        if ("${localidad.provincia.id_provincia}" === provinciaId) {
+            var option = document.createElement("option");
+            option.value = "${localidad.id_localidad}";
+            option.textContent = "${localidad.nombre}";
+            localidadDropdown.appendChild(option);
+        }
+    </c:forEach>
+
+    // Habilitar el dropdown de localidades
+    localidadDropdown.disabled = false;
+}
+
+document.getElementById("provinciaId").addEventListener("change", cargarLocalidades);
+
+document.querySelector("form").addEventListener("submit", function(event) {
+    var localidadId = document.getElementById("localidadId").value;
+});
+
+</script>
 </body>
 </html>
