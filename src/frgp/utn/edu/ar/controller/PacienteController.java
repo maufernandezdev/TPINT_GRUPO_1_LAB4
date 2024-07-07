@@ -4,6 +4,9 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -14,30 +17,46 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.servlet.ModelAndView;
 
+import frgp.utn.edu.ar.entidad.Localidad;
 import frgp.utn.edu.ar.entidad.Paciente;
+import frgp.utn.edu.ar.entidad.Provincia;
+
 import frgp.utn.edu.ar.exceptions.PacienteAlreadyExistsException;
+
+import frgp.utn.edu.ar.negocioImp.LocalidadNegocio;
 import frgp.utn.edu.ar.negocioImp.PacienteNegocio;
+import frgp.utn.edu.ar.negocioImp.ProvinciaNegocio;
 
 @Controller
 public class PacienteController {
 	private final static String MENSAJE_AGREGADO = "AGREGADO CORRECTAMENTE";
-	private final static String MENSAJE_YA_EXISTE = "YA EXISTE EN LA BASE DE DATOS";
 	private final static String MENSAJE_MODIFICADO = "MODIFICADO CORRECTAMENTE";
 	private final static String MENSAJE_ELIMINADO = "ELIMINADO CORRECTAMENTE";
     private final static String MENSAJE_ERROR_ELIMINAR = "ERROR AL BORRAR PACIENTE";
 	
+    private ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+    private PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
+    private ProvinciaNegocio provinciaNegocio = (ProvinciaNegocio) appContext.getBean("beanProvinciaNegocio");
+    private LocalidadNegocio localidadNegocio = (LocalidadNegocio) appContext.getBean("beanLocalidadNegocio");
+
+    
 	
     @RequestMapping("/pacientes")
     public ModelAndView pacientes() {
+    	
         ModelAndView mv = new ModelAndView();
+        List<Provincia> provincias = provinciaNegocio.ReadAll();
+        List<Localidad> localidades = localidadNegocio.ReadAll();
+        
+        mv.addObject("provincias", provincias);
+        mv.addObject("localidades", localidades);
         mv.setViewName("pacientes");
         return mv;
     }
     
     @RequestMapping("listarPacientes.html")
     public ModelAndView listarPacientes() {
-    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-		PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
+    	
         ModelAndView mv = new ModelAndView("listarPacientes");
         List<Paciente> pacientes = pacienteNegocio.listarPacientesActivos();
         mv.addObject("listaPacientes", pacientes);
@@ -51,8 +70,7 @@ public class PacienteController {
     
     @RequestMapping("listarPacientesActivos.html")
     public ModelAndView listarPacientesActivos() {
-        ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-        PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
+        
         ModelAndView mv = new ModelAndView("listarPacientes");
         List<Paciente> pacientes = pacienteNegocio.listarPacientesActivos();
         mv.addObject("listaPacientes", pacientes);
@@ -71,16 +89,16 @@ public class PacienteController {
             String apellido,
             String telefono,
             String direccion,
-            String provincia,
-            String localidad,
+            int id_provincia,
+            int id_localidad,
             Date fechaNac,
             String correo) {
         ModelAndView mv = new ModelAndView("pacientes");
-        ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-        PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
-        Paciente paciente = (Paciente) appContext.getBean("beanPaciente");
+        Paciente paciente = new Paciente();
+        Provincia provincia = provinciaNegocio.ReadOneById(id_provincia);
+        Localidad localidad = localidadNegocio.ReadOneById(id_localidad);
         int dniParsed = 0;
-
+     
         // Parsear el DNI a int
         try {
             dniParsed = Integer.parseInt(dni);
@@ -89,7 +107,6 @@ public class PacienteController {
             mv.addObject("errorMessage", "Error al parsear el DNI: " + e.getMessage());
             return mv;
         }
-
         try {
             paciente.setDni(dniParsed);
             paciente.setNombre(nombre);
@@ -101,7 +118,6 @@ public class PacienteController {
             paciente.setLocalidad(localidad);
             paciente.setCorreo(correo);
             paciente.setEstado(Paciente.Estado.ACTIVO);
-
             boolean pacienteAgregado = pacienteNegocio.Add(paciente);
 
             if (pacienteAgregado) {
@@ -112,7 +128,6 @@ public class PacienteController {
             } else {
                 mv.addObject("errorMessage", "No se pudo agregar el paciente.");
             }
-            
         } catch (PacienteAlreadyExistsException e) {
             System.out.println("Error: " + e.getMessage());
             mv.addObject("errorMessage", e.getMessage());
@@ -120,7 +135,6 @@ public class PacienteController {
             System.out.println("Error al guardar el paciente: " + e.getMessage());
             mv.addObject("errorMessage", "Error al guardar el paciente: " + e.getMessage());
         }
-
         return mv;
     }
     
@@ -132,18 +146,19 @@ public class PacienteController {
             @RequestParam String apellido,
             @RequestParam String telefono,
             @RequestParam String direccion,
-            @RequestParam String provincia,
-            @RequestParam String localidad,
+            @RequestParam int idProvincia,
+            @RequestParam int idLocalidad,
             @RequestParam Date fechaNac,
             @RequestParam String correo) {
 
         ModelAndView mv = new ModelAndView("listarPacientes");
-        ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-        PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
 
         // Obtener paciente por DNI
         Paciente paciente = pacienteNegocio.ReadOne(dni);
-
+        
+        Provincia provincia = provinciaNegocio.ReadOneById(idProvincia);
+        Localidad localidad = localidadNegocio.ReadOneById(idLocalidad);
+        
         if (paciente != null) {
             paciente.setNombre(nombre);
             paciente.setApellido(apellido);
@@ -178,10 +193,7 @@ public class PacienteController {
     @RequestMapping(value = "eliminar_paciente.html", method = RequestMethod.GET)
     public ModelAndView eliminarPaciente(@RequestParam int dni) {
         ModelAndView mv = new ModelAndView("listarPacientes");
-        ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-        PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
-
-       
+        
         try {
             boolean eliminado = pacienteNegocio.Delete(dni);
             if (eliminado) {
@@ -205,9 +217,7 @@ public class PacienteController {
     
     @RequestMapping("listarPaciente_xDni.html")
     public ModelAndView listarMedico_xNombre(@RequestParam("txtBuscarPaciente_xDni") String dniStr) {
-        ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-        PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
-
+        
         ModelAndView mv = new ModelAndView("listarPacientes");
         
         if (dniStr != null && !dniStr.isEmpty()) {

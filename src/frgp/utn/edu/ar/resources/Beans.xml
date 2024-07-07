@@ -29,6 +29,14 @@
 	    <constructor-arg ref="beanConexion" />
 	</bean>
 	
+	<bean id="beanDaoProvincia" class="frgp.utn.edu.ar.daoImp.DaoProvincia" scope="singleton">
+	    <constructor-arg ref="beanConexion" />
+	</bean>
+	
+	<bean id="beanDaoLocalidad" class="frgp.utn.edu.ar.daoImp.DaoLocalidad" scope="singleton">
+	    <constructor-arg ref="beanConexion" />
+	</bean>
+	
 	<!-- negocio imp beans -->
 	<bean id="beanUsuarioNegocio" class="frgp.utn.edu.ar.negocioImp.UsuarioNegocio">
 	    <property name="daoUsuario" ref="beanDaoUsuario" />
@@ -46,6 +54,16 @@
 	    <property name="daoTurno" ref="beanDaoTurno" />
 	</bean>
 	
+	
+	<bean id="beanProvinciaNegocio" class="frgp.utn.edu.ar.negocioImp.ProvinciaNegocio" scope="singleton">
+	    <property name="daoProvincia" ref="beanDaoProvincia" />
+	</bean>
+	
+	<bean id="beanLocalidadNegocio" class="frgp.utn.edu.ar.negocioImp.LocalidadNegocio" scope="singleton">
+	    <property name="daoLocalidad" ref="beanDaoLocalidad" />
+	</bean>
+	
+	
 	<!-- entidad beans -->
 	<bean id="beanUsuario" class="frgp.utn.edu.ar.entidad.Usuario" scope="prototype">
 		 	<property name="TipoDeUsuario" value="MEDICO"/>
@@ -61,4 +79,7 @@
 	<bean id="beanTurno" class="frgp.utn.edu.ar.entidad.Turno" scope="prototype">
 		 	<property name="estado" value="ACTIVO"/>
 	</bean>	
+	
+	<bean id="beanProvincia" class="frgp.utn.edu.ar.entidad.Provincia" scope="prototype"></bean>
+	<bean id="beanLocalidad" class="frgp.utn.edu.ar.entidad.Localidad" scope="prototype"></bean>
 </beans>

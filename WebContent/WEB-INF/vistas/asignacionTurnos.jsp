@@ -47,9 +47,6 @@
                 <label for="medico">Seleccione un Médico:</label>
 			    <select id="medico" name="medico" class="form-control" required>
 			        <option value="" disabled selected>Seleccione un Médico</option>
-			         <c:forEach items="${medicos}" var="medico">
-							<option value="${medico.legajo}">${medico.nombre} ${medico.apellido}</option>
-						</c:forEach>
 			    </select>
             </div>
             <div class="form-group">
