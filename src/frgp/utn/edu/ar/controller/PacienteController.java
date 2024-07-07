@@ -4,9 +4,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -38,8 +35,9 @@ public class PacienteController {
     private PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
     private ProvinciaNegocio provinciaNegocio = (ProvinciaNegocio) appContext.getBean("beanProvinciaNegocio");
     private LocalidadNegocio localidadNegocio = (LocalidadNegocio) appContext.getBean("beanLocalidadNegocio");
-
-    
+	private Localidad localidadEncontrada = (Localidad) appContext.getBean("beanLocalidad");	
+	
+	
 	
     @RequestMapping("/pacientes")
     public ModelAndView pacientes() {
@@ -89,24 +87,27 @@ public class PacienteController {
             String apellido,
             String telefono,
             String direccion,
-            int id_provincia,
-            int id_localidad,
+            Integer localidadId,
             Date fechaNac,
             String correo) {
         ModelAndView mv = new ModelAndView("pacientes");
         Paciente paciente = new Paciente();
-        Provincia provincia = provinciaNegocio.ReadOneById(id_provincia);
-        Localidad localidad = localidadNegocio.ReadOneById(id_localidad);
-        int dniParsed = 0;
-     
-        // Parsear el DNI a int
+        
+        int dniParsed = 0; // Define dniParsed fuera del bloque try-catch
+        
         try {
-            dniParsed = Integer.parseInt(dni);
+            dniParsed = Integer.parseInt(dni); // Asigna valor dentro del try-catch
         } catch (NumberFormatException e) {
-            System.out.println("Error al parsear el DNI: " + e.getMessage());
             mv.addObject("errorMessage", "Error al parsear el DNI: " + e.getMessage());
             return mv;
         }
+        
+        
+		localidadEncontrada = localidadNegocio.ReadOneById(localidadId);
+		
+		List<Provincia> provincias = provinciaNegocio.ReadAll();
+		List<Localidad> localidades = localidadNegocio.ReadAll();
+       
         try {
             paciente.setDni(dniParsed);
             paciente.setNombre(nombre);
@@ -114,27 +115,28 @@ public class PacienteController {
             paciente.setTelefono(telefono);
             paciente.setDireccion(direccion);
             paciente.setFechaNac(fechaNac);
-            paciente.setProvincia(provincia);
-            paciente.setLocalidad(localidad);
+           
+            paciente.setLocalidad(localidadEncontrada);
             paciente.setCorreo(correo);
             paciente.setEstado(Paciente.Estado.ACTIVO);
+            
             boolean pacienteAgregado = pacienteNegocio.Add(paciente);
 
             if (pacienteAgregado) {
                 mv.addObject("successMessage", "Paciente: " + dniParsed + " " + MENSAJE_AGREGADO);
-
-                // Reiniciar el formulario
-                mv.addObject("paciente", new Paciente());
+                mv.addObject("paciente", new Paciente()); // Reinicia el formulario
             } else {
                 mv.addObject("errorMessage", "No se pudo agregar el paciente.");
             }
         } catch (PacienteAlreadyExistsException e) {
-            System.out.println("Error: " + e.getMessage());
             mv.addObject("errorMessage", e.getMessage());
         } catch (Exception e) {
-            System.out.println("Error al guardar el paciente: " + e.getMessage());
             mv.addObject("errorMessage", "Error al guardar el paciente: " + e.getMessage());
         }
+        
+        mv.addObject("provincias", provincias);
+        mv.addObject("localidades", localidades);
+      
         return mv;
     }
     
@@ -164,7 +166,7 @@ public class PacienteController {
             paciente.setApellido(apellido);
             paciente.setTelefono(telefono);
             paciente.setDireccion(direccion);
-            paciente.setProvincia(provincia);
+            
             paciente.setLocalidad(localidad);
             paciente.setFechaNac(fechaNac);
             paciente.setCorreo(correo);
@@ -232,3 +234,4 @@ public class PacienteController {
     }
     
 }
+

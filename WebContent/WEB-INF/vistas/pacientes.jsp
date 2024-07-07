@@ -124,6 +124,7 @@
             <input type="text" id="direccion" name="direccion" value="${paciente.direccion}" required><br>
         </div>
         
+        <!-- Dropdown de Provincias -->
         <div class="item"> 
 				    <label for="provinciaId">Provincia:</label>
 				    <select id="provinciaId" onchange="cargarLocalidades()" required>
@@ -136,7 +137,7 @@
         
         <div class="item"> 
 	        <label for="localidadId">Localidad:</label>
-	        <select id="localidadId" name="localidadId" value="${paciente.telefono}" required>
+	        <select id="localidadId" name="localidadId" required>
 	            <!-- Options se cargarán dinámicamente con JavaScript -->
 	        </select>
         </div> 
