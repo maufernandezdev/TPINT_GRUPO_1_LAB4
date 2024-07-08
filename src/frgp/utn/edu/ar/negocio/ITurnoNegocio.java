@@ -12,6 +12,9 @@ public interface ITurnoNegocio {
 	public boolean Add(Turno turno);
 	public Turno ReadOne(int idTurno);
 	public List<Turno> ReadAll();
+	public List<Turno> Turno_xDni(int dni);
+	public List<Turno> filtrarTurnos_xMedicos(String idMedico);
+	public List<Turno> filtrarTurnos_xEstado(String estadoTurno);
 	public boolean Exist(int idTurno);
 	public boolean Update(Turno turno);
 	public boolean Delete(int idTurno);

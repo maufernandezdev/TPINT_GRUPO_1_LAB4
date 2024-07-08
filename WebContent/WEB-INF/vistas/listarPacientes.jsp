@@ -93,8 +93,8 @@
                         <td>${paciente.provincia.nombre}</td>
                         <td>${paciente.fechaNac}</td>
                         <td>
-                            <button type="button" class="btn btn-primary btn-sm editar-paciente" data-toggle="modal" data-target="#modalEditar" data-dni="${paciente.dni}">Modificar</button>
-                            <button type="button" class="btn btn-danger btn-sm eliminar-paciente" data-toggle="modal" data-target="#modalEliminar" data-dni="${paciente.dni}">Eliminar</button>
+                            <button type="button" class="btn btn-primary btn-sm editar-paciente" style="width: 100px;" data-toggle="modal" data-target="#modalEditar" data-dni="${paciente.dni}">Modificar</button>
+                            <button type="button" class="btn btn-danger btn-sm eliminar-paciente" style="width: 100px;" data-toggle="modal" data-target="#modalEliminar" data-dni="${paciente.dni}">Eliminar</button>
                         </td>
                     </tr>
                 </c:forEach>

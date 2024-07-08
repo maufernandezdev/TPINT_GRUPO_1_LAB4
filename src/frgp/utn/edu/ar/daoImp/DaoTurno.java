@@ -73,9 +73,63 @@ public class DaoTurno implements IdaoTurno{
 		conexion = new ConfigHibernate();
 	    Session session = conexion.abrirConexion();
         session.beginTransaction();
-        List<Turno> listTurno = session.createQuery("FROM Turno").list();
+        List<Turno> listTurno = session.createQuery("FROM Turno WHERE estado = 0").list();
         return listTurno;
 	}
+	
+	public List<Turno> Turno_xDni(int dni) {		
+	    conexion = new ConfigHibernate();
+	    Session session = conexion.abrirConexion();
+	    session.beginTransaction();
+	    
+	    String hql = "FROM Turno WHERE estado =0 AND idPaciente LIKE :dni";
+	    Query query = session.createQuery(hql);
+	    query.setParameter("dni", "%" + dni + "%");
+	    
+	    List<Turno> ListTurnos = (List<Turno>)query.list();
+	    
+	    session.getTransaction().commit();
+	    session.close();
+	    
+	    return ListTurnos;
+	}
+	
+	
+	public List<Turno> filtrarTurnos_xMedicos(String idMedico){
+		conexion = new ConfigHibernate();
+		Session session = conexion.abrirConexion();
+		session.beginTransaction();
+		
+		String hql ="FROM Turno WHERE estado = 0 AND idMedico = :idMedico";
+		Query query = session.createQuery(hql);
+		query.setParameter("idMedico", idMedico);
+		
+		List<Turno> ListTurnos = (List<Turno>)query.list();
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		return ListTurnos;
+	}
+	
+	
+	public List<Turno> filtrarTurnos_xEstado(String estadoTurno){
+		conexion = new ConfigHibernate();
+		Session session = conexion.abrirConexion();
+		session.beginTransaction();
+		
+		String hql = "FROM Turno WHERE estado = 0 AND EstadoTurno = :estadoTurno";
+		Query query = session.createQuery(hql);
+		query.setParameter("estadoTurno", estadoTurno);
+		
+		List<Turno> listaTurnos =(List<Turno>)query.list();
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		return listaTurnos;
+	}
+	
 
 	public boolean Update(Turno turno) {
 		boolean estado = false;

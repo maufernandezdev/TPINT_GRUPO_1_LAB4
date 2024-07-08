@@ -2,22 +2,19 @@ package frgp.utn.edu.ar.entidad;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import frgp.utn.edu.ar.entidad.Medico.Estado;
+
 
 
 @Entity
@@ -36,11 +33,8 @@ public class Paciente implements Serializable{
 	private String telefono;
 	private String direccion;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_provincia")
-	private Provincia provincia;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
+
+	@ManyToOne
 	@JoinColumn(name = "id_localidad")
 	private Localidad localidad;
 	
@@ -63,7 +57,7 @@ public class Paciente implements Serializable{
 
 	public Paciente ( ) {}
 	
-	public Paciente(int dni, String nombre, String apellido, String telefono, String direccion, Provincia provincia,
+	public Paciente(int dni, String nombre, String apellido, String telefono, String direccion,
 			Localidad localidad, Date fechaNac, String correo) {
 		super();
 		this.dni = dni;
@@ -71,7 +65,6 @@ public class Paciente implements Serializable{
 		this.apellido = apellido;
 		this.telefono = telefono;
 		this.direccion = direccion;
-		this.provincia = provincia;
 		this.localidad = localidad;
 		this.fechaNac = fechaNac;
 		this.correo = correo;
@@ -80,13 +73,12 @@ public class Paciente implements Serializable{
 	
 	//facilitar
     public void setPacienteDetails(int dni, String nombre, String apellido, String telefono, String direccion,
-    		Provincia provincia, Localidad localidad, Date fechaNac, String correo) {
+    		 Localidad localidad, Date fechaNac, String correo) {
 		this.dni = dni;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.telefono = telefono;
 		this.direccion = direccion;
-		this.provincia = provincia;
 		this.localidad = localidad;
 		this.fechaNac = fechaNac;
 		this.correo = correo;
@@ -132,14 +124,6 @@ public class Paciente implements Serializable{
 		this.direccion = direccion;
 	}
 
-	public Provincia getProvincia() {
-		return provincia;
-	}
-
-	public void setProvincia(Provincia provincia) {
-		this.provincia = provincia;
-	}
-
 	public Localidad getLocalidad() {
 		return localidad;
 	}
@@ -175,7 +159,7 @@ public class Paciente implements Serializable{
 	@Override
 	public String toString() {
 		return "Paciente [dni=" + dni + ", nombre=" + nombre + ", apellido=" + apellido + ", telefono=" + telefono
-				+ ", direccion=" + direccion + ", provincia=" + provincia.getNombre() + ", localidad=" + localidad.getNombre() + ", fechaNac="
+				+ ", direccion=" + direccion +  ", localidad=" + localidad.getNombre() + ", fechaNac="
 				+ fechaNac + ", correo=" + correo + ", estado=" + estado + ", listaTurnos=" + listaTurnos + "]";
 	}
 	

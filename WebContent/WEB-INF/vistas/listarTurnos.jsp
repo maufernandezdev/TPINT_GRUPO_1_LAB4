@@ -10,13 +10,13 @@
 <body>
 <jsp:include page="masterPage.jsp" /> 
 
+    <c:if test="${tipoUsuario == 'ADMINISTRADOR'}">
+	    <h1 class="text-center">Listado de Turnos</h1>
+	</c:if>
 <div class="container mt-5">
  	<c:if test="${tipoUsuario == 'MEDICO'}">
 	    <h1 class="text-center">Gestión de Turnos</h1>
 	    <h2 class="text-center">Mis turnos asignados</h2>
-	</c:if>
-    <c:if test="${tipoUsuario == 'ADMINISTRADOR'}">
-	    <h1 class="text-center">Listado de Turnos</h1>
 	</c:if>
     
       <!-- Barra de búsqueda -->
@@ -27,7 +27,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">Buscar por dni:</span>
                         </div>
-                        <input type="text" name="txtBuscarTurno_xDni" class="form-control" placeholder="Escribe aquí..." required >
+                        <input type="number" name="txtBuscarTurno_xDni" class="form-control" placeholder="Escribe aquí..." required >
                         <div class="input-group-append">
                         	<input type="submit" name="btnBuscarTurno" class="btn btn-primary" value="Buscar"> 
 
@@ -35,8 +35,49 @@
                     </div>
                 </div>
             </div>
-        </form>
+        </form>    
     
+    <div class="w-100">
+    <nav class="navbar navbar-expand-sm ">
+        <div class="row w-100">
+            <div class="col-md-0">
+                <div class="input-group form-inline">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Filtrar por :</span>
+                    </div>
+                    <form action="filtrarTurnos_xMedico.html" method="post" id="medicoForm">
+                        <select id="medico" name="ddl_medico" class="form-control" required 
+                                onchange="document.getElementById('medicoForm').submit();">
+                            <option value="" disabled selected>Medico</option>
+                            <c:forEach items="${medicos}" var="medico">
+                                <option value="${medico.legajo}">${medico.nombre} ${medico.apellido}</option>
+                            </c:forEach>
+                        </select>
+                    </form>
+                    <form action="filtrarTurnos_xEstadoTurno.html" method="post" id="EstadoTurnoForm" class="mr-2">
+                        <select id="estadoTurno" name="ddl_EstadoTurno" class="form-control" required 
+                                onchange="document.getElementById('EstadoTurnoForm').submit();">
+                            <option value="" disabled selected>Estado Turno</option>
+                            <option value="PENDIENTE">PENDIENTE</option>
+                            <option value="PRESENTE">PRESENTE</option>
+                            <option value="AUSENTE">AUSENTE</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+
+	<form action="listarTurnos.html" method="post">
+	    <div class="row">
+	        <div class="col-md-6">
+	            <input type="submit" name="btnMostrarTodo" class="btn btn-secondary" value="Mostrar todo">
+	        </div>
+	    </div>
+    </form>
+    <br>
+        
     <c:if test="${not empty listaTurnos}">
         <table id="tablaTurnos" class="table table-striped table-bordered">
             <thead>
@@ -50,9 +91,9 @@
                     <c:if test="${tipoUsuario == 'MEDICO'}">
                     	<th>Acción</th>
 		            </c:if>
-
                 </tr>
             </thead>
+            
             <tbody>
                 <c:forEach items="${listaTurnos}" var="turno">
                     <tr>
@@ -147,6 +188,29 @@
 </div>
 
 <script>
+
+
+$(document).ready(function() {
+    $('#tablaTurnos').DataTable({
+        "searching": false,
+        "lengthMenu": [5, 10, 15, 30, 60],
+        "language": {
+            "zeroRecords": "No se encontraron datos",
+            "infoEmpty": "No hay datos para mostrar",
+            "info": "Mostrando del _START_ al _END_, de un total de _TOTAL_ entradas",
+            "lengthMenu": "Mostrar _MENU_ registros",
+            "paginate": {
+                "first": "Primeros",
+                "last": "Últimos",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
+    });
+});
+
+
+
     function openModal(idTurno) {
         $('#idTurnoInput').val(idTurno);
         $('#observacionModal').modal('show');
