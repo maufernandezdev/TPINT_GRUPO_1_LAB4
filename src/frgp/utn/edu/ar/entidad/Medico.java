@@ -69,9 +69,9 @@ public class Medico implements Serializable{
     @JoinColumn(name = "id_localidad")
     private Localidad localidad;
 	
-	// Nueva columna para la relación con los horarios
+/*	// Nueva columna para la relación con los horarios
     @Column(name="horario_id")
-    private Long horarioId;	
+    private Long horarioId;	*/
 	
 	// Getters & Setters de ListaTurnos
 	public List<Turno> getListaTurnos() {
@@ -82,14 +82,15 @@ public class Medico implements Serializable{
 		this.listaTurnos = listaTurnos;
 	}
 	
-	public Long getHorarioId() {
+/*	public Long getHorarioId() {
         return horarioId;
     }
     
     public void setHorarioId(Long horarioId) {
         this.horarioId = horarioId;
     }	
-    
+    */
+	
     // Contructor y demás métodos
 	public Medico() {	}
 	

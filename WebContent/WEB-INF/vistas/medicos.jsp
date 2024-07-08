@@ -80,7 +80,42 @@
 	      		width: 100%;
 	      	}
 	      	
+.checkboxes-container {
+    display: flex; /* Mostrar los checkboxes en línea */
+    flex-wrap: wrap; /* Permitir que los checkboxes se envuelvan en varias líneas si es necesario */
+}
 
+.checkbox-label {
+    margin-right: 20px; /* Espacio entre los checkboxes */
+}
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+#horariosAgregados div {
+    margin-bottom: 5px;
+}
+.btn-outline-danger {
+    color: #dc3545;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 1rem; /* Tamaño de fuente ajustable */
+    width: 10% !important;
+}
+
+.btn-outline-danger:hover {
+    color: #c82333;
+}
     	</style>
     	
     	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
@@ -106,7 +141,6 @@
     	
 	</head>
 	<body>
-	
 	<jsp:include page="masterPage.jsp" /> 
 	
 		<h1>Gestión de Medicos</h1>
@@ -197,10 +231,50 @@
 		        </select>
         	 </div>
   
-        <div id="listaHorarios">
-            <h4>Horarios Agregados</h4>
-            <div id="horariosAgregados"></div>
-        </div>
+<div class="item">
+    <label>Días de la semana:</label>
+    <div class="checkboxes-container">
+        <c:forEach items="${diasSemana}" var="dia">
+            <label class="checkbox-label">
+                <input type="checkbox" name="diasSemana" value="${dia}"> ${dia}
+            </label>
+        </c:forEach>
+    </div>
+</div>
+
+<div class="item">
+    <label for="horaInicio">Hora Inicio:</label>
+    <select id="horaInicio" name="horaInicio">
+        <c:forEach begin="0" end="23" var="hora">
+            <c:forEach items="${minutos}" var="minuto">
+                <option value="${hora}:${minuto}">${hora}:${minuto}</option>
+            </c:forEach>
+        </c:forEach>
+    </select>
+</div>
+
+<div class="item">
+    <label for="horaFin">Hora Fin:</label>
+    <select id="horaFin" name="horaFin">
+        <c:forEach begin="0" end="23" var="hora">
+            <c:forEach items="${minutos}" var="minuto">
+                <option value="${hora}:${minuto}">${hora}:${minuto}</option>
+            </c:forEach>
+        </c:forEach>
+    </select>
+</div>
+
+    <div class="item">
+        <button type="button" onclick="agregarHorario()">Agregar Horario</button>
+    </div>
+
+    <div id="listaHorarios">
+        <h4>Horarios Agregados</h4>
+        <div id="horariosAgregados"></div>
+    </div>
+
+    <!-- Campos ocultos para enviar horarios -->
+    <div id="camposHorarios"></div>
         
 	        <div class="item"> 
 	    		<button type="submit">Guardar</button>
@@ -297,6 +371,111 @@
     document.querySelector("form").addEventListener("submit", function(event) {
         var localidadId = document.getElementById("localidadId").value;
     });
+    
+    
+    var horarios = [];
+    var contadorHorarios = 0;
+
+    function agregarHorario() {
+        var diasSeleccionados = document.querySelectorAll('input[name="diasSemana"]:checked');
+        var horaInicio = document.getElementById("horaInicio").value;
+        var horaFin = document.getElementById("horaFin").value;
+
+        if (parseHoraAMinutos(horaInicio) >= parseHoraAMinutos(horaFin)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'La hora de inicio debe ser menor a la hora de fin.'
+            });
+            return;
+        }
+
+        diasSeleccionados.forEach(function(dia) {
+            var horario = {
+                dia: dia.value,
+                horaInicio: horaInicio,
+                horaFin: horaFin
+            };
+
+            var horarioExistente = horarios.find(h => h.dia === horario.dia);
+            if (horarioExistente) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'El horario para ' + horario.dia + ' ya está agregado.'
+                });
+            } else {
+                horarios.push(horario);
+                agregarCampoHidden(horario);
+                actualizarListaHorarios();
+                
+                // Resetear checkboxes y dropdowns
+                dia.checked = false;
+                document.getElementById("horaInicio").selectedIndex = 0;
+                document.getElementById("horaFin").selectedIndex = 0;
+            }
+        });
+    }
+
+    function agregarCampoHidden(horario) {
+        var camposHorarios = document.getElementById("camposHorarios");
+
+        var inputDia = document.createElement("input");
+        inputDia.type = "hidden";
+        inputDia.name = "horarios[" + contadorHorarios + "].dia";
+        inputDia.value = horario.dia;
+        
+        var inputHoraInicio = document.createElement("input");
+        inputHoraInicio.type = "hidden";
+        inputHoraInicio.name = "horarios[" + contadorHorarios + "].horaInicio";
+        inputHoraInicio.value = horario.horaInicio;
+        
+        var inputHoraFin = document.createElement("input");
+        inputHoraFin.type = "hidden";
+        inputHoraFin.name = "horarios[" + contadorHorarios + "].horaFin";
+        inputHoraFin.value = horario.horaFin;
+        
+        camposHorarios.appendChild(inputDia);
+        camposHorarios.appendChild(inputHoraInicio);
+        camposHorarios.appendChild(inputHoraFin);
+
+        contadorHorarios++;
+    }
+
+    function actualizarListaHorarios() {
+        var contenedorHorarios = document.getElementById("horariosAgregados");
+        contenedorHorarios.innerHTML = "";
+
+        horarios.forEach(function(horario, index) {
+            var div = document.createElement("div");
+            div.textContent = horario.dia + " de " + horario.horaInicio + " a " + horario.horaFin;
+            
+            var botonEliminar = document.createElement("button");
+            botonEliminar.innerHTML = "&times;"; // Usar el símbolo de cruz (×)
+            botonEliminar.setAttribute("onclick", "eliminarHorario(" + index + ")");
+            botonEliminar.classList.add("btn", "btn-outline-danger", "ml-2", "p-1");
+            
+            div.appendChild(botonEliminar);
+            
+            contenedorHorarios.appendChild(div);
+        });
+    }
+    
+ // Función para convertir hora en formato "HH:MM" a minutos desde la medianoche
+    function parseHoraAMinutos(horaStr) {
+        var partesHora = horaStr.split(":");
+        var horas = parseInt(partesHora[0], 10);
+        var minutos = parseInt(partesHora[1], 10);
+        return horas * 60 + minutos;
+    }
+    
+    function eliminarHorario(index) {
+        horarios.splice(index, 1); // Elimina el horario del array
+        contadorHorarios--; // Decrementa el contador
+        
+        // Actualiza la lista de horarios en la interfaz
+        actualizarListaHorarios();
+    }
     
 </script>
 

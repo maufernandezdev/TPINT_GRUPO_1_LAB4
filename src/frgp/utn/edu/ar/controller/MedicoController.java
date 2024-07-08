@@ -3,6 +3,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +52,11 @@ public class MedicoController {
         List<Especialidad> especialidades = especialidadNegocio.ReadAll();
         List<Provincia> provincias = provinciaNegocio.ReadAll();
         List<Localidad> localidades = localidadNegocio.ReadAll();        
-		
+        List<String> diasSemana = Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo");
+        List<String> minutos = Arrays.asList("00", "30");
+        
+        mv.addObject("diasSemana", diasSemana);
+        mv.addObject("minutos", minutos);
         mv.addObject("especialidades", especialidades);
         mv.addObject("provincias", provincias);
         mv.addObject("localidades", localidades);
@@ -71,7 +76,8 @@ public class MedicoController {
 	    		String telefono,
 	    		String usuario,
 	    		String contrasenia,
-	    		Integer especialidad) {
+	    		Integer especialidad,
+	    		@RequestParam(value = "horarios", required = false) List<String> horarios) { // Recibir los horarios como una lista de strings) {
 	        ModelAndView mv = new ModelAndView();
 	        boolean estado = false;
 		 	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
@@ -91,7 +97,17 @@ public class MedicoController {
 			LocalidadNegocio localidadNegocio = (LocalidadNegocio) appContext.getBean("beanLocalidadNegocio");
 			localidadEncontrada = localidadNegocio.ReadOneById(localidadId);
 			
-					
+			//ver por que no llega 
+			// Lógica para guardar los horarios
+			if (horarios != null && !horarios.isEmpty()) {
+			    for (String horarioString : horarios) {
+
+			        System.out.println("Horario recibido: " + horarioString);
+			        
+			        		//conversiones
+			    }
+			}
+			
 			List<Provincia> provincias = provinciaNegocio.ReadAll();
 			List<Localidad> localidades = localidadNegocio.ReadAll();
 			
