@@ -57,6 +57,11 @@ public class PacienteController {
     	
         ModelAndView mv = new ModelAndView("listarPacientes");
         List<Paciente> pacientes = pacienteNegocio.listarPacientesActivos();
+        List<Provincia> provincias = provinciaNegocio.ReadAll();
+        List<Localidad> localidades = localidadNegocio.ReadAll();       
+        
+        mv.addObject("provincias", provincias);
+        mv.addObject("localidades", localidades);
         mv.addObject("listaPacientes", pacientes);
         
         for (Paciente p1: pacientes) {
@@ -71,6 +76,11 @@ public class PacienteController {
         
         ModelAndView mv = new ModelAndView("listarPacientes");
         List<Paciente> pacientes = pacienteNegocio.listarPacientesActivos();
+        List<Provincia> provincias = provinciaNegocio.ReadAll();
+        List<Localidad> localidades = localidadNegocio.ReadAll();       
+        
+        mv.addObject("provincias", provincias);
+        mv.addObject("localidades", localidades);
         mv.addObject("listaPacientes", pacientes);
 
         for (Paciente p1 : pacientes) {
@@ -184,6 +194,11 @@ public class PacienteController {
             mv.addObject("errorMessage", "No se encontró paciente con DNI: " + dni);
         }
         List<Paciente> pacientes = pacienteNegocio.listarPacientesActivos();
+        List<Provincia> provincias = provinciaNegocio.ReadAll();
+        List<Localidad> localidades = localidadNegocio.ReadAll();       
+        
+        mv.addObject("provincias", provincias);
+        mv.addObject("localidades", localidades);
         mv.addObject("listaPacientes", pacientes);
         for (Paciente p1 : pacientes) {
             System.out.println(p1.toString());
