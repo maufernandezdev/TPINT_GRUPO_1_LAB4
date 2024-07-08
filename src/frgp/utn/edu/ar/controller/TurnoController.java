@@ -5,21 +5,28 @@ import java.sql.Time;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
+import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.ModelAndView;
 
 import frgp.utn.edu.ar.entidad.Especialidad;
+import frgp.utn.edu.ar.entidad.Horario;
 import frgp.utn.edu.ar.entidad.Medico;
 import frgp.utn.edu.ar.entidad.Paciente;
 import frgp.utn.edu.ar.entidad.Turno;
 import frgp.utn.edu.ar.entidad.Usuario;
 import frgp.utn.edu.ar.negocioImp.EspecialidadNegocio;
+import frgp.utn.edu.ar.negocioImp.HorarioNegocio;
 import frgp.utn.edu.ar.negocioImp.MedicoNegocio;
 import frgp.utn.edu.ar.negocioImp.PacienteNegocio;
 import frgp.utn.edu.ar.negocioImp.TurnoNegocio;
@@ -32,16 +39,38 @@ public class TurnoController {
 	private final static String MENSAJE_YA_EXISTE = "YA EXISTE EN LA BASE DE DATOS";
 	private final static String MENSAJE_MODIFICADO = "MODIFICADO CORRECTAMENTE";
 	private final static String MENSAJE_ELIMINADO = "ELIMINADO CORRECTAMENTE";
+	
+	private PacienteNegocio pacienteNegocio;
+	private MedicoNegocio medicoNegocio;
+	private EspecialidadNegocio especialidadNegocio;
+	private TurnoNegocio turnoNegocio;
+	private UsuarioNegocio usuarioNegocio;
+	private HorarioNegocio horarioNegocio;
+
+	@PostConstruct
+	public void init() {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+        this.pacienteNegocio = (PacienteNegocio) ctx.getBean("beanPacienteNegocio");
+        this.medicoNegocio = (MedicoNegocio) ctx.getBean("beanMedicoNegocio");
+        this.especialidadNegocio = (EspecialidadNegocio) ctx.getBean("beanEspecialidadNegocio");
+        this.turnoNegocio = (TurnoNegocio) ctx.getBean("beanTurnoNegocio");
+        this.usuarioNegocio = (UsuarioNegocio) ctx.getBean("beanUsuarioNegocio");
+        this.horarioNegocio = (HorarioNegocio) ctx.getBean("beanHorarioNegocio");
+	}
+	
+	@RequestMapping(value = "/obtenerHorariosDisponibles", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Horario> obtenerHorariosDisponibles(@RequestParam("medicoId") int medicoId, @RequestParam("fecha") Date fecha) {
+		System.out.println("medicoId: " + medicoId);
+		System.out.println("fecha: " + fecha);
+	    List<Horario> horariosDisponibles = horarioNegocio.getAvailableTimesByMedic(medicoId, fecha);
+	    System.out.println("horarios disponibles en turno controller: " + horariosDisponibles);
+	    return horariosDisponibles;
+	}
 
 	@RequestMapping("/turnos")
     public ModelAndView medicos() {
-    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-		PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
-		MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
-	    EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
-
 		ModelAndView mv = new ModelAndView("asignacionTurnos");	
-		
         List<Paciente> pacientes = pacienteNegocio.ReadAll();
         List<Medico> medicos = medicoNegocio.ReadAll();
         List<Especialidad> especialidades = especialidadNegocio.ReadAll();

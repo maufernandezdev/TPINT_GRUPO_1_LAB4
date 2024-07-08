@@ -37,6 +37,10 @@
 	    <constructor-arg ref="beanConexion" />
 	</bean>
 	
+	<bean id="beanDaoHorario" class="frgp.utn.edu.ar.daoImp.DaoHorario" scope="singleton">
+	    <constructor-arg ref="beanConexion" />
+	</bean>
+	
 	<!-- negocio imp beans -->
 	<bean id="beanUsuarioNegocio" class="frgp.utn.edu.ar.negocioImp.UsuarioNegocio">
 	    <property name="daoUsuario" ref="beanDaoUsuario" />
@@ -61,6 +65,10 @@
 	
 	<bean id="beanLocalidadNegocio" class="frgp.utn.edu.ar.negocioImp.LocalidadNegocio" scope="singleton">
 	    <property name="daoLocalidad" ref="beanDaoLocalidad" />
+	</bean>
+	
+	<bean id="beanHorarioNegocio" class="frgp.utn.edu.ar.negocioImp.HorarioNegocio" scope="singleton">
+	    <property name="daoHorario" ref="beanDaoHorario" />
 	</bean>
 	
 	

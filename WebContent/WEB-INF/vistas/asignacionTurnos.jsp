@@ -34,6 +34,16 @@
     <h1 class="text-center">Asignación de Turnos</h1>
     <div class="form-container">
         <form action="guardar_turno.html" method="post">
+         	<div class="form-group">
+                <label for="paciente">Seleccione un Paciente:</label>
+                <select id="paciente" name="paciente" class="form-control" required>
+                    <option value="" disabled selected>Seleccione un Paciente</option>
+                    <c:forEach items="${pacientes}" var="paciente">
+                        <option value="${paciente.dni}">${paciente.nombre} ${paciente.apellido}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            
 			<div class="form-group">
 			    <label for="especialidad">Seleccione una Especialidad:</label>
 				<select id="especialidad" name="especialidad" class="form-control" onchange="filtrarMedicos()" required>
@@ -43,24 +53,21 @@
 				    </c:forEach>
 				</select>
 			</div>
+			
             <div class="form-group">
                 <label for="medico">Seleccione un Médico:</label>
-			    <select id="medico" name="medico" class="form-control" required>
+			    <select id="medico" name="medico" class="form-control" onchange="obtenerHorarios()" required>
 			        <option value="" disabled selected>Seleccione un Médico</option>
+			         <c:forEach items="${medicos}" var="medico">
+                        <option value="${medico.legajo}">${medico.nombre} ${medico.apellido} (Leg.${medico.legajo})</option>
+                    </c:forEach>
 			    </select>
             </div>
-            <div class="form-group">
-                <label for="paciente">Seleccione un Paciente:</label>
-                <select id="paciente" name="paciente" class="form-control" required>
-                    <option value="" disabled selected>Seleccione un Paciente</option>
-                    <c:forEach items="${pacientes}" var="paciente">
-                        <option value="${paciente.dni}">${paciente.nombre} ${paciente.apellido}</option>
-                    </c:forEach>
-                </select>
-            </div>
+          
             <div class="form-group">
                 <label for="fecha">Seleccione la Fecha:</label>
-                <input type="date" id="fecha" name="fecha" class="form-control" required>
+                <input type="date" id="fecha" name="fecha" class="form-control" onchange="obtenerHorarios()" required>
+                 <div class="invalid-feedback">Por favor seleccione un día entre lunes y viernes.</div>
             </div>
             <div class="form-group">
                 <label for="horario">Seleccione el Horario:</label>
@@ -153,6 +160,55 @@
             medicoSelect.appendChild(option);
         });
     }
+</script>
+ <script>
+        document.getElementById('fecha').addEventListener('input', function (event) {
+            const input = event.target;
+            const dateValue = new Date(input.value);
+            const dayOfWeek = dateValue.getUTCDay(); // 0: domingo, 1: lunes, ..., 6: sábado
+
+            if (dayOfWeek === 0 || dayOfWeek === 6) {
+                input.value = ''; // Borra la fecha seleccionada
+                input.classList.add('is-invalid');
+                input.classList.remove('is-valid');
+                input.nextElementSibling.style.display = 'block'; // Muestra el mensaje de error
+            } else {
+                input.classList.add('is-valid');
+                input.classList.remove('is-invalid');
+                input.nextElementSibling.style.display = 'none'; // Oculta el mensaje de error
+            }
+        });
+</script>
+<script>
+async function obtenerHorarios () {
+    var medicoId = document.getElementById("medico").value;
+    var fecha = document.getElementById("fecha").value;
+
+    if (medicoId && fecha) {
+    	try {
+    		const res = await fetch("/obtenerHorariosDisponibles?medicoId=" + medicoId + "&fecha=" + fecha, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+    		console.log("res: ", res);
+    		const data = await res.json();
+    		console.log("data: ", data);
+    		// Aquí puedes manejar la respuesta JSON como lo necesites
+            /* var horarioSelect = document.getElementById("horario");
+            horarioSelect.innerHTML = '<option value="" disabled selected>Seleccione un Horario</option>';
+            horarios.forEach(function(horario) {
+                var option = document.createElement("option");
+                option.value = horario.horaInicio;
+                option.text = horario.horaInicio + " - " + horario.horaFin;
+                horarioSelect.appendChild(option);
+            });*/
+    	} catch(e) {
+    		console.log('error: ', e)
+    	}
+    }
+}
 </script>
 
 </body>

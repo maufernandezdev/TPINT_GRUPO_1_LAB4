@@ -53,7 +53,7 @@ insert into localidades (nombre, id_provincia) values
 ('Paraná', 4) ;
 
 /*Pacientes*/
-INSERT INTO Pacientes (dni, nombre, apellido, telefono, direccion, id_provincia, id_localidad, fechaNac, correo, estado) 
+INSERT INTO pacientes (dni, nombre, apellido, telefono, direccion, id_provincia, id_localidad, fechaNac, correo, estado) 
 VALUES 
 (12345678, 'Juan', 'Perez', '1234567890', 'Calle Falsa 123', '1', '2', '1990-01-01', 'juan.perez@example.com', 1),
 (87654321, 'Maria', 'Gomez', '0987654321', 'Av. Siempre Viva 742', '1', '3', '1985-05-15', 'maria.gomez@example.com', 1),
@@ -99,3 +99,19 @@ VALUES
 (0, 'ACTIVO', '2024-09-15', '11:00:00', 'Observación 13', 1, 56789012),
 (0, 'ACTIVO', '2024-09-20', '12:00:00', 'Observación 14', 2, 34567890),
 (0, 'ACTIVO', '2024-10-25', '13:00:00', 'Observación 15', 3, 78901234);
+
+/*horarios de prueba*/
+INSERT INTO horarios (dia, hora_inicio, hora_fin, medico_id) VALUES
+('2024-08-01', '08:00:00', '09:00:00', 1),
+('2024-08-02', '13:00:00', '14:00:00', 1),
+('2024-08-01', '14:00:00', '15:00:00', 2),
+('2024-08-02', '10:00:00', '11:00:00', 2),
+
+('2024-09-02', '11:00:00', '12:00:00', 3),
+('2024-09-04', '16:00:00', '17:00:00', 3),
+
+('2024-09-10', '13:00:00', '14:00:00', 4),
+('2024-09-10', '15:00:00', '16:00:00', 4),
+
+('2024-10-03', '08:00:00', '09:00:00', 5),
+('2024-10-03', '09:00:00', '10:00:00', 5);

@@ -1,8 +1,8 @@
 package frgp.utn.edu.ar.entidad;
 
 import java.io.Serializable;
-import java.time.DayOfWeek;
-import java.time.LocalTime;
+import java.sql.Date;
+import java.sql.Time;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,13 +26,13 @@ public class Horario implements Serializable {
     private int id;
 
     @Column(name = "dia")
-    private DayOfWeek dia;
+    private Date dia;
 
     @Column(name = "hora_inicio")
-    private LocalTime horaInicio;
+    private Time horaInicio;
 
     @Column(name = "hora_fin")
-    private LocalTime horaFin;
+    private Time horaFin;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "medico_id")
@@ -41,16 +41,16 @@ public class Horario implements Serializable {
     public Horario() {
     }
 
-    public Horario(String dia, LocalTime horaInicio, LocalTime horaFin, Medico medico) {
-        this.dia = DayOfWeek.valueOf(dia.toUpperCase()); // Convertir el String a DayOfWeek
+    public Horario(Date dia, Time horaInicio, Time horaFin, Medico medico) {
+        this.dia = dia;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.medico = medico;
     }
     
 // para faciltarr
-    public void setHorarioDetails(String dia, LocalTime horaInicio, LocalTime horaFin, Medico medico) {
-        this.dia = DayOfWeek.valueOf(dia.toUpperCase());
+    public void setHorarioDetails(Date dia, Time horaInicio, Time horaFin, Medico medico) {
+        this.dia = dia;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.medico = medico;
@@ -64,27 +64,27 @@ public class Horario implements Serializable {
         this.id = id;
     }
 
-    public DayOfWeek getDia() {
+    public Date getDia() {
         return dia;
     }
 
-    public void setDia(DayOfWeek dia) {
+    public void setDia(Date dia) {
         this.dia = dia;
     }
 
-    public LocalTime getHoraInicio() {
+    public Time getHoraInicio() {
         return horaInicio;
     }
 
-    public void setHoraInicio(LocalTime horaInicio) {
+    public void setHoraInicio(Time horaInicio) {
         this.horaInicio = horaInicio;
     }
 
-    public LocalTime getHoraFin() {
+    public Time getHoraFin() {
         return horaFin;
     }
 
-    public void setHoraFin(LocalTime horaFin) {
+    public void setHoraFin(Time horaFin) {
         this.horaFin = horaFin;
     }
     
