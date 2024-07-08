@@ -148,8 +148,8 @@ public class PacienteController {
             @RequestParam String apellido,
             @RequestParam String telefono,
             @RequestParam String direccion,
-            @RequestParam int idProvincia,
-            @RequestParam int idLocalidad,
+            @RequestParam(name = "provincia") int provincia,
+            @RequestParam(name = "localidad") int localidad,
             @RequestParam Date fechaNac,
             @RequestParam String correo) {
 
@@ -158,8 +158,8 @@ public class PacienteController {
         // Obtener paciente por DNI
         Paciente paciente = pacienteNegocio.ReadOne(dni);
         
-        Provincia provincia = provinciaNegocio.ReadOneById(idProvincia);
-        Localidad localidad = localidadNegocio.ReadOneById(idLocalidad);
+       
+        localidadEncontrada = localidadNegocio.ReadOneById(localidad);
         
         if (paciente != null) {
             paciente.setNombre(nombre);
@@ -167,7 +167,7 @@ public class PacienteController {
             paciente.setTelefono(telefono);
             paciente.setDireccion(direccion);
             
-            paciente.setLocalidad(localidad);
+            paciente.setLocalidad(localidadEncontrada);
             paciente.setFechaNac(fechaNac);
             paciente.setCorreo(correo);
 

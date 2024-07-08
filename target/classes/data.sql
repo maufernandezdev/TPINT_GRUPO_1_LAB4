@@ -53,13 +53,13 @@ insert into localidades (nombre, id_provincia) values
 ('Paraná', 4) ;
 
 /*Pacientes*/
-INSERT INTO pacientes (dni, nombre, apellido, telefono, direccion, id_provincia, id_localidad, fechaNac, correo, estado) 
+INSERT INTO pacientes (dni, nombre, apellido, telefono, direccion,  id_localidad, fechaNac, correo, estado) 
 VALUES 
-(12345678, 'Juan', 'Perez', '1234567890', 'Calle Falsa 123', '1', '2', '1990-01-01', 'juan.perez@example.com', 1),
-(87654321, 'Maria', 'Gomez', '0987654321', 'Av. Siempre Viva 742', '1', '3', '1985-05-15', 'maria.gomez@example.com', 1),
-(56789012, 'Carlos', 'Lopez', '1122334455', 'Calle Luna 333', '2', '4', '1978-12-30', 'carlos.lopez@example.com', 1),
-(34567890, 'Ana', 'Martinez', '2233445566', 'Calle Sol 1234', '2', '5', '1992-08-25', 'ana.martinez@example.com', 1),
-(78901234, 'Luis', 'Fernandez', '3344556677', 'Av. Libertador 1234', '1', '1', '1980-11-12', 'luis.fernandez@example.com', 1);
+(12345678, 'Juan', 'Perez', '1234567890', 'Calle Falsa 123',  '2', '1990-01-01', 'juan.perez@example.com', 1),
+(87654321, 'Maria', 'Gomez', '0987654321', 'Av. Siempre Viva 742',  '3', '1985-05-15', 'maria.gomez@example.com', 1),
+(56789012, 'Carlos', 'Lopez', '1122334455', 'Calle Luna 333',  '4', '1978-12-30', 'carlos.lopez@example.com', 1),
+(34567890, 'Ana', 'Martinez', '2233445566', 'Calle Sol 1234',  '5', '1992-08-25', 'ana.martinez@example.com', 1),
+(78901234, 'Luis', 'Fernandez', '3344556677', 'Av. Libertador 1234',  '1', '1980-11-12', 'luis.fernandez@example.com', 1);
 
 /*Medicos*/
 INSERT INTO medicos (apellido, correo, direccion, estado, fechaNac, horario_id, nombre, sexo, telefono, id_especialidad, id_localidad, usuario_c)
