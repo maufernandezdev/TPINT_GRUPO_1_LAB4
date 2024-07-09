@@ -175,12 +175,17 @@
             </div>
             <div class="modal-body">
                 <p>¿Está seguro de que desea marcar este turno como ausente?</p>
-            </div>
-            <div class="modal-footer">
-                <form id="ausenteForm" action="marcarAusente.html" method="post">
+                
+                    <form id="ausenteForm" action="marcarAusente.html" method="post">
                     <input type="hidden" id="ausenteIdTurno" name="idTurno">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <div class="form-group">
+                   		<label for="observaciones">Observaciones:</label>
+                  		<textarea class="form-control" id="observacionesAusente" name="observacionesAusente" rows="3" required></textarea>
+               		</div>
+                    <div class="modal-footer">
+                 		<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    	<button type="submit" class="btn btn-primary">Guardar</button>
+            		</div>
                 </form>
             </div>
         </div>
