@@ -259,13 +259,15 @@ public class TurnoController {
 	 }
 	 
 	 @RequestMapping(value = "marcarAusente.html", method = RequestMethod.POST)
-	 public ModelAndView marcarAusente(@RequestParam("idTurno") int idTurno) {
+	 public ModelAndView marcarAusente(@RequestParam("idTurno") int idTurno,
+			 							@RequestParam("observacionesAusente") String observacionesAusente) {
 	     ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 	     TurnoNegocio turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");
 
 	     ModelAndView mv = new ModelAndView("redirect:listarTurnos.html");
 
 	     Turno turno = turnoNegocio.ReadOne(idTurno);
+	     turno.setObservacion(observacionesAusente);
 	     turno.setEstadoTurno("AUSENTE");
 	     turnoNegocio.Update(turno);
 	     
