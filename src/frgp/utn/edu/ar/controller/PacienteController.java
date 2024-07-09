@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -19,10 +21,14 @@ import frgp.utn.edu.ar.entidad.Paciente;
 import frgp.utn.edu.ar.entidad.Provincia;
 
 import frgp.utn.edu.ar.exceptions.PacienteAlreadyExistsException;
-
+import frgp.utn.edu.ar.negocioImp.EspecialidadNegocio;
+import frgp.utn.edu.ar.negocioImp.HorarioNegocio;
 import frgp.utn.edu.ar.negocioImp.LocalidadNegocio;
+import frgp.utn.edu.ar.negocioImp.MedicoNegocio;
 import frgp.utn.edu.ar.negocioImp.PacienteNegocio;
 import frgp.utn.edu.ar.negocioImp.ProvinciaNegocio;
+import frgp.utn.edu.ar.negocioImp.TurnoNegocio;
+import frgp.utn.edu.ar.negocioImp.UsuarioNegocio;
 
 @Controller
 public class PacienteController {
@@ -31,12 +37,20 @@ public class PacienteController {
 	private final static String MENSAJE_ELIMINADO = "ELIMINADO CORRECTAMENTE";
     private final static String MENSAJE_ERROR_ELIMINAR = "ERROR AL BORRAR PACIENTE";
 	
-    private ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-    private PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
-    private ProvinciaNegocio provinciaNegocio = (ProvinciaNegocio) appContext.getBean("beanProvinciaNegocio");
-    private LocalidadNegocio localidadNegocio = (LocalidadNegocio) appContext.getBean("beanLocalidadNegocio");
-	private Localidad localidadEncontrada = (Localidad) appContext.getBean("beanLocalidad");	
+    private PacienteNegocio pacienteNegocio;
+    private ProvinciaNegocio provinciaNegocio;
+    private LocalidadNegocio localidadNegocio;
+	private Localidad localidadEncontrada;	
 	
+	@PostConstruct
+	public void init() {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+        this.pacienteNegocio = (PacienteNegocio) ctx.getBean("beanPacienteNegocio");
+        this.provinciaNegocio = (ProvinciaNegocio) ctx.getBean("beanProvinciaNegocio");
+        this.localidadNegocio = (LocalidadNegocio) ctx.getBean("beanLocalidadNegocio");
+        this.localidadEncontrada = (Localidad) ctx.getBean("beanLocalidad");
+
+	}
 	
 	
     @RequestMapping("/pacientes")
