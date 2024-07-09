@@ -57,6 +57,11 @@ public class PacienteController {
     	
         ModelAndView mv = new ModelAndView("listarPacientes");
         List<Paciente> pacientes = pacienteNegocio.listarPacientesActivos();
+        List<Provincia> provincias = provinciaNegocio.ReadAll();
+        List<Localidad> localidades = localidadNegocio.ReadAll();       
+        
+        mv.addObject("provincias", provincias);
+        mv.addObject("localidades", localidades);
         mv.addObject("listaPacientes", pacientes);
         
         for (Paciente p1: pacientes) {
@@ -71,6 +76,11 @@ public class PacienteController {
         
         ModelAndView mv = new ModelAndView("listarPacientes");
         List<Paciente> pacientes = pacienteNegocio.listarPacientesActivos();
+        List<Provincia> provincias = provinciaNegocio.ReadAll();
+        List<Localidad> localidades = localidadNegocio.ReadAll();       
+        
+        mv.addObject("provincias", provincias);
+        mv.addObject("localidades", localidades);
         mv.addObject("listaPacientes", pacientes);
 
         for (Paciente p1 : pacientes) {
@@ -148,8 +158,8 @@ public class PacienteController {
             @RequestParam String apellido,
             @RequestParam String telefono,
             @RequestParam String direccion,
-            @RequestParam int idProvincia,
-            @RequestParam int idLocalidad,
+            @RequestParam(name = "provincia") int provincia,
+            @RequestParam(name = "localidad") int localidad,
             @RequestParam Date fechaNac,
             @RequestParam String correo) {
 
@@ -158,8 +168,8 @@ public class PacienteController {
         // Obtener paciente por DNI
         Paciente paciente = pacienteNegocio.ReadOne(dni);
         
-        Provincia provincia = provinciaNegocio.ReadOneById(idProvincia);
-        Localidad localidad = localidadNegocio.ReadOneById(idLocalidad);
+       
+        localidadEncontrada = localidadNegocio.ReadOneById(localidad);
         
         if (paciente != null) {
             paciente.setNombre(nombre);
@@ -167,7 +177,7 @@ public class PacienteController {
             paciente.setTelefono(telefono);
             paciente.setDireccion(direccion);
             
-            paciente.setLocalidad(localidad);
+            paciente.setLocalidad(localidadEncontrada);
             paciente.setFechaNac(fechaNac);
             paciente.setCorreo(correo);
 
@@ -184,6 +194,11 @@ public class PacienteController {
             mv.addObject("errorMessage", "No se encontró paciente con DNI: " + dni);
         }
         List<Paciente> pacientes = pacienteNegocio.listarPacientesActivos();
+        List<Provincia> provincias = provinciaNegocio.ReadAll();
+        List<Localidad> localidades = localidadNegocio.ReadAll();       
+        
+        mv.addObject("provincias", provincias);
+        mv.addObject("localidades", localidades);
         mv.addObject("listaPacientes", pacientes);
         for (Paciente p1 : pacientes) {
             System.out.println(p1.toString());

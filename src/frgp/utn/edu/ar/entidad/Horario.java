@@ -26,7 +26,7 @@ public class Horario implements Serializable {
     private int id;
 
     @Column(name = "dia")
-    private Date dia;
+    private String dia;
 
     @Column(name = "hora_inicio")
     private Time horaInicio;
@@ -41,7 +41,7 @@ public class Horario implements Serializable {
     public Horario() {
     }
 
-    public Horario(Date dia, Time horaInicio, Time horaFin, Medico medico) {
+    public Horario(String dia, Time horaInicio, Time horaFin, Medico medico) {
         this.dia = dia;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
@@ -49,7 +49,7 @@ public class Horario implements Serializable {
     }
     
 // para faciltarr
-    public void setHorarioDetails(Date dia, Time horaInicio, Time horaFin, Medico medico) {
+    public void setHorarioDetails(String dia, Time horaInicio, Time horaFin, Medico medico) {
         this.dia = dia;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
@@ -64,11 +64,11 @@ public class Horario implements Serializable {
         this.id = id;
     }
 
-    public Date getDia() {
+    public String getDia() {
         return dia;
     }
 
-    public void setDia(Date dia) {
+    public void setDia(String dia) {
         this.dia = dia;
     }
 

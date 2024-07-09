@@ -4,6 +4,7 @@ import java.util.List;
 
 import frgp.utn.edu.ar.dao.IdaoMedico;
 import frgp.utn.edu.ar.daoImp.DaoMedico;
+import frgp.utn.edu.ar.entidad.Horario;
 import frgp.utn.edu.ar.entidad.Medico;
 import frgp.utn.edu.ar.negocio.IMedicoNegocio;
 
@@ -30,6 +31,10 @@ public class MedicoNegocio implements IMedicoNegocio {
 	
 	public boolean Add(Medico medico) {
 		return daoMedico.Add(medico);
+	}
+	
+	public Medico Agregar(Medico medico) {
+		return daoMedico.Agregar(medico);
 	}
 	
 	public List<Medico> Medico_xNombre(String nombre){

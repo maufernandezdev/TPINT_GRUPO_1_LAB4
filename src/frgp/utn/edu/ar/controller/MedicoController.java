@@ -1,36 +1,33 @@
 package frgp.utn.edu.ar.controller;
+
 import java.sql.Date;
 import java.sql.Time;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpSession;
-
+import org.springframework.util.MultiValueMap;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import frgp.utn.edu.ar.entidad.Especialidad;
+import frgp.utn.edu.ar.entidad.Horario;
 import frgp.utn.edu.ar.entidad.Localidad;
 import frgp.utn.edu.ar.entidad.Medico;
-import frgp.utn.edu.ar.entidad.Medico.Estado;
-import frgp.utn.edu.ar.entidad.Paciente;
 import frgp.utn.edu.ar.entidad.Provincia;
-import frgp.utn.edu.ar.entidad.Turno;
 import frgp.utn.edu.ar.entidad.Usuario;
 import frgp.utn.edu.ar.negocioImp.EspecialidadNegocio;
+import frgp.utn.edu.ar.negocioImp.HorarioNegocio;
 import frgp.utn.edu.ar.negocioImp.LocalidadNegocio;
 import frgp.utn.edu.ar.negocioImp.MedicoNegocio;
-import frgp.utn.edu.ar.negocioImp.PacienteNegocio;
 import frgp.utn.edu.ar.negocioImp.ProvinciaNegocio;
-import frgp.utn.edu.ar.negocioImp.TurnoNegocio;
 import frgp.utn.edu.ar.negocioImp.UsuarioNegocio;
 
 @Controller
@@ -51,7 +48,11 @@ public class MedicoController {
         List<Especialidad> especialidades = especialidadNegocio.ReadAll();
         List<Provincia> provincias = provinciaNegocio.ReadAll();
         List<Localidad> localidades = localidadNegocio.ReadAll();        
-		
+        List<String> diasSemana = Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo");
+        List<String> minutos = Arrays.asList("00", "30");
+        
+        mv.addObject("diasSemana", diasSemana);
+        mv.addObject("minutos", minutos);
         mv.addObject("especialidades", especialidades);
         mv.addObject("provincias", provincias);
         mv.addObject("localidades", localidades);
@@ -71,8 +72,9 @@ public class MedicoController {
 	    		String telefono,
 	    		String usuario,
 	    		String contrasenia,
-	    		Integer especialidad) {
-	        ModelAndView mv = new ModelAndView();
+	    		Integer especialidad,
+	    		@RequestBody MultiValueMap<String, String> formData	 ) { // para tomar los multiples valores json
+		 	ModelAndView mv = new ModelAndView();
 	        boolean estado = false;
 		 	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
 		 	
@@ -85,13 +87,24 @@ public class MedicoController {
 			Especialidad especialidadEncontrada = (Especialidad) appContext.getBean("beanEspecialidad");
 			EspecialidadNegocio especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
 			
+			HorarioNegocio horarioNegocio = (HorarioNegocio) appContext.getBean("beanHorarioNegocio");
+			
 			ProvinciaNegocio provinciaNegocio = (ProvinciaNegocio) appContext.getBean("beanProvinciaNegocio");
 			
 			Localidad localidadEncontrada = (Localidad) appContext.getBean("beanLocalidad");	
 			LocalidadNegocio localidadNegocio = (LocalidadNegocio) appContext.getBean("beanLocalidadNegocio");
 			localidadEncontrada = localidadNegocio.ReadOneById(localidadId);
+	        List<String> diasSemana = Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo");
+	        List<String> minutos = Arrays.asList("00", "30");
+			List<Horario> horariosList = new ArrayList<>();
 			
-					
+			  // Obtener el valor de 'horarios' del MultiValueMap ya que tiene el json
+            String horariosJson = formData.getFirst("horarios");
+            JSONArray horariosArray = new JSONArray(horariosJson);
+
+            horariosList = horarioNegocio.getList(horariosArray);
+            
+			
 			List<Provincia> provincias = provinciaNegocio.ReadAll();
 			List<Localidad> localidades = localidadNegocio.ReadAll();
 			
@@ -111,7 +124,9 @@ public class MedicoController {
 				 nuevoUsuario.setContrasenia(contrasenia);
 				 usuarioNegocio.Add(nuevoUsuario);
 				 nuevoMedico.setMedicoDetails(nombre,apellido,sexo,fechaDeNac,direccion,localidadEncontrada,correo,telefono,nuevoUsuario,especialidadEncontrada);
-		    	 medicoNegocio.Add(nuevoMedico);
+/*		    	 medicoNegocio.Add(nuevoMedico);*/
+				 horarioNegocio.Add(medicoNegocio.Agregar(nuevoMedico), horariosList);
+
 		         mv.addObject("successMessage", MENSAJE_AGREGADO);
 		 	     System.out.println(MENSAJE_AGREGADO);	 
 		     }
@@ -119,6 +134,8 @@ public class MedicoController {
 		    	 mv.addObject("errorMessage", MENSAJE_YA_EXISTE);
 		    	 System.out.println(MENSAJE_YA_EXISTE);
 		     }
+		     mv.addObject("diasSemana", diasSemana);
+		     mv.addObject("minutos", minutos);
 		     mv.addObject("provincias", provincias);
 		     mv.addObject("localidades", localidades);
 		     mv.addObject("especialidades", especialidades);
