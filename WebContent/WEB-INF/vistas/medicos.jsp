@@ -383,6 +383,7 @@
 //funcion para ir agregando los horarios seleccionados a una lista temporal antes de mandarlo
 //despues se procesa como json al controller
     function agregarHorario() {
+
         var diasSeleccionados = document.querySelectorAll('input[name="diasSemana"]:checked');
         var horaInicio = document.getElementById("horaInicio").value;
         var horaFin = document.getElementById("horaFin").value;
@@ -419,6 +420,14 @@
         // Actualizar el campo oculto de horarios
         document.getElementById("horarios").value = JSON.stringify(horarios);
         console.log(document.getElementById("horarios").value);
+        
+        // Restablecer los selectores de horario y desmarcar los checkboxes
+    // Restablecer los selectores de hora a "0:0"
+    document.getElementById("horaInicio").value = "0:00";
+    document.getElementById("horaFin").value = "0:00";
+        diasSeleccionados.forEach((checkbox) => {
+            checkbox.checked = false;
+        });
     }
 //Aca se actualizan los horarios por si se agregan o sacan nuevos
     function actualizarListaHorarios() {
