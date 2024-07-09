@@ -40,8 +40,16 @@
 	<dependency>
 		<groupId>mysql</groupId>
 		<artifactId>mysql-connector-java</artifactId>
-		<version>5.1.6</version>
+		<version>8.0.28</version>
 	</dependency>
+	
+	<!-- Versión actualizada de Jackson -->
+<dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20210307</version> <!-- Versión actualizada -->
+</dependency>
+
   </dependencies>
   <build>
     <sourceDirectory>src</sourceDirectory>

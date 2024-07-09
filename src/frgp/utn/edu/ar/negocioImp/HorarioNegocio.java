@@ -30,5 +30,8 @@ public class HorarioNegocio implements IHorarioNegocio {
 	public List<Horario> getList(JSONArray horariosList){
 		return daoHorario.getList(horariosList);
 	}
-
+	
+	public List<Horario> ReadAll(){
+		return daoHorario.ReadAll();
+	}
 }

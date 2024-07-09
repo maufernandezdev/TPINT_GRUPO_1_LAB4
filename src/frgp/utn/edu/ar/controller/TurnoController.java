@@ -74,10 +74,14 @@ public class TurnoController {
         List<Paciente> pacientes = pacienteNegocio.ReadAll();
         List<Medico> medicos = medicoNegocio.ReadAll();
         List<Especialidad> especialidades = especialidadNegocio.ReadAll();
+        List<Turno> turnos = turnoNegocio.ReadAll();
+        List<Horario> horarios = horarioNegocio.ReadAll();
         
         mv.addObject("medicos", medicos);
         mv.addObject("pacientes", pacientes);
-        mv.addObject("especialidades", especialidades);	        
+        mv.addObject("especialidades", especialidades);
+        mv.addObject("turnos", turnos);
+        mv.addObject("horarios", horarios);
         
         return mv;
     }
@@ -102,11 +106,10 @@ public class TurnoController {
 			List<Turno> listaTurnosCheck = null;
 			listaTurnosCheck = turnoNegocio.ReadAll();
 			//parse de hora
-         Time hora = Time.valueOf(horaCompletaStr); // HH:mm:ss
+			Time hora = Time.valueOf(horaCompletaStr); // HH:mm:ss
          
 			medico = medicoNegocio.ReadOneById(medicoLegajo);
 			paciente = pacienteNegocio.ReadOne(pacienteDni);
-
 
 			existeTurno = turnoNegocio.existeTurnoParaMedicoFechaYHora(medicoLegajo, fecha, hora);
          

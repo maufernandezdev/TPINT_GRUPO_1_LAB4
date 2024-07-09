@@ -151,11 +151,11 @@ public class DaoHorario implements IdaoHorario {
 		return null;
     }
     
-    public List<Especialidad> ReadAll() {
+    public List<Horario> ReadAll() {
 		conexion = new ConfigHibernate();
 	    Session session = conexion.abrirConexion();
         session.beginTransaction();
-        List<Especialidad> especialidades = session.createQuery("FROM Especialidad").list();
-        return especialidades;
+        List<Horario> horarios = session.createQuery("FROM Horario").list();
+        return horarios;
 	}
 }

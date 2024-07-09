@@ -12,4 +12,5 @@ public interface IHorarioNegocio {
     public boolean Add(Medico medico, List<Horario> horariosList);
 	public List<Horario> getAvailableTimesByMedic(int medicoId, Date fecha);
 	public List<Horario> getList(JSONArray horariosList);
+	public List<Horario> ReadAll();
 }

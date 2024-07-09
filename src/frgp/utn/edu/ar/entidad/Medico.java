@@ -56,9 +56,9 @@ public class Medico implements Serializable{
 	private Usuario usuario;
 	
 	// TIPO DE RELACION CON ESPECIALIDAD
-		@ManyToOne
-		@JoinColumn(name = "id_especialidad")
-		private Especialidad especialidad;
+	@ManyToOne
+	@JoinColumn(name = "id_especialidad")
+	private Especialidad especialidad;
 	
 	// TIPO DE RELACION CON TURNO
 	@OneToMany(mappedBy = "medico", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
@@ -72,7 +72,7 @@ public class Medico implements Serializable{
 /*	// Nueva columna para la relación con los horarios
     @Column(name="horario_id")
     private Long horarioId;	*/
-	
+  
 	// Getters & Setters de ListaTurnos
 	public List<Turno> getListaTurnos() {
 		return listaTurnos;

@@ -56,7 +56,7 @@
 			
             <div class="form-group">
                 <label for="medico">Seleccione un Médico:</label>
-			    <select id="medico" name="medico" class="form-control" onchange="obtenerHorarios()" required>
+			    <select id="medico" name="medico" class="form-control" required>
 			        <option value="" disabled selected>Seleccione un Médico</option>
 			         <c:forEach items="${medicos}" var="medico">
                         <option value="${medico.legajo}">${medico.nombre} ${medico.apellido} (Leg.${medico.legajo})</option>
@@ -66,9 +66,10 @@
           
             <div class="form-group">
                 <label for="fecha">Seleccione la Fecha:</label>
-                <input type="date" id="fecha" name="fecha" class="form-control" onchange="obtenerHorarios()" required>
-                 <div class="invalid-feedback">Por favor seleccione un día entre lunes y viernes.</div>
+                <input type="date" id="fecha" name="fecha" class="form-control" required>
+                 <div class="invalid-feedback">El medico no trabaja el dia seleccionado.</div>
             </div>
+            <!-- 
             <div class="form-group">
                 <label for="horario">Seleccione el Horario:</label>
                 <select id="horario" name="horario" class="form-control" required>
@@ -77,6 +78,13 @@
 					        <option value="${hora}:00">${hora}:00</option>
 					    </c:forEach>
                     <option value="20:00">20:00</option>
+                </select>
+            </div>
+            -->
+            <div class="form-group">
+                <label for="horario">Seleccione el Horario:</label>
+                <select id="horario" name="horario" class="form-control" required>
+                    <option value="" disabled selected>Seleccione un Horario</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary btn-submit">Asignar Turno</button>
@@ -121,7 +129,7 @@
             },
         </c:forEach>
     ];
-    
+    console.log("allMedicos: ", allMedicos);
     $(document).ready(function() {
         var successMessage = "${successMessage}";
         var errorMessage = "${errorMessage}";
@@ -162,54 +170,89 @@
     }
 </script>
  <script>
+		
+		 function parseTime(timeString) {
+		     const [hours, minutes, seconds] = timeString.split(":").map(Number);
+		     const time = new Date();
+		     time.setHours(hours, minutes, seconds, 0);
+		     return time;
+		 }
+		
+		 function formatTime(time) {
+		     const hours = String(time.getHours()).padStart(2, '0');
+		     const minutes = String(time.getMinutes()).padStart(2, '0');
+		     const seconds = String(time.getSeconds()).padStart(2, '0');
+		     const res = hours + ':' + minutes + ':' + seconds;
+		     return res;
+		 }
+		 
+		 function generateHorarios(horaInicio, horaFin) {
+		        const select = document.getElementById("horario");
+		        select.innerHTML = '<option value="" disabled selected>Seleccione un Horario</option>';
+		        const startTime = parseTime(horaInicio);
+		        const endTime = parseTime(horaFin);
+
+		        for (let time = startTime; time <= endTime; time.setHours(time.getHours() + 1)) {
+		            const option = document.createElement("option");
+		            option.value = formatTime(time);
+		            option.text = formatTime(time);
+		            select.appendChild(option);
+		        }
+		}
         document.getElementById('fecha').addEventListener('input', function (event) {
             const input = event.target;
             const dateValue = new Date(input.value);
-            const dayOfWeek = dateValue.getUTCDay(); // 0: domingo, 1: lunes, ..., 6: sábado
-
-            if (dayOfWeek === 0 || dayOfWeek === 6) {
-                input.value = ''; // Borra la fecha seleccionada
+            const dayOfWeek = dateValue.getUTCDay();
+            
+            const medicoId = document.getElementById("medico").value;
+       	 	const doctorBusinessDays = allHorarios.filter((horario)=> Number(horario.id_medico) === Number(medicoId));
+       	 	const days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+       	 	const businessDaysIds = doctorBusinessDays.map(day => days.indexOf(day.dia) + 1);
+       		const isBusinessDay = businessDaysIds.includes(dayOfWeek);
+            if (!isBusinessDay) {
+                input.value = ''; 
                 input.classList.add('is-invalid');
                 input.classList.remove('is-valid');
-                input.nextElementSibling.style.display = 'block'; // Muestra el mensaje de error
+                input.nextElementSibling.style.display = 'block';
             } else {
                 input.classList.add('is-valid');
                 input.classList.remove('is-invalid');
-                input.nextElementSibling.style.display = 'none'; // Oculta el mensaje de error
+                input.nextElementSibling.style.display = 'none';
+                const selectedDay = doctorBusinessDays.find(day => days.indexOf(day.dia) + 1 === dayOfWeek);
+                generateHorarios(selectedDay.horaInicio, selectedDay.horaFin);
             }
         });
 </script>
 <script>
-async function obtenerHorarios () {
-    var medicoId = document.getElementById("medico").value;
-    var fecha = document.getElementById("fecha").value;
-
-    if (medicoId && fecha) {
-    	try {
-    		const res = await fetch("/obtenerHorariosDisponibles?medicoId=" + medicoId + "&fecha=" + fecha, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-    		console.log("res: ", res);
-    		const data = await res.json();
-    		console.log("data: ", data);
-    		// Aquí puedes manejar la respuesta JSON como lo necesites
-            /* var horarioSelect = document.getElementById("horario");
-            horarioSelect.innerHTML = '<option value="" disabled selected>Seleccione un Horario</option>';
-            horarios.forEach(function(horario) {
-                var option = document.createElement("option");
-                option.value = horario.horaInicio;
-                option.text = horario.horaInicio + " - " + horario.horaFin;
-                horarioSelect.appendChild(option);
-            });*/
-    	} catch(e) {
-    		console.log('error: ', e)
-    	}
-    }
-}
-</script>
-
+/*Cargar de horarios y turnos en el front*/
+ const allHorarios = [
+        <c:forEach items="${horarios}" var="horario">
+            {
+                id: "${horario.id}",
+                dia: "${horario.dia}",
+                horaInicio: "${horario.horaInicio}",
+                horaFin: "${horario.horaFin}",
+                id_medico: "${horario.medico.legajo}",
+            },
+        </c:forEach>];
+ 
+ const allTurnos = [
+     <c:forEach items="${turnos}" var="turno">
+         {
+        	 idTurno: "${turno.idTurno}",
+        	 EstadoTurno: "${turno.EstadoTurno}",
+             estado: "${turno.estado}",
+             fecha: "${turno.fecha}",
+             hora: "${turno.hora}",
+             observacion: "${turno.observacion}",
+             id_medico: "${turno.medico.legajo}",
+             dni_paciente: "${turno.paciente.dni}",
+         },
+     </c:forEach>];
+ 
+ console.log("allHorarios: ", allHorarios);
+ console.log("allTurnos: ", allTurnos);
+ 
+ </script>
 </body>
 </html>
