@@ -20,6 +20,37 @@ public class DaoMedico implements IdaoMedico {
 		this.conexion = conexion;
 	}
 	
+	public Medico Agregar(Medico medico) {
+	    conexion = new ConfigHibernate();
+	    Session session = null;
+	    Medico savedMedico = null;
+
+	    try {
+	        session = conexion.abrirConexion();
+	        session.beginTransaction();
+	        session.save(medico);
+	        session.flush();
+	        session.getTransaction().commit();
+	        savedMedico = (Medico) session.get(Medico.class, medico.getLegajo());
+
+	    } catch (Exception e) {
+	        if (session != null) {
+	            Transaction transaction = session.getTransaction();
+	            if (transaction != null && transaction.isActive()) {
+	                transaction.rollback();
+	            }
+	        }
+	        e.printStackTrace();
+	    } finally {
+	        if (session != null && session.isOpen()) {
+	            session.close();
+	        }
+	    }
+
+	    return savedMedico;
+	}
+
+	
 	public boolean Add(Medico medico) {
 		boolean estado = true;
 	    conexion = new ConfigHibernate();
@@ -32,7 +63,7 @@ public class DaoMedico implements IdaoMedico {
 	        session.flush();
 	        session.getTransaction().commit();
 	        Medico savedMedico = (Medico) session.get(Medico.class, medico.getLegajo());
-	        
+
 	        if (savedMedico == null) {
 	            estado = false;
 	        }

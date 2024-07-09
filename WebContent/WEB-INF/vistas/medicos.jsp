@@ -275,12 +275,15 @@
 
     <!-- Campos ocultos para enviar horarios -->
     <div id="camposHorarios"></div>
-        
+    <!-- Se pone como input hidden para poder asignarle los horarios que se agregan o sacan -->
+	            <input type="hidden" id="horarios" name="horarios"> 
 	        <div class="item"> 
-	    		<button type="submit">Guardar</button>
+	    		<button type="submit" id="btnGuardar">Guardar</button>
 	    	</div>
 	    	
 	        </form>
+
+    
 	    </div>
 	   <!-- Modal Agregado -->
 <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -347,6 +350,7 @@
         });
     });
     
+    //Para cargar las localidades dinamicamente segun las provincias
     function cargarLocalidades() {
         var provinciaId = document.getElementById("provinciaId").value;
         var localidadDropdown = document.getElementById("localidadId");
@@ -366,16 +370,18 @@
         localidadDropdown.disabled = false;
     }
 
+    //Listener para que al cambiar provincias cambien las localidades
     document.getElementById("provinciaId").addEventListener("change", cargarLocalidades);
 
+    //actualiza el valor de localidadId
     document.querySelector("form").addEventListener("submit", function(event) {
         var localidadId = document.getElementById("localidadId").value;
     });
     
     
     var horarios = [];
-    var contadorHorarios = 0;
-
+//funcion para ir agregando los horarios seleccionados a una lista temporal antes de mandarlo
+//despues se procesa como json al controller
     function agregarHorario() {
         var diasSeleccionados = document.querySelectorAll('input[name="diasSemana"]:checked');
         var horaInicio = document.getElementById("horaInicio").value;
@@ -406,42 +412,15 @@
                 });
             } else {
                 horarios.push(horario);
-                agregarCampoHidden(horario);
                 actualizarListaHorarios();
-                
-                // Resetear checkboxes y dropdowns
-                dia.checked = false;
-                document.getElementById("horaInicio").selectedIndex = 0;
-                document.getElementById("horaFin").selectedIndex = 0;
             }
         });
+
+        // Actualizar el campo oculto de horarios
+        document.getElementById("horarios").value = JSON.stringify(horarios);
+        console.log(document.getElementById("horarios").value);
     }
-
-    function agregarCampoHidden(horario) {
-        var camposHorarios = document.getElementById("camposHorarios");
-
-        var inputDia = document.createElement("input");
-        inputDia.type = "hidden";
-        inputDia.name = "horarios[" + contadorHorarios + "].dia";
-        inputDia.value = horario.dia;
-        
-        var inputHoraInicio = document.createElement("input");
-        inputHoraInicio.type = "hidden";
-        inputHoraInicio.name = "horarios[" + contadorHorarios + "].horaInicio";
-        inputHoraInicio.value = horario.horaInicio;
-        
-        var inputHoraFin = document.createElement("input");
-        inputHoraFin.type = "hidden";
-        inputHoraFin.name = "horarios[" + contadorHorarios + "].horaFin";
-        inputHoraFin.value = horario.horaFin;
-        
-        camposHorarios.appendChild(inputDia);
-        camposHorarios.appendChild(inputHoraInicio);
-        camposHorarios.appendChild(inputHoraFin);
-
-        contadorHorarios++;
-    }
-
+//Aca se actualizan los horarios por si se agregan o sacan nuevos
     function actualizarListaHorarios() {
         var contenedorHorarios = document.getElementById("horariosAgregados");
         contenedorHorarios.innerHTML = "";
@@ -449,19 +428,28 @@
         horarios.forEach(function(horario, index) {
             var div = document.createElement("div");
             div.textContent = horario.dia + " de " + horario.horaInicio + " a " + horario.horaFin;
-            
+
             var botonEliminar = document.createElement("button");
             botonEliminar.innerHTML = "&times;"; // Usar el símbolo de cruz (×)
             botonEliminar.setAttribute("onclick", "eliminarHorario(" + index + ")");
             botonEliminar.classList.add("btn", "btn-outline-danger", "ml-2", "p-1");
-            
+
             div.appendChild(botonEliminar);
-            
+
             contenedorHorarios.appendChild(div);
         });
     }
-    
- // Función para convertir hora en formato "HH:MM" a minutos desde la medianoche
+// por si se remueven horarios de la lista ya agregada
+    function eliminarHorario(index) {
+        horarios.splice(index, 1); // Elimina el horario del array
+        actualizarListaHorarios();
+
+        // Actualizar el campo oculto de horarios después de eliminar
+        document.getElementById("horarios").value = JSON.stringify(horarios);
+        
+    }
+
+    // Función para convertir hora en formato "HH:MM" a minutos desde la medianoche
     function parseHoraAMinutos(horaStr) {
         var partesHora = horaStr.split(":");
         var horas = parseInt(partesHora[0], 10);
@@ -469,14 +457,26 @@
         return horas * 60 + minutos;
     }
     
-    function eliminarHorario(index) {
-        horarios.splice(index, 1); // Elimina el horario del array
-        contadorHorarios--; // Decrementa el contador
-        
-        // Actualiza la lista de horarios en la interfaz
-        actualizarListaHorarios();
+    // Función para validar que se haya agregado al menos un horario antes de enviar el formulario
+    function validarAntesDeGuardar() {
+        if (horarios.length === 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Debes agregar al menos un horario antes de guardar.'
+            });
+            return false; // Evita que el formulario se envíe
+        }
+        return true; // Permite que el formulario se envíe
     }
     
+    // Listener para el evento click del botón de guardar
+    document.getElementById("btnGuardar").addEventListener("click", function(event) {
+        // Llamar a la función de validación antes de enviar el formulario
+        if (!validarAntesDeGuardar()) {
+            event.preventDefault(); // Evita que el formulario se envíe si la validación falla
+        }
+    });
 </script>
 
 	</body>

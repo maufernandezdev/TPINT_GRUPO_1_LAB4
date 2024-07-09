@@ -5,6 +5,7 @@ import frgp.utn.edu.ar.entidad.Medico;
 
 public interface IdaoMedico {
 	public boolean Add(Medico medico);
+	public Medico Agregar(Medico medico);
 	public List<Medico> Medico_xNombre(String nombre);
 	public List<Medico> filtrarMedico_xSexo(String sexoMedico);
 	public List<Medico> filtrarMedico_xEspecialidad(String especialidadMedico);
