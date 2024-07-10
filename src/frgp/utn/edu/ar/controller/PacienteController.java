@@ -3,32 +3,23 @@ package frgp.utn.edu.ar.controller;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import org.springframework.web.servlet.ModelAndView;
 
 import frgp.utn.edu.ar.entidad.Localidad;
 import frgp.utn.edu.ar.entidad.Paciente;
 import frgp.utn.edu.ar.entidad.Provincia;
-
 import frgp.utn.edu.ar.exceptions.PacienteAlreadyExistsException;
-import frgp.utn.edu.ar.negocioImp.EspecialidadNegocio;
-import frgp.utn.edu.ar.negocioImp.HorarioNegocio;
 import frgp.utn.edu.ar.negocioImp.LocalidadNegocio;
-import frgp.utn.edu.ar.negocioImp.MedicoNegocio;
 import frgp.utn.edu.ar.negocioImp.PacienteNegocio;
 import frgp.utn.edu.ar.negocioImp.ProvinciaNegocio;
-import frgp.utn.edu.ar.negocioImp.TurnoNegocio;
-import frgp.utn.edu.ar.negocioImp.UsuarioNegocio;
+
 
 @Controller
 public class PacienteController {
@@ -49,7 +40,6 @@ public class PacienteController {
         this.provinciaNegocio = (ProvinciaNegocio) ctx.getBean("beanProvinciaNegocio");
         this.localidadNegocio = (LocalidadNegocio) ctx.getBean("beanLocalidadNegocio");
         this.localidadEncontrada = (Localidad) ctx.getBean("beanLocalidad");
-
 	}
 	
 	
@@ -118,7 +108,6 @@ public class PacienteController {
         Paciente paciente = new Paciente();
         
         int dniParsed = 0; // Define dniParsed fuera del bloque try-catch
-        
         try {
             dniParsed = Integer.parseInt(dni); // Asigna valor dentro del try-catch
         } catch (NumberFormatException e) {
@@ -126,9 +115,7 @@ public class PacienteController {
             return mv;
         }
         
-        
 		localidadEncontrada = localidadNegocio.ReadOneById(localidadId);
-		
 		List<Provincia> provincias = provinciaNegocio.ReadAll();
 		List<Localidad> localidades = localidadNegocio.ReadAll();
        
@@ -139,7 +126,6 @@ public class PacienteController {
             paciente.setTelefono(telefono);
             paciente.setDireccion(direccion);
             paciente.setFechaNac(fechaNac);
-           
             paciente.setLocalidad(localidadEncontrada);
             paciente.setCorreo(correo);
             paciente.setEstado(Paciente.Estado.ACTIVO);
@@ -160,7 +146,6 @@ public class PacienteController {
         
         mv.addObject("provincias", provincias);
         mv.addObject("localidades", localidades);
-      
         return mv;
     }
     
@@ -182,7 +167,6 @@ public class PacienteController {
         // Obtener paciente por DNI
         Paciente paciente = pacienteNegocio.ReadOne(dni);
         
-       
         localidadEncontrada = localidadNegocio.ReadOneById(localidad);
         
         if (paciente != null) {
