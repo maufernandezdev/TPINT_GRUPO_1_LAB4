@@ -15,15 +15,26 @@ import frgp.utn.edu.ar.negocioImp.UsuarioNegocio;
 
 import frgp.utn.edu.ar.entidad.Paciente;
 import frgp.utn.edu.ar.negocioImp.PacienteNegocio;
+
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 
 @Controller
 public class PageController {
 	
 	
-    private ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-    private UsuarioNegocio usuarioNegocio = (UsuarioNegocio) appContext.getBean("beanUsuarioNegocio");
+    private UsuarioNegocio usuarioNegocio;
 	
+    
+	@PostConstruct
+	public void init() {
+    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+    	this.usuarioNegocio = (UsuarioNegocio) appContext.getBean("beanUsuarioNegocio");
+    }
+	
+	
+    
+    
 	@RequestMapping("dashboard.html")
 	public ModelAndView loginEvent(String username, String password, HttpSession session) {
 	
