@@ -219,12 +219,27 @@
                 return;
             }
             
-            const dayOfWeek = dateValue.getUTCDay();
+            let diaDeLaSemana = dateValue.getUTCDay();
+            if (diaDeLaSemana === 0) {
+            	diaDeLaSemana = 7; // el getUTCday tra en 0 al domingo por eso si es dom se cambia a 7 para mantener
+                				// la estructura
+            }
+            const dayOfWeek = diaDeLaSemana;
+
             const medicoId = document.getElementById("medico").value;
        	 	const doctorBusinessDays = allHorarios.filter((horario)=> Number(horario.id_medico) === Number(medicoId));
+       	 	
+       	 	console.log("doctorBusinessDays",doctorBusinessDays)
+       	 	
        	 	const days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
        	 	const businessDaysIds = doctorBusinessDays.map(day => days.indexOf(day.dia) + 1);
+       	 	
+       	 	console.log("businessDaysIds",businessDaysIds)
+       	 	console.log("dayOfWeek", dayOfWeek);
        		const isBusinessDay = businessDaysIds.includes(dayOfWeek);
+       		
+       		console.log("isBusinessDay",isBusinessDay)
+       	 	
             if (!isBusinessDay) {
                 input.value = ''; 
                 input.classList.add('is-invalid');
