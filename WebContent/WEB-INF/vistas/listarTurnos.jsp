@@ -20,6 +20,7 @@
 	</c:if>
     
       <!-- Barra de búsqueda -->
+      <c:if test="${tipoUsuario == 'ADMINISTRADOR'}">
         <form id="barraBusqueda" action="listarTurno_xDni.html" method="post" class="mb-4">
             <div class="row">
                 <div class="col-md-6">
@@ -36,7 +37,29 @@
                 </div>
             </div>
         </form>    
-    
+	 </c:if>
+	 
+	       <!-- Barra de búsqueda -->
+      <c:if test="${tipoUsuario == 'MEDICO'}">
+        <form id="barraBusqueda" action="listarTurno_xDni_Medico.html" method="post" class="mb-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Buscar por dni:</span>
+                        </div>
+                        <input type="number" name="txtBuscarTurno_xDni" class="form-control" placeholder="Escribe aquí..." required >
+                        <div class="input-group-append">
+                        	<input type="submit" name="btnBuscarTurno" class="btn btn-primary" value="Buscar"> 
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>    
+	 </c:if>
+	 
+	 
     <div class="w-100">
     <nav class="navbar navbar-expand-sm ">
         <div class="row w-100">
@@ -56,6 +79,7 @@
                         </select>
                     </form>
                     </c:if>
+                     <c:if test="${tipoUsuario == 'ADMINISTRADOR'}">
                     <form action="filtrarTurnos_xEstadoTurno.html" method="post" id="EstadoTurnoForm" class="mr-2">
                         <select id="estadoTurno" name="ddl_EstadoTurno" class="form-control" required 
                                 onchange="document.getElementById('EstadoTurnoForm').submit();">
@@ -65,6 +89,18 @@
                             <option value="AUSENTE">AUSENTE</option>
                         </select>
                     </form>
+                     </c:if>
+                    <c:if test="${tipoUsuario == 'MEDICO'}">
+                    <form action="filtrarTurnos_xEstadoTurno_Medico.html" method="post" id="EstadoTurnoForm" class="mr-2">
+                        <select id="estadoTurno" name="ddl_EstadoTurno" class="form-control" required 
+                                onchange="document.getElementById('EstadoTurnoForm').submit();">
+                            <option value="" disabled selected>Estado Turno</option>
+                            <option value="PENDIENTE">PENDIENTE</option>
+                            <option value="PRESENTE">PRESENTE</option>
+                            <option value="AUSENTE">AUSENTE</option>
+                        </select>
+                    </form>
+                     </c:if>
                 </div>
             </div>
         </div>

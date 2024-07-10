@@ -168,6 +168,30 @@ public class TurnoController {
 	        
 	        return mv;
 	    }
+	  
+	  @RequestMapping("listarTurno_xDni_Medico.html")
+	  public ModelAndView listarTurno_xDni_Medico(int txtBuscarTurno_xDni, HttpSession session) {
+	      String user = (String) session.getAttribute("user");
+	      List<Turno> listaTurnos = null;
+	      Medico nuevoMedico = null;
+
+	      if (user != null) {
+	          nuevoMedico = medicoNegocio.getMedicoByUser(user);  
+	          listaTurnos = turnoNegocio.getTurnosPorMedicoLegajo(nuevoMedico.getLegajo());
+	      }
+
+	      String txtBuscarTurno_xDniStr = String.valueOf(txtBuscarTurno_xDni);
+
+	      // Filtrar la lista por DNI del paciente que contenga la subcadena
+	      List<Turno> listaTurnosPendientes = listaTurnos.stream()
+	                                                      .filter(turno -> String.valueOf(turno.getPaciente().getDni()).contains(txtBuscarTurno_xDniStr))
+	                                                      .collect(Collectors.toList());
+
+	      ModelAndView mv = new ModelAndView("listarTurnos");          
+	      mv.addObject("listaTurnos", listaTurnosPendientes);
+	      
+	      return mv;
+	  }
 	 
 	 
 	 
@@ -200,6 +224,28 @@ public class TurnoController {
 		  mv.addObject("medicos", listaMedicos);
 		  		  
 		  return mv;
+	  }
+	  
+	  @RequestMapping("filtrarTurnos_xEstadoTurno_Medico.html")
+	  public ModelAndView filtrarTurnos_xEstadoTurno_Medico(@RequestParam("ddl_EstadoTurno") String estadoTurno, HttpSession session) {
+	      String user = (String) session.getAttribute("user");
+	      List<Turno> listaTurnos = null;
+	      Medico nuevoMedico = null;
+
+	      if (user != null) {
+	          nuevoMedico = medicoNegocio.getMedicoByUser(user);  
+	          listaTurnos = turnoNegocio.getTurnosPorMedicoLegajo(nuevoMedico.getLegajo());
+	      }
+
+	      // Filtrar la lista por estado
+	      List<Turno> listaTurnosPendientes = listaTurnos.stream()
+	                                                      .filter(turno -> estadoTurno.equals(turno.getEstadoTurno()))
+	                                                      .collect(Collectors.toList());
+
+	      ModelAndView mv = new ModelAndView("listarTurnos");          
+	      mv.addObject("listaTurnos", listaTurnosPendientes);
+	      
+	      return mv;
 	  }
 	  
 	  
