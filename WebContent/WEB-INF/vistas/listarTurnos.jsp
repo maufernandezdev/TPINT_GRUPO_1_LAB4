@@ -92,6 +92,7 @@
                     <th>Estado</th>
                     <c:if test="${tipoUsuario == 'MEDICO'}">
                     	<th>Acción</th>
+                    	<th>Observación</th>
 		            </c:if>
                 </tr>
             </thead>
@@ -122,6 +123,7 @@
                                 </c:otherwise>
                             </c:choose>
                         </td>
+                        <td>${turno.observacion}</td>
 		            	</c:if>
                         
                     </tr>

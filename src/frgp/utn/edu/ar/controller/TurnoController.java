@@ -232,7 +232,7 @@ public class TurnoController {
 	 public ModelAndView marcarPresente(@RequestParam("idTurno") int idTurno, 
 	                                    @RequestParam("observaciones") String observaciones) {
 	     
-	     ModelAndView mv = new ModelAndView("redirect:listarTurnos.html");
+	     ModelAndView mv = new ModelAndView("redirect:listarTurnosAsignados.html");
 
 	     nuevoTurno = turnoNegocio.ReadOne(idTurno);
 	     
@@ -248,7 +248,7 @@ public class TurnoController {
 	 public ModelAndView marcarAusente(@RequestParam("idTurno") int idTurno,
 			 							@RequestParam("observacionesAusente") String observacionesAusente) {
 	    
-	     ModelAndView mv = new ModelAndView("redirect:listarTurnos.html");
+	     ModelAndView mv = new ModelAndView("redirect:listarTurnosAsignados.html");
 
 	     nuevoTurno = turnoNegocio.ReadOne(idTurno);
 	     nuevoTurno.setObservacion(observacionesAusente);
