@@ -131,8 +131,6 @@
         $('#messageModal .close, #messageModal .btn-danger').on('click', function () {
             $('#messageModal').modal('hide');
             
-            window.location.href = "asignacionTurnos.html";
-
         });
     });
     
@@ -153,7 +151,7 @@
         filteredMedicos.forEach(function(medico) {
             var option = document.createElement('option');
             option.value = medico.id;
-            option.text = medico.nombre + ' ' + medico.apellido;
+            option.text = medico.nombre + ' ' + medico.apellido + ' (Leg.'+ medico.id+')';
             medicoSelect.appendChild(option);
         });
     }

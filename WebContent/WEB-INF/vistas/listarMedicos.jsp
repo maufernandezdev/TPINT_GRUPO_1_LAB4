@@ -325,8 +325,6 @@
         $('#provinciaEditar').val(provinciaId);
         cargarLocalidadesEditar(localidadId);
 
-        // Mostrar el modal
-        $('#modalEditar').modal('show');
     });
     
     $('.eliminar-medico').click(function() {	

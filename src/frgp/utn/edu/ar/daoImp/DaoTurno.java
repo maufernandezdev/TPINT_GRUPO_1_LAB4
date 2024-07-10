@@ -16,6 +16,7 @@ import frgp.utn.edu.ar.entidad.Paciente;
 import frgp.utn.edu.ar.entidad.Turno;
 import frgp.utn.edu.ar.entidad.Medico.Estado;
 import frgp.utn.edu.ar.entidad.Turno.EstadoT;
+import frgp.utn.edu.ar.entidad.Turno.EstadoTurno;
 
 public class DaoTurno implements IdaoTurno{
 
@@ -260,21 +261,21 @@ public class DaoTurno implements IdaoTurno{
     		
     		// Consulta para obtener la cantidad TOTAL de turnos en el rango de fechas SOLO CONTANDO LOS PRESENTES Y AUSENTES
     		Long cantidadTotal = (Long) session.createQuery(
-    			    "SELECT COUNT(t) FROM Turno t WHERE t.fecha BETWEEN :startDate AND :endDate AND EstadoTurno IN (1, 2)")
+    				"SELECT COUNT(t) FROM Turno t WHERE t.fecha BETWEEN :startDate AND :endDate AND t.EstadoTurno IN ('PRESENTE', 'AUSENTE')")
     				.setParameter("startDate", fechaDeInicio)
                     .setParameter("endDate", fechaFinal)
     			    .uniqueResult();
     		
     		// Consulta para obtener la cantidad de TURNOS PRESENTES
     		Long cantidadPresentes = (Long) session.createQuery(
-    				"SELECT COUNT(t.EstadoTurno) FROM Turno t WHERE t.EstadoTurno = 1 AND t.fecha BETWEEN :startDate AND :endDate")
+    				"SELECT COUNT(t.EstadoTurno) FROM Turno t WHERE t.EstadoTurno = 'PRESENTE' AND t.fecha BETWEEN :startDate AND :endDate")
     				.setParameter("startDate", fechaDeInicio)
                     .setParameter("endDate", fechaFinal)
     			    .uniqueResult();
     		
     		// Consulta para obtener la cantidad de TURNOS AUSENTES
     		Long cantidadAusentes = (Long) session.createQuery(
-    				"SELECT COUNT(t.EstadoTurno) FROM Turno t WHERE t.EstadoTurno = 2 AND t.fecha BETWEEN :startDate AND :endDate") 
+    				"SELECT COUNT(t.EstadoTurno) FROM Turno t WHERE t.EstadoTurno = 'AUSENTE' AND t.fecha BETWEEN :startDate AND :endDate") 
     				.setParameter("startDate", fechaDeInicio) 
     				.setParameter("endDate", fechaFinal) 
     				.uniqueResult();

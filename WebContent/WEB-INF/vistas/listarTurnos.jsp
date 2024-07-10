@@ -45,6 +45,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">Filtrar por :</span>
                     </div>
+                    <c:if test="${tipoUsuario != 'MEDICO'}">
                     <form action="filtrarTurnos_xMedico.html" method="post" id="medicoForm">
                         <select id="medico" name="ddl_medico" class="form-control" required 
                                 onchange="document.getElementById('medicoForm').submit();">
@@ -54,6 +55,7 @@
                             </c:forEach>
                         </select>
                     </form>
+                    </c:if>
                     <form action="filtrarTurnos_xEstadoTurno.html" method="post" id="EstadoTurnoForm" class="mr-2">
                         <select id="estadoTurno" name="ddl_EstadoTurno" class="form-control" required 
                                 onchange="document.getElementById('EstadoTurnoForm').submit();">

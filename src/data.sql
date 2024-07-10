@@ -42,12 +42,15 @@ insert into localidades (nombre, id_provincia) values
 ('Tigre', 1),
 ('Escobar', 1),
 ('Pilar', 1),
+('Tres Arroyos', 1),
 ('Río Cuarto', 2),
 ('Santa Maria', 2),
 ('Calamuchita', 2),
+('Carlos Paz', 2),
 ('Tunuyán', 3),
 ('Malargue', 3),
 ('Guaymallén',3),
+('San Rafael',3),
 ('Colón', 4),
 ('Gualeguaychú', 4),
 ('Paraná', 4) ;
@@ -59,7 +62,18 @@ VALUES
 (87654321, 'Maria', 'Gomez', '0987654321', 'Av. Siempre Viva 742',  '3', '1985-05-15', 'maria.gomez@example.com', 1),
 (56789012, 'Carlos', 'Lopez', '1122334455', 'Calle Luna 333',  '4', '1978-12-30', 'carlos.lopez@example.com', 1),
 (34567890, 'Ana', 'Martinez', '2233445566', 'Calle Sol 1234',  '5', '1992-08-25', 'ana.martinez@example.com', 1),
-(78901234, 'Luis', 'Fernandez', '3344556677', 'Av. Libertador 1234',  '1', '1980-11-12', 'luis.fernandez@example.com', 1);
+(78901234, 'Luis', 'Fernandez', '3344556677', 'Av. Libertador 1234',  '1', '1980-11-12', 'luis.fernandez@example.com', 1),
+(11111111, 'Gabriel', 'Rodriguez', '1111111111', 'Calle Alegre 111',  '1', '1987-04-10', 'gabriel.rodriguez@example.com', 1),
+(22222222, 'Laura', 'Garcia', '2222222222', 'Av. Esperanza 222',  '2', '1995-09-20', 'laura.garcia@example.com', 1),
+(33333333, 'Diego', 'Sanchez', '3333333333', 'Calle Primavera 333',  '3', '1982-03-05', 'diego.sanchez@example.com', 1),
+(44444444, 'Valeria', 'Lopez', '4444444444', 'Av. Paz 444',  '4', '1976-07-15', 'valeria.lopez@example.com', 1),
+(55555555, 'Javier', 'Martinez', '5555555555', 'Calle Libertad 555',  '5', '1990-12-25', 'javier.martinez@example.com', 1),
+(66666666, 'Lucia', 'Fernandez', '6666666666', 'Av. Unión 666',  '6', '1988-06-30', 'lucia.fernandez@example.com', 1),
+(77777777, 'Sofia', 'Alvarez', '7777777777', 'Calle Sol y Luna 777',  '7', '1984-02-18', 'sofia.alvarez@example.com', 1),
+(88888888, 'Matias', 'Perez', '8888888888', 'Av. del Sol 888',  '8', '1993-10-08', 'matias.perez@example.com', 1),
+(99999999, 'Camila', 'Gomez', '9999999999', 'Calle del Mar 999',  '9', '1975-11-05', 'camila.gomez@example.com', 1),
+(10101010, 'Maximiliano', 'Rodriguez', '1010101010', 'Av. Esperanza 1010',  '10', '1998-08-15', 'maximiliano.rodriguez@example.com', 1);
+
 
 /*Medicos*/
 INSERT INTO medicos (apellido, correo, direccion, estado, fechaNac, horario_id, nombre, sexo, telefono, id_especialidad, id_localidad, usuario_c)
@@ -84,30 +98,44 @@ VALUES
 /*turnos de prueba*/
 INSERT INTO turnos (estado_turno, estado, fecha, hora, observacion, idMedico, idPaciente)
 VALUES 
-(1, 'ACTIVO', '2024-01-10', '09:00:00', 'Observación 1', 1, 12345678),
-(2, 'ACTIVO', '2024-01-15', '10:00:00', 'Observación 2', 2, 87654321),
-(2, 'ACTIVO', '2024-01-20', '11:00:00', 'Observación 3', 3, 56789012),
-(2, 'ACTIVO', '2024-01-25', '12:00:00', 'Observación 4', 1, 34567890),
-(1, 'ACTIVO', '2024-01-30', '13:00:00', 'Observación 5', 2, 78901234),
-(1, 'ACTIVO', '2024-02-05', '14:00:00', 'Observación 6', 3, 12345678),
-(1, 'ACTIVO', '2024-02-10', '15:00:00', 'Observación 7', 1, 87654321),
-(1, 'ACTIVO', '2024-02-15', '16:00:00', 'Observación 8', 2, 56789012),
-(1, 'ACTIVO', '2024-02-20', '17:00:00', 'Observación 9', 3, 34567890),
-(1, 'ACTIVO', '2024-02-25', '18:00:00', 'Observación 10', 1, 78901234),
-(0, 'ACTIVO', '2024-07-05', '09:00:00', 'Observación 11', 2, 12345678),
-(0, 'ACTIVO', '2024-08-10', '10:00:00', 'Observación 12', 3, 87654321),
-(0, 'ACTIVO', '2024-09-15', '11:00:00', 'Observación 13', 1, 56789012),
-(0, 'ACTIVO', '2024-09-20', '12:00:00', 'Observación 14', 2, 34567890),
-(0, 'ACTIVO', '2024-10-25', '13:00:00', 'Observación 15', 3, 78901234);
+('PRESENTE', 'ACTIVO', '2024-01-10', '09:00:00', 'Observación 1', 1, 12345678),
+('AUSENTE', 'ACTIVO', '2024-01-15', '10:00:00', 'Observación 2', 2, 87654321),
+('PRESENTE', 'ACTIVO', '2024-01-20', '11:00:00', 'Observación 3', 3, 56789012),
+('AUSENTE', 'ACTIVO', '2024-01-25', '12:00:00', 'Observación 4', 1, 34567890),
+('PRESENTE', 'ACTIVO', '2024-01-30', '13:00:00', 'Observación 5', 2, 78901234),
+('AUSENTE', 'ACTIVO', '2024-02-05', '14:00:00', 'Observación 6', 3, 12345678),
+('PRESENTE', 'ACTIVO', '2024-02-10', '15:00:00', 'Observación 7', 1, 87654321),
+('AUSENTE', 'ACTIVO', '2024-02-15', '16:00:00', 'Observación 8', 2, 56789012),
+('PRESENTE', 'ACTIVO', '2024-02-20', '17:00:00', 'Observación 9', 3, 34567890),
+('AUSENTE', 'ACTIVO', '2024-02-25', '18:00:00', 'Observación 10', 1, 78901234),
+('PRESENTE', 'ACTIVO', '2024-07-05', '09:00:00', 'Observación 11', 2, 12345678),
+('PENDIENTE', 'ACTIVO', '2024-08-10', '10:00:00', 'Observación 12', 3, 87654321),
+('PENDIENTE', 'ACTIVO', '2024-09-15', '11:00:00', 'Observación 13', 1, 56789012),
+('PENDIENTE', 'ACTIVO', '2024-09-20', '12:00:00', 'Observación 14', 2, 34567890),
+('PENDIENTE', 'ACTIVO', '2024-10-25', '13:00:00', 'Observación 15', 3, 78901234);
 
 /*horarios de prueba*/
 INSERT INTO horarios (dia, hora_inicio, hora_fin, medico_id) VALUES
-('LUNES', '08:00:00', '20:00:00', 1),
-('MARTES', '13:00:00', '18:00:00', 1),
+('Lunes', '08:00:00', '20:00:00', 1),
+('Martes', '13:00:00', '18:00:00', 1),
 
-('MIERCOLES', '14:00:00', '20:00:00', 2),
-('VIERNES', '14:00:00', '20:00:00', 2),
+('Miércoles', '14:00:00', '20:00:00', 2),
+('Viernes', '14:00:00', '20:00:00', 2),
 
-('LUNES', '09:00:00', '12:00:00', 3),
-('JUEVES', '16:00:00', '18:00:00', 3),
+('Lunes', '09:00:00', '12:00:00', 3),
+('Jueves', '16:00:00', '18:00:00', 3),
 
+('Martes', '08:00:00', '12:00:00', 4),
+('Jueves', '08:00:00', '12:00:00', 4),
+
+('Miércoles', '09:00:00', '13:00:00', 5),
+('Viernes', '09:00:00', '13:00:00', 5),
+
+('Martes', '10:00:00', '14:00:00', 6),
+('Jueves', '11:00:00', '15:00:00', 6),
+
+('Miércoles', '08:00:00', '12:00:00', 7),
+('Viernes', '08:00:00', '12:00:00', 7),
+
+('Lunes', '15:00:00', '19:00:00', 8),
+('Miércoles', '15:00:00', '19:00:00', 8);

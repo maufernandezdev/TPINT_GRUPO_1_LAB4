@@ -91,10 +91,14 @@ public class TurnoController {
 			Paciente paciente = (Paciente) appContext.getBean("beanPaciente");
 			
 			boolean existeTurno = false;		
-			List<Turno> listaTurnosCheck = null;
-			listaTurnosCheck = turnoNegocio.ReadAll();
+
 			Time hora = Time.valueOf(horaString);
-         
+	        List<Paciente> pacientes = pacienteNegocio.ReadAll();
+	        List<Medico> medicos = medicoNegocio.ReadAll();
+	        List<Especialidad> especialidades = especialidadNegocio.ReadAll();
+	        List<Turno> turnos = turnoNegocio.ReadAll();
+	        List<Horario> horarios = horarioNegocio.ReadAll();
+	        
 			medico = medicoNegocio.ReadOneById(medicoLegajo);
 			paciente = pacienteNegocio.ReadOne(pacienteDni);
 
@@ -102,6 +106,11 @@ public class TurnoController {
          
 			if (existeTurno) {
 	             mv.addObject("errorMessage", "El médico ya tiene un turno asignado en esa fecha y hora.");
+	 	         mv.addObject("medicos", medicos);
+		         mv.addObject("pacientes", pacientes);
+		         mv.addObject("especialidades", especialidades);
+		         mv.addObject("turnos", turnos);
+		         mv.addObject("horarios", horarios);
 	             mv.setViewName("asignacionTurnos");
 	             return mv;				
 			}
@@ -110,6 +119,12 @@ public class TurnoController {
 			turnoNegocio.Add(turno);
 			
 	        mv.addObject("successMessage", "El turno ha sido agregado correctamente");
+	        mv.addObject("medicos", medicos);
+	        mv.addObject("pacientes", pacientes);
+	        mv.addObject("especialidades", especialidades);
+	        mv.addObject("turnos", turnos);
+	        mv.addObject("horarios", horarios);
+	        
 	        mv.setViewName("asignacionTurnos");
 
 	        return mv;
