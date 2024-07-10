@@ -22,7 +22,7 @@ public class Horario implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "horario_id")
+    @Column(name = "id")
     private int id;
 
     @Column(name = "dia")

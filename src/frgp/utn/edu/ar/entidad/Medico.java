@@ -70,8 +70,9 @@ public class Medico implements Serializable{
     private Localidad localidad;
 	
 	// Nueva columna para la relación con los horarios
-    @Column(name="horario_id")
-    private Long horarioId;	
+    /*Ya no lo usamos por la multiple relacion en horarios*/
+/*    @Column(name="horario_id")
+    private Long horarioId;	*/
   
 	// Getters & Setters de ListaTurnos
 	public List<Turno> getListaTurnos() {

@@ -39,7 +39,7 @@
                 <select id="paciente" name="paciente" class="form-control" required>
                     <option value="" disabled selected>Seleccione un Paciente</option>
                     <c:forEach items="${pacientes}" var="paciente">
-                        <option value="${paciente.dni}">${paciente.nombre} ${paciente.apellido}</option>
+                        <option value="${paciente.dni}">${paciente.nombre} ${paciente.apellido} (Dni.${paciente.dni})</option>
                     </c:forEach>
                 </select>
             </div>
@@ -137,7 +137,20 @@
     document.addEventListener('DOMContentLoaded', (event) => {
         var especialidadSelect = document.getElementById('especialidad');
         especialidadSelect.addEventListener('change', filtrarMedicos);
+        
+        var medicoSelect = document.getElementById('medico');
+        medicoSelect.addEventListener('change', seleccionarEspecialidad);
     });
+    
+    function seleccionarEspecialidad() {
+        var medicoId = document.getElementById('medico').value;
+        var especialidadSelect = document.getElementById('especialidad');
+        var selectedMedico = allMedicos.find(medico => medico.id == medicoId);
+
+        if (selectedMedico) {
+            especialidadSelect.value = selectedMedico.id_especialidad;
+        }
+    }
     
     function filtrarMedicos() {
         var especialidadId = document.getElementById('especialidad').value;
