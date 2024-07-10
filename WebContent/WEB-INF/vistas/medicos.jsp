@@ -145,8 +145,13 @@
 	
 		<h1>Gestión de Medicos</h1>
 	    <div id="formularioAlta" class="container">
-	        <h2>Alta Médico</h2>
-	   
+	    <h2>Alta Médico</h2>
+	  	<c:if test="${not empty errorMessage}">
+        	<div class="error-message">${errorMessage}</div>
+   		</c:if>
+    	<c:if test="${not empty successMessage}">
+       		 <div class="success-message">${successMessage}</div>
+   	    </c:if>
 			<form id="formAltaMedico" action="guardar_medico.html" method="post" onsubmit="return validarContrasenias()">
 	  		
 	  		<div class="item">
