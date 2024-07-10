@@ -49,23 +49,13 @@ public class TurnoController {
 
 	@PostConstruct
 	public void init() {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
         this.pacienteNegocio = (PacienteNegocio) ctx.getBean("beanPacienteNegocio");
         this.medicoNegocio = (MedicoNegocio) ctx.getBean("beanMedicoNegocio");
         this.especialidadNegocio = (EspecialidadNegocio) ctx.getBean("beanEspecialidadNegocio");
         this.turnoNegocio = (TurnoNegocio) ctx.getBean("beanTurnoNegocio");
         this.usuarioNegocio = (UsuarioNegocio) ctx.getBean("beanUsuarioNegocio");
         this.horarioNegocio = (HorarioNegocio) ctx.getBean("beanHorarioNegocio");
-	}
-	
-	@RequestMapping(value = "/obtenerHorariosDisponibles", method = RequestMethod.GET)
-	@ResponseBody
-	public List<Horario> obtenerHorariosDisponibles(@RequestParam("medicoId") int medicoId, @RequestParam("fecha") Date fecha) {
-		System.out.println("medicoId: " + medicoId);
-		System.out.println("fecha: " + fecha);
-	    List<Horario> horariosDisponibles = horarioNegocio.getAvailableTimesByMedic(medicoId, fecha);
-	    System.out.println("horarios disponibles en turno controller: " + horariosDisponibles);
-	    return horariosDisponibles;
 	}
 
 	@RequestMapping("/turnos")
@@ -93,20 +83,17 @@ public class TurnoController {
 	    	        @RequestParam("fecha") Date fecha,
 	    	        @RequestParam("horario") String horaString
 	    		) {
-			String horaCompletaStr = horaString + ":00";
+		 	
 	        ModelAndView mv = new ModelAndView();
-		 	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-			MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
-			PacienteNegocio pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
-			TurnoNegocio turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");			
+		 	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");		
 			Turno turno = (Turno) appContext.getBean("beanTurno");
 			Medico medico = (Medico) appContext.getBean("beanMedico");	
-			Paciente paciente = (Paciente) appContext.getBean("beanPaciente");	
+			Paciente paciente = (Paciente) appContext.getBean("beanPaciente");
+			
 			boolean existeTurno = false;		
 			List<Turno> listaTurnosCheck = null;
 			listaTurnosCheck = turnoNegocio.ReadAll();
-			//parse de hora
-			Time hora = Time.valueOf(horaCompletaStr); // HH:mm:ss
+			Time hora = Time.valueOf(horaString);
          
 			medico = medicoNegocio.ReadOneById(medicoLegajo);
 			paciente = pacienteNegocio.ReadOne(pacienteDni);
@@ -114,9 +101,9 @@ public class TurnoController {
 			existeTurno = turnoNegocio.existeTurnoParaMedicoFechaYHora(medicoLegajo, fecha, hora);
          
 			if (existeTurno) {
-             mv.addObject("errorMessage", "El médico ya tiene un turno asignado en esa fecha y hora.");
-             mv.setViewName("asignacionTurnos");
-             return mv;				
+	             mv.addObject("errorMessage", "El médico ya tiene un turno asignado en esa fecha y hora.");
+	             mv.setViewName("asignacionTurnos");
+	             return mv;				
 			}
          
 			turno.setTurnoDetails(medico, paciente, fecha, hora, "", "PENDIENTE");
@@ -124,7 +111,7 @@ public class TurnoController {
 			
 	        mv.addObject("successMessage", "El turno ha sido agregado correctamente");
 	        mv.setViewName("asignacionTurnos");
-	        
+
 	        return mv;
 	 	}
 	 
