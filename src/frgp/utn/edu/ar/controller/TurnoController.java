@@ -45,17 +45,26 @@ public class TurnoController {
 	private EspecialidadNegocio especialidadNegocio;
 	private TurnoNegocio turnoNegocio;
 	private UsuarioNegocio usuarioNegocio;
+	private Usuario nuevoUsuario;
 	private HorarioNegocio horarioNegocio;
+	private Turno nuevoTurno;
+	private Medico nuevoMedico;
+	private Paciente nuevoPaciente;
+	
 
 	@PostConstruct
 	public void init() {
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-        this.pacienteNegocio = (PacienteNegocio) ctx.getBean("beanPacienteNegocio");
-        this.medicoNegocio = (MedicoNegocio) ctx.getBean("beanMedicoNegocio");
-        this.especialidadNegocio = (EspecialidadNegocio) ctx.getBean("beanEspecialidadNegocio");
-        this.turnoNegocio = (TurnoNegocio) ctx.getBean("beanTurnoNegocio");
-        this.usuarioNegocio = (UsuarioNegocio) ctx.getBean("beanUsuarioNegocio");
-        this.horarioNegocio = (HorarioNegocio) ctx.getBean("beanHorarioNegocio");
+		ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
+        this.pacienteNegocio = (PacienteNegocio) appContext.getBean("beanPacienteNegocio");
+        this.medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
+        this.especialidadNegocio = (EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
+        this.turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");
+        this.usuarioNegocio = (UsuarioNegocio) appContext.getBean("beanUsuarioNegocio");
+        this.nuevoUsuario = (Usuario) appContext.getBean("beanUsuario");
+        this.horarioNegocio = (HorarioNegocio) appContext.getBean("beanHorarioNegocio");
+		this.nuevoMedico = (Medico) appContext.getBean("beanMedico");
+		this.nuevoTurno = (Turno) appContext.getBean("beanTurno");
+        this.nuevoPaciente = (Paciente) appContext.getBean("beanPaciente");
 	}
 
 	@RequestMapping("/turnos")
@@ -85,11 +94,7 @@ public class TurnoController {
 	    		) {
 		 	
 	        ModelAndView mv = new ModelAndView();
-		 	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");		
-			Turno turno = (Turno) appContext.getBean("beanTurno");
-			Medico medico = (Medico) appContext.getBean("beanMedico");	
-			Paciente paciente = (Paciente) appContext.getBean("beanPaciente");
-			
+		 	
 			boolean existeTurno = false;		
 
 			Time hora = Time.valueOf(horaString);
@@ -99,8 +104,8 @@ public class TurnoController {
 	        List<Turno> turnos = turnoNegocio.ReadAll();
 	        List<Horario> horarios = horarioNegocio.ReadAll();
 	        
-			medico = medicoNegocio.ReadOneById(medicoLegajo);
-			paciente = pacienteNegocio.ReadOne(pacienteDni);
+			nuevoMedico = medicoNegocio.ReadOneById(medicoLegajo);
+			nuevoPaciente = pacienteNegocio.ReadOne(pacienteDni);
 
 			existeTurno = turnoNegocio.existeTurnoParaMedicoFechaYHora(medicoLegajo, fecha, hora);
          
@@ -115,8 +120,8 @@ public class TurnoController {
 	             return mv;				
 			}
          
-			turno.setTurnoDetails(medico, paciente, fecha, hora, "", "PENDIENTE");
-			turnoNegocio.Add(turno);
+			nuevoTurno.setTurnoDetails(nuevoMedico, nuevoPaciente, fecha, hora, "", "PENDIENTE");
+			turnoNegocio.Add(nuevoTurno);
 			
 	        mv.addObject("successMessage", "El turno ha sido agregado correctamente");
 	        mv.addObject("medicos", medicos);
@@ -132,14 +137,7 @@ public class TurnoController {
 	 
 	 @RequestMapping("listarTurnos.html")
 	    public ModelAndView listarTurnos(HttpSession session) {
-	    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-	    	TurnoNegocio turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");
-			UsuarioNegocio usuarioNegocio = (UsuarioNegocio) appContext.getBean("beanUsuarioNegocio");	
-			MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");
-			EspecialidadNegocio especialidadNegocio =(EspecialidadNegocio) appContext.getBean("beanEspecialidadNegocio");
-			
-			Medico medico = (Medico) appContext.getBean("beanMedico");
-			Usuario usuario = (Usuario) appContext.getBean("beanUsuario");	
+	    	
 	    	String user = (String) session.getAttribute("user");
 	    	
 	    	List<Medico> listaMedicos = medicoNegocio.ReadAll();
@@ -158,12 +156,10 @@ public class TurnoController {
 	 
 	  @RequestMapping("listarTurno_xDni.html")
 	    public ModelAndView listarTurno_xDni(int txtBuscarTurno_xDni) {
-	    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-	    	TurnoNegocio turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");	    	
+	    	   	
 	    	List<Turno> listaTurnos = turnoNegocio.Turno_xDni(txtBuscarTurno_xDni);
 	    	
 	    	//se cargan los medicos para el filtro de buscar
-	    	MedicoNegocio medicoNegocio = (MedicoNegocio)appContext.getBean("beanMedicoNegocio");	    	
 			List<Medico> listaMedicos = medicoNegocio.ReadAll();
 	    	
 	        ModelAndView mv = new ModelAndView("listarTurnos");	        
@@ -177,12 +173,10 @@ public class TurnoController {
 	 
 	  @RequestMapping("filtrarTurnos_xMedico.html")
 	  public ModelAndView filtrarTurnos_xMedico(@RequestParam("ddl_medico") String idMedico) {
-		  ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-		  TurnoNegocio turnoNegocio = (TurnoNegocio)appContext.getBean("beanTurnoNegocio");
+		  
 		  List<Turno> listaTurnos = turnoNegocio.filtrarTurnos_xMedicos(idMedico);		  
 		  
-		  //se cargan los medicos para los filtros
-		  MedicoNegocio medicoNegocio= (MedicoNegocio)appContext.getBean("beanMedicoNegocio");		  
+		  //se cargan los medicos para los filtros	  
 		  List<Medico> listaMedicos = medicoNegocio.ReadAll();
 		  
 		  ModelAndView mv = new ModelAndView("listarTurnos");		  
@@ -195,12 +189,10 @@ public class TurnoController {
 	  
 	  @RequestMapping("filtrarTurnos_xEstadoTurno.html")
 	  public ModelAndView filtrarTurnos_xEstadoTurno(@RequestParam("ddl_EstadoTurno") String estadoTurno) {
-		  ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-		  TurnoNegocio turnoNegocio = (TurnoNegocio)appContext.getBean("beanTurnoNegocio");
+		  
 		  List<Turno> listaTurnos = turnoNegocio.filtrarTurnos_xEstado(estadoTurno);
 		  
 		  //se cargan los medicos para los filtros
-		  MedicoNegocio medicoNegocio = (MedicoNegocio)appContext.getBean("beanMedicoNegocio");
 		  List<Medico> listaMedicos = medicoNegocio.ReadAll();
 		  
 		  ModelAndView mv = new ModelAndView("listarTurnos");		  
@@ -213,18 +205,13 @@ public class TurnoController {
 	  
 	 @RequestMapping("listarTurnosAsignados.html")
 	    public ModelAndView listarTurnosAsignados(HttpSession session) {
-	    	ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-	    	TurnoNegocio turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");
-			UsuarioNegocio usuarioNegocio = (UsuarioNegocio) appContext.getBean("beanUsuarioNegocio");	
-			MedicoNegocio medicoNegocio = (MedicoNegocio) appContext.getBean("beanMedicoNegocio");	
-			Medico medico = (Medico) appContext.getBean("beanMedico");
-			Usuario usuario= (Usuario) appContext.getBean("beanUsuario");	
+	    	
 	    	String user = (String) session.getAttribute("user");
 	    	List<Turno> listaTurnos = null;
 	    	
 	    	if (user != null) {
-	    	    	medico = medicoNegocio.getMedicoByUser(user);  
-	    	    	listaTurnos = turnoNegocio.getTurnosPorMedicoLegajo(medico.getLegajo());
+	    	    	nuevoMedico = medicoNegocio.getMedicoByUser(user);  
+	    	    	listaTurnos = turnoNegocio.getTurnosPorMedicoLegajo(nuevoMedico.getLegajo());
 	    	 }
 	    		    	 
 	    	ModelAndView mv = new ModelAndView("listarTurnos");
@@ -244,17 +231,14 @@ public class TurnoController {
 	 @RequestMapping(value = "marcarPresente.html", method = RequestMethod.POST)
 	 public ModelAndView marcarPresente(@RequestParam("idTurno") int idTurno, 
 	                                    @RequestParam("observaciones") String observaciones) {
-	     ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-	     TurnoNegocio turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");
-		 Turno turno = (Turno) appContext.getBean("beanTurno");
-
+	     
 	     ModelAndView mv = new ModelAndView("redirect:listarTurnos.html");
 
-	     turno = turnoNegocio.ReadOne(idTurno);
+	     nuevoTurno = turnoNegocio.ReadOne(idTurno);
 	     
-	     turno.setObservacion(observaciones);
-	     turno.setEstadoTurno("PRESENTE");
-	     turnoNegocio.Update(turno);
+	     nuevoTurno.setObservacion(observaciones);
+	     nuevoTurno.setEstadoTurno("PRESENTE");
+	     turnoNegocio.Update(nuevoTurno);
 	     
 
 	     return mv;
@@ -263,15 +247,13 @@ public class TurnoController {
 	 @RequestMapping(value = "marcarAusente.html", method = RequestMethod.POST)
 	 public ModelAndView marcarAusente(@RequestParam("idTurno") int idTurno,
 			 							@RequestParam("observacionesAusente") String observacionesAusente) {
-	     ApplicationContext appContext = new ClassPathXmlApplicationContext("frgp/utn/edu/ar/resources/Beans.xml");
-	     TurnoNegocio turnoNegocio = (TurnoNegocio) appContext.getBean("beanTurnoNegocio");
-
+	    
 	     ModelAndView mv = new ModelAndView("redirect:listarTurnos.html");
 
-	     Turno turno = turnoNegocio.ReadOne(idTurno);
-	     turno.setObservacion(observacionesAusente);
-	     turno.setEstadoTurno("AUSENTE");
-	     turnoNegocio.Update(turno);
+	     nuevoTurno = turnoNegocio.ReadOne(idTurno);
+	     nuevoTurno.setObservacion(observacionesAusente);
+	     nuevoTurno.setEstadoTurno("AUSENTE");
+	     turnoNegocio.Update(nuevoTurno);
 	     
 	     return mv;
 	 }
