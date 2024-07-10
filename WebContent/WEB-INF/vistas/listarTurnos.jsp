@@ -106,7 +106,7 @@
         </div>
     </nav>
 </div>
-
+<c:if test="${tipoUsuario == 'ADMINISTRADOR'}">
 	<form action="listarTurnos.html" method="post">
 	    <div class="row">
 	        <div class="col-md-6">
@@ -115,7 +115,17 @@
 	    </div>
     </form>
     <br>
-        
+</c:if>
+<c:if test="${tipoUsuario == 'MEDICO'}">
+	<form action="listarTurnosAsignados.html" method="post">
+	    <div class="row">
+	        <div class="col-md-6">
+	            <input type="submit" name="btnMostrarTodo" class="btn btn-secondary" value="Mostrar todo">
+	        </div>
+	    </div>
+    </form>
+    <br>
+</c:if>           
     <c:if test="${not empty listaTurnos}">
         <table id="tablaTurnos" class="table table-striped table-bordered">
             <thead>
