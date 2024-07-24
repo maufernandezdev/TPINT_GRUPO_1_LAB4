@@ -8,7 +8,12 @@
     <title>Lista de Pacientes</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+    
+   
     <style>
+	    .modal-dialog {
+	        max-width: 800px !important;
+	    }
         .container {
             padding-top: 20px;
         }
@@ -297,7 +302,11 @@ $(document).ready(function() {
 	    localidadDropdown.disabled = false;
 	}
 	
-	document.getElementById("provinciaEditar").addEventListener("change", cargarLocalidadesEditar);
+	// Cargar localidades cuando se cambia la provincia en el modal de edición
+    document.getElementById("provinciaEditar").addEventListener("change", function() {
+        cargarLocalidadesEditar();
+    });
+	//document.getElementById("provinciaEditar").addEventListener("change", cargarLocalidadesEditar);
 </script>
 
 </body>
