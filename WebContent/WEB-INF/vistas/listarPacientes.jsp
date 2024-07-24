@@ -242,6 +242,11 @@ $(document).ready(function() {
         var dni = $(this).data('dni');
         window.location.href = "eliminar_paciente.html?dni=" + dni;
     });
+    
+    $('.modal button.close, .modal .btn-secondary').click(function() {
+        $('.modal-backdrop').remove();
+    });
+    
     // Configurar el modal de edición al hacer click en Modificar
     $('.editar-paciente').click(function() {
         var dni = $(this).data('dni');
